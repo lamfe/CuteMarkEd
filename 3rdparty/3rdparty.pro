@@ -5,8 +5,7 @@ SUBDIRS += \
 
 win32 {
     SUBDIRS += \
-        discount \
-        hunspell
+        discount
 
     with_hoedown {
         message("3rdparty: Build hoedown markdown converter library")

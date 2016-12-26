@@ -4,8 +4,8 @@
 #
 #-------------------------------------------------
 
-TARGET = cutemarked
 TEMPLATE = app
+TARGET = cutemarked
 
 include(../global.pri)
 
@@ -223,19 +223,12 @@ else:win32-msvc*:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../..
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../3rdparty/peg-markdown-highlight/libpmh.a
 
 # hunspell
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../3rdparty/hunspell/lib/ -lhunspell
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../3rdparty/hunspell/lib/ -lhunspell
+INCLUDEPATH += $$PWD/../../3rdparty/hunspell/src
+LIBS += -L$$OUT_PWD/../libs/hunspell$${OUT_TAIL} -lhunspell
 
 unix:!macx {
   PKGCONFIG += hunspell
 }
-
-macx {
-  LIBS += -lhunspell
-}
-
-win32:INCLUDEPATH += $$PWD/../../3rdparty/hunspell/src
-win32:DEPENDPATH += $$PWD/../../3rdparty/hunspell/src
 
 # hoedown
 with_hoedown {
@@ -296,15 +289,15 @@ unix:!macx {
 mac {
     CUTE_MARK_ED_LIBS = \
         $$OUT_PWD/../../3rdparty/discount/libdiscount.1.dylib \
-        $$OUT_PWD/../../3rdparty/hunspell/lib/libhunspell.1.dylib
+        $$OUT_PWD/../libs/hunspell/libhunspell.1.dylib
 } else:win32 {
     CUTE_MARK_ED_LIBS = \
         $$OUT_PWD/../../3rdparty/discount/$${DEBUG_MODE}/discount.dll \
-        $$OUT_PWD/../../3rdparty/hunspell/lib/hunspell.dll
+        $$OUT_PWD/../libs/hunspell/$${DEBUG_MODE}/hunspell.dll
 } else {
     CUTE_MARK_ED_LIBS = \
         $$OUT_PWD/../../3rdparty/discount/libdiscount.1.so \
-        $$OUT_PWD/../../3rdparty/hunspell/lib/libhunspell.1.so
+        $$OUT_PWD/../libs/hunspell/libhunspell.1.so
 }
 
 include(post_link.pri)
