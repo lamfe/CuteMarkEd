@@ -4,14 +4,15 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkitwidgets printsupport
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-win32: QT += winextras
-
 TARGET = cutemarked
 TEMPLATE = app
+
+include(../global.pri)
+
+QT += core gui webkitwidgets printsupport
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+win32: QT += winextras
+
 CONFIG += c++11
 
 unix:!macx {
@@ -68,17 +69,13 @@ SOURCES += \
     aboutdialog.cpp \
     statusbarwidget.cpp
 
-win32 {
-    SOURCES += \
-        hunspell/spellchecker_win.cpp
-}
-
 macx {
     SOURCES += \
         hunspell/spellchecker_macx.cpp
-}
-
-unix {
+} else:win32 {
+    SOURCES += \
+        hunspell/spellchecker_win.cpp
+} else {
     SOURCES += \
         hunspell/spellchecker_unix.cpp
 }
@@ -293,3 +290,22 @@ unix:!macx {
    INSTALLS += target desktop icon16 icon32 icon48 icon64 icon128 iconsvg
    message("The project will be installed in prefix $${PREFIX}")
 }
+
+################################################################################
+
+mac {
+    CUTE_MARK_ED_LIBS = \
+        $$OUT_PWD/../../3rdparty/discount/libdiscount.1.dylib \
+        $$OUT_PWD/../../3rdparty/hunspell/lib/libhunspell.1.dylib
+} else:win32 {
+    CUTE_MARK_ED_LIBS = \
+        $$OUT_PWD/../../3rdparty/discount/$${DEBUG_MODE}/discount.dll \
+        $$OUT_PWD/../../3rdparty/hunspell/lib/hunspell.dll
+} else {
+    CUTE_MARK_ED_LIBS = \
+        $$OUT_PWD/../../3rdparty/discount/libdiscount.1.so \
+        $$OUT_PWD/../../3rdparty/hunspell/lib/libhunspell.1.so
+}
+
+include(post_link.pri)
+include(archive.pri)
