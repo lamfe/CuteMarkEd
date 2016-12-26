@@ -28,4 +28,4 @@ HEADERS  += \
 # peg-markdown-highlight
 #
 
-INCLUDEPATH += $$PWD/../../3rdparty/peg-markdown-highlight
+INCLUDEPATH += $$PWD/../../../3rdparty/peg-markdown-highlight
