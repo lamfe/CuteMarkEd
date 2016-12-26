@@ -4,10 +4,13 @@
 # Github : https://github.com/cloose/CuteMarkEd
 #
 
-QT       += testlib
-QT       += gui webkitwidgets
-
 TARGET = integrationtest
+
+include(../../global.pri)
+
+QT += testlib
+QT += gui webkitwidgets
+
 CONFIG += console testcase
 CONFIG += c++11
 
@@ -66,17 +69,12 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../app-static/libapp-static.a
 #
 # PEG Markdown Highlight adapter library
 #
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../libs/peg-markdown-highlight/release/ -lpmh-adapter
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../libs/peg-markdown-highlight/debug/ -lpmh-adapter
-else:unix: LIBS += -L$$OUT_PWD/../../libs/peg-markdown-highlight/ -lpmh-adapter
+LIBS += -L$$OUT_PWD/../../libs/pmh-adapter$${OUT_TAIL} -lpmh-adapter
 
-INCLUDEPATH += $$PWD/../../libs/peg-markdown-highlight
-DEPENDPATH += $$PWD/../../libs/peg-markdown-highlight
+INCLUDEPATH += $$PWD/../../libs/pmh-adapter
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../libs/peg-markdown-highlight/release/libpmh-adapter.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../libs/peg-markdown-highlight/debug/libpmh-adapter.a
-else:win32-msvc*:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../libs/peg-markdown-highlight/release/pmh-adapter.lib
-else:win32-msvc*:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../libs/peg-markdown-highlight/debug/pmh-adapter.lib
+win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/pmh-adapter/$${DEBUG_MODE}/libpmh-adapter.a
+else:win32-msvc*: PRE_TARGETDEPS += $$OUT_PWD/../../libs/pmh-adapter/$${DEBUG_MODE}/pmh-adapter.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../libs/peg-markdown-highlight/libpmh-adapter.a
 
 #
@@ -87,7 +85,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../3rdparty/p
 else:unix: LIBS += -L$$OUT_PWD/../../../3rdparty/peg-markdown-highlight/ -lpmh
 
 INCLUDEPATH += $$PWD/../../../3rdparty/peg-markdown-highlight
-DEPENDPATH += $$PWD/../../../3rdparty/peg-markdown-highlight
 
 win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../../3rdparty/peg-markdown-highlight/release/libpmh.a
 else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../../3rdparty/peg-markdown-highlight/debug/libpmh.a
@@ -98,15 +95,12 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../../3rdparty/peg-markdown-highlight/
 #
 # Discount library
 #
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../3rdparty/discount/release/ -ldiscount
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../3rdparty/discount/debug/ -ldiscount
-else:unix: LIBS += -L$$OUT_PWD/../../../3rdparty/discount/ -lmarkdown
-
 INCLUDEPATH += $$PWD/../../../3rdparty/
-DEPENDPATH += $$PWD/../../../3rdparty/
+LIBS += -L$$OUT_PWD/../../../3rdparty/discount$${OUT_TAIL} -ldiscount
 
-#win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../../3rdparty/discount/release/libdiscount.a
-#else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../../3rdparty/discount/debug/libdiscount.a
+#win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/discount/$${DEBUG_MODE}/libdiscount.a
+#else:win32-msvc*: PRE_TARGETDEPS += $$OUT_PWD/../../libs/discount/$${DEBUG_MODE}/discount.lib
+#else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../libs/discount/libdiscount.a
 
 #
 # hoedown

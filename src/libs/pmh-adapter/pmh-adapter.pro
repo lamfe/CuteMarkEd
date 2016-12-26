@@ -4,11 +4,12 @@
 # Github : https://github.com/cloose/CuteMarkEd
 #
 
-QT += core gui widgets
-
 TARGET = pmh-adapter
 TEMPLATE = lib
 CONFIG += staticlib
+
+QT += core gui widgets
+
 CONFIG += c++11
 
 SOURCES += \

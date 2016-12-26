@@ -4,8 +4,8 @@
 #
 #-------------------------------------------------
 
-TEMPLATE = lib
 TARGET = hunspell
+TEMPLATE = lib
 
 QT -= core gui
 
