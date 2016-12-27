@@ -16,65 +16,23 @@ CONFIG += precompile_header
 
 OBJECTS_DIR += temp
 
-SRC_ROOT = $$PWD/../../../3rdparty/hunspell/src
+SRC_ROOT = $$PWD/../../../3rdparty/hunspell
 
-INCLUDEPATH += ./ \
-    $${SRC_ROOT}/hunspell \
-    $${SRC_ROOT}/parsers \
-    $${SRC_ROOT}/tools \
-    $${SRC_ROOT}/win_api
+INCLUDEPATH += \
+    $${SRC_ROOT}/src/hunspell \
+    $${SRC_ROOT}/src/parsers \
+    $${SRC_ROOT}/src/tools
 
 SOURCES += \
-    $${SRC_ROOT}/hunspell/suggestmgr.cxx \
-    $${SRC_ROOT}/hunspell/replist.cxx \
-    $${SRC_ROOT}/hunspell/phonet.cxx \
-    $${SRC_ROOT}/hunspell/hunzip.cxx \
-    $${SRC_ROOT}/hunspell/hunspell.cxx \
-    $${SRC_ROOT}/hunspell/hashmgr.cxx \
-    $${SRC_ROOT}/hunspell/filemgr.cxx \
-    $${SRC_ROOT}/hunspell/dictmgr.cxx \
-    $${SRC_ROOT}/hunspell/csutil.cxx \
-    $${SRC_ROOT}/hunspell/affixmgr.cxx \
-    $${SRC_ROOT}/hunspell/affentry.cxx \
-# parsers
-    $${SRC_ROOT}/parsers/firstparser.cxx \
-    $${SRC_ROOT}/parsers/htmlparser.cxx \
-    $${SRC_ROOT}/parsers/latexparser.cxx \
-    $${SRC_ROOT}/parsers/manparser.cxx \
-    $${SRC_ROOT}/parsers/textparser.cxx \
+    $$files($${SRC_ROOT}/src/hunspell/*.cxx) \
+    $$files($${SRC_ROOT}/src/parsers/*.cxx) \
 
-HEADERS +=\
-    $${SRC_ROOT}/hunspell/w_char.hxx \
-    $${SRC_ROOT}/hunspell/suggestmgr.hxx \
-    $${SRC_ROOT}/hunspell/replist.hxx \
-    $${SRC_ROOT}/hunspell/phonet.hxx \
-    $${SRC_ROOT}/hunspell/langnum.hxx \
-    $${SRC_ROOT}/hunspell/hunzip.hxx \
-    $${SRC_ROOT}/hunspell/hunvisapi.h \
-    $${SRC_ROOT}/hunspell/hunspell.hxx \
-    $${SRC_ROOT}/hunspell/hunspell.h \
-    $${SRC_ROOT}/hunspell/htypes.hxx \
-    $${SRC_ROOT}/hunspell/hashmgr.hxx \
-    $${SRC_ROOT}/hunspell/filemgr.hxx \
-    $${SRC_ROOT}/hunspell/dictmgr.hxx \
-    $${SRC_ROOT}/hunspell/csutil.hxx \
-    $${SRC_ROOT}/hunspell/baseaffix.hxx \
-    $${SRC_ROOT}/hunspell/atypes.hxx \
-    $${SRC_ROOT}/hunspell/affixmgr.hxx \
-    $${SRC_ROOT}/hunspell/affentry.hxx \
-    $${SRC_ROOT}/win_api/config.h \
-# parsers
-    $${SRC_ROOT}/parsers/firstparser.hxx \
-    $${SRC_ROOT}/parsers/htmlparser.hxx \
-    $${SRC_ROOT}/parsers/manparser.hxx \
-    $${SRC_ROOT}/parsers/latexparser.hxx \
-    $${SRC_ROOT}/parsers/textparser.hxx \
+HEADERS += \
+    $$files($${SRC_ROOT}/src/hunspell/*.hxx) \
+    $$files($${SRC_ROOT}/src/hunspell/*.h) \
+    $$files($${SRC_ROOT}/src/parsers/*.hxx)
 
-!static: {
-  win32:RC_FILE = $${SRC_ROOT}/win_api/Hunspell.rc
-}
-
-OTHER_FILES +=\
-    $${SRC_ROOT}/hunspell/license.myspell \
-    $${SRC_ROOT}/hunspell/license.hunspell \
-    $${SRC_ROOT}/hunspell/utf_info.cxx
+OTHER_FILES += \
+    $${SRC_ROOT}/license.myspell \
+    $${SRC_ROOT}/license.hunspell \
+    $${SRC_ROOT}/src/hunspell/utf_info.cxx
