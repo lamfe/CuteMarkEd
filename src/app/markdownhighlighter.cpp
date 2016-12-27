@@ -25,7 +25,7 @@
 #include "pmh_parser.h"
 #include "yamlheaderchecker.h"
 
-#include "peg-markdown-highlight/definitions.h"
+#include "pmh-adapter/definitions.h"
 using PegMarkdownHighlight::HighlightingStyle;
 
 #include "hunspell/spellchecker.h"

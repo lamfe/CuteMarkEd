@@ -96,7 +96,7 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../../3rdparty/peg-markdown-highlight/
 # Discount library
 #
 INCLUDEPATH += $$PWD/../../../3rdparty/
-LIBS += -L$$OUT_PWD/../../../3rdparty/discount$${OUT_TAIL} -ldiscount
+LIBS += -L$$OUT_PWD/../../libs/discount$${OUT_TAIL} -ldiscount
 
 #win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/discount/$${DEBUG_MODE}/libdiscount.a
 #else:win32-msvc*: PRE_TARGETDEPS += $$OUT_PWD/../../libs/discount/$${DEBUG_MODE}/discount.lib

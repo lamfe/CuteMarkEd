@@ -20,7 +20,7 @@
 #include <QSyntaxHighlighter>
 
 #include "pmh_definitions.h"
-#include "peg-markdown-highlight/definitions.h"
+#include "pmh-adapter/definitions.h"
 #include "highlightworkerthread.h"
 
 namespace hunspell {

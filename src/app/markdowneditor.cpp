@@ -27,7 +27,7 @@
 #include <QTextStream>
 
 #include <controls/linenumberarea.h>
-#include <peg-markdown-highlight/styleparser.h>
+#include <pmh-adapter/styleparser.h>
 #include <markdownhighlighter.h>
 #include "markdownmanipulator.h"
 #include "snippetcompleter.h"

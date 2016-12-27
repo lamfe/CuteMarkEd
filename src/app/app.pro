@@ -187,14 +187,11 @@ else:win32-msvc*:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../ap
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../app-static/libapp-static.a
 
 # discount
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../3rdparty/discount/release/ -ldiscount
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../3rdparty/discount/debug/ -ldiscount
-else:unix: LIBS += -L/usr/lib -lmarkdown
-
 INCLUDEPATH += $$PWD/../../3rdparty/discount
+LIBS += -L$$OUT_PWD/../libs/discount$${OUT_TAIL} -ldiscount
 
 # pmh-adapter
-INCLUDEPATH += $$PWD/../libs/pmh-adapter
+INCLUDEPATH += $$PWD/../libs/pmh-adapter/..
 LIBS += -L$$OUT_PWD/../libs/pmh-adapter$${OUT_TAIL} -lpmh-adapter
 
 win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../libs/pmh-adapter/$${DEBUG_MODE}/libpmh-adapter.a
@@ -280,15 +277,15 @@ unix:!macx {
 
 mac {
     CUTE_MARK_ED_LIBS = \
-        $$OUT_PWD/../../3rdparty/discount/libdiscount.1.dylib \
+        $$OUT_PWD/../libs/discount/libdiscount.1.dylib \
         $$OUT_PWD/../libs/hunspell/libhunspell.1.dylib
 } else:win32 {
     CUTE_MARK_ED_LIBS = \
-        $$OUT_PWD/../../3rdparty/discount/$${DEBUG_MODE}/discount.dll \
+        $$OUT_PWD/../libs/discount/$${DEBUG_MODE}/discount.dll \
         $$OUT_PWD/../libs/hunspell/$${DEBUG_MODE}/hunspell.dll
 } else {
     CUTE_MARK_ED_LIBS = \
-        $$OUT_PWD/../../3rdparty/discount/libdiscount.1.so \
+        $$OUT_PWD/../libs/discount/libdiscount.1.so \
         $$OUT_PWD/../libs/hunspell/libhunspell.1.so
 }
 
