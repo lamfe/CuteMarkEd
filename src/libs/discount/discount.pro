@@ -46,4 +46,6 @@ HEADERS += \
     mkdio.h \
     $${SRC_ROOT}/markdown.h \
     $${SRC_ROOT}/tags.h \
-    config.h
+    config.h \
+    config_win.h \
+    config_mac.h

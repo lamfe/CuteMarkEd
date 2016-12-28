@@ -1,17 +1,12 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+﻿
 
-#if defined(_WIN32) || defined(_WIN64)
+#ifndef ___HEADFILE_BBCBFD59_1010_4800_A4D1_858C7DDEAEFC_
+#define ___HEADFILE_BBCBFD59_1010_4800_A4D1_858C7DDEAEFC_
 
-#include <Windows.h>
+#include "config_win.h"
+#include "config_mac.h"
 
-#define snprintf _snprintf
-#define vsnprintf _vsnprintf
-#define strcasecmp _stricmp
-#define strncasecmp _strnicmp
-
-#define INITRNG(x) srand((unsigned int)x)
-#define COINTOSS() (rand()&1)
+/** User config */
 
 // Set tabstops to N characters: --with-tabstops=4
 #define TABSTOP 4
@@ -29,8 +24,5 @@
 #define USE_EXTRA_DL 1
 #define USE_DISCOUNT_DL 1
 
-#define VERSION "2.1.6"
 
 #endif
-
-#endif // CONFIG_H
