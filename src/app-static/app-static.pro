@@ -87,7 +87,7 @@ INCLUDEPATH += $$PWD/../libs/jsonconfig
 #
 # Discount library
 #
-win32:INCLUDEPATH += $$PWD/../../3rdparty/discount
+win32:INCLUDEPATH += $$PWD/../../3rdparty/discount $$PWD/../libs/discount
 
 #
 # Hoedown library

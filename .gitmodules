@@ -1,6 +1,6 @@
 [submodule "3rdparty/discount"]
 	path = 3rdparty/discount
-	url = https://github.com/cloose/discount.git
+	url = https://github.com/Orc/discount.git
 [submodule "3rdparty/hunspell"]
 	path = 3rdparty/hunspell
 	url = https://github.com/hunspell/hunspell.git

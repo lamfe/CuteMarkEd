@@ -15,7 +15,11 @@ CONFIG += warn_off
 
 SRC_ROOT = $$PWD/../../../3rdparty/discount
 
-DEF_FILE = $${SRC_ROOT}/discount.def
+DEF_FILE = discount.def
+
+INCLUDEPATH += \
+    $$PWD \
+    $${SRC_ROOT}
 
 SOURCES += \
     $${SRC_ROOT}/mkdio.c \
@@ -24,7 +28,7 @@ SOURCES += \
     $${SRC_ROOT}/generate.c \
     $${SRC_ROOT}/resource.c \
     $${SRC_ROOT}/docheader.c \
-    $${SRC_ROOT}/version.c \
+    version.c \
     $${SRC_ROOT}/toc.c \
     $${SRC_ROOT}/css.c \
     $${SRC_ROOT}/xml.c \
@@ -39,7 +43,7 @@ SOURCES += \
     $${SRC_ROOT}/flags.c
 
 HEADERS += \
-    $${SRC_ROOT}/mkdio.h \
+    mkdio.h \
     $${SRC_ROOT}/markdown.h \
     $${SRC_ROOT}/tags.h \
-    $${SRC_ROOT}/config.h
+    config.h
