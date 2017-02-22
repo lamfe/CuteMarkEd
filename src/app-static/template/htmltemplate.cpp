@@ -102,20 +102,26 @@ QString HtmlTemplate::buildHtmlHeader(RenderOptions options) const
             header += "<script type=\"text/x-mathjax-config\">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']]}});</script>";
         }
 
+#if 0
+        // Use online mathjax, and HTML-CSS renderer
         header += "<script type=\"text/javascript\" src=\"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML\"></script>\n";
+#else
+        // Use local mathjax, and SVG renderer
+        header += "<script type=\"text/javascript\" src=\"qrc:/resources/scripts/mathjax/MathJax.js?config=TeX-AMS-MML_SVG\"></script>\n";
+#endif
     }
 
     // add Highlight.js script to HTML header
     if (options.testFlag(Template::CodeHighlighting)) {
-        header += QString("<link rel=\"stylesheet\" href=\"qrc:/scripts/highlight.js/styles/%1.css\">\n").arg(codeHighlightingStyle());
-        header += "<script src=\"qrc:/scripts/highlight.js/highlight.pack.js\"></script>\n";
+        header += QString("<link rel=\"stylesheet\" href=\"qrc:/resources/scripts/highlight.js/styles/%1.css\">\n").arg(codeHighlightingStyle());
+        header += "<script src=\"qrc:/resources/scripts/highlight.js/highlight.pack.js\"></script>\n";
         header += "<script>hljs.initHighlightingOnLoad();</script>\n";
     }
 
     // add mermaid.js script to HTML header
     if (options.testFlag(Template::DiagramSupport)) {
-        header += "<link rel=\"stylesheet\" href=\"qrc:/scripts/mermaid/mermaid.css\">\n";
-        header += "<script src=\"qrc:/scripts/mermaid/mermaid.full.min.js\"></script>\n";
+        header += "<link rel=\"stylesheet\" href=\"qrc:/resources/scripts/mermaid/mermaid.css\">\n";
+        header += "<script src=\"qrc:/resources/scripts/mermaid/mermaid.full.min.js\"></script>\n";
     }
 
     return header;

@@ -300,7 +300,7 @@ void MainWindow::fileExportToHtml()
 
         QString highlightJs;
         if (dialog.includeCodeHighlighting()) {
-            QFile f(":/scripts/highlight.js/highlight.pack.js");
+            QFile f(":/resources/scripts/highlight.js/highlight.pack.js");
             if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
                 highlightJs = f.readAll();
             }

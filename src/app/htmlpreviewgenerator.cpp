@@ -72,7 +72,7 @@ QString HtmlPreviewGenerator::exportHtml(const QString &styleSheet, const QStrin
     if (!highlightingScript.isEmpty()) {
         // FIXME: doesn't really belong here
         QString highlightStyle;
-        QFile f(QString(":/scripts/highlight.js/styles/%1.css").arg(converter->templateRenderer()->codeHighlightingStyle()));
+        QFile f(QString(":/resources/scripts/highlight.js/styles/%1.css").arg(converter->templateRenderer()->codeHighlightingStyle()));
         if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
             highlightStyle = f.readAll();
         }
