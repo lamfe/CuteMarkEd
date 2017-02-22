@@ -15,7 +15,7 @@ win32: QT += winextras
 
 CONFIG += c++11
 
-unix:!macx {
+unix: !macx {
   CONFIG += link_pkgconfig
 }
 
@@ -34,9 +34,9 @@ TRANSLATIONS += \
     translations/cutemarked_ru.ts \
     translations/cutemarked_zh_CN.ts
 
-win32:RC_FILE = cutemarked.rc
+win32: RC_FILE = cutemarked.rc
 macx {
-    ICON = app-icon.icns
+    ICON = resources/app-icon.icns
     QMAKE_INFO_PLIST = Info.plist
 }
 
@@ -80,7 +80,7 @@ macx {
         hunspell/spellchecker_unix.cpp
 }
 
-HEADERS  += \
+HEADERS += \
     mainwindow.h \
     markdowneditor.h \
     controls/linenumberarea.h \
@@ -107,7 +107,7 @@ HEADERS  += \
     statusbarwidget.h \
     savefileadapter.h
 
-FORMS    += \
+FORMS += \
     mainwindow.ui \
     controls/fileexplorerwidget.ui \
     controls/findreplacewidget.ui \
@@ -244,22 +244,22 @@ unix:!macx {
 
    # install icons
    icon16.path = $${DATADIR}/icons/hicolor/16x16/apps
-   icon16.files = icons/16x16/cutemarked.png
+   icon16.files = resources/icons/16x16/cutemarked.png
 
    icon32.path = $${DATADIR}/icons/hicolor/32x32/apps
-   icon32.files = icons/32x32/cutemarked.png
+   icon32.files = resources/icons/32x32/cutemarked.png
 
    icon48.path = $${DATADIR}/icons/hicolor/48x48/apps
-   icon48.files = icons/48x48/cutemarked.png
+   icon48.files = resources/icons/48x48/cutemarked.png
 
    icon64.path = $${DATADIR}/icons/hicolor/64x64/apps
-   icon64.files = icons/64x64/cutemarked.png
+   icon64.files = resources/icons/64x64/cutemarked.png
 
    icon128.path = $${DATADIR}/icons/hicolor/128x128/apps
-   icon128.files = icons/128x128/cutemarked.png
+   icon128.files = resources/icons/128x128/cutemarked.png
 
    iconsvg.path = $${DATADIR}/icons/hicolor/scalable/apps
-   iconsvg.files = icons/scalable/cutemarked.svg
+   iconsvg.files = resources/icons/scalable/cutemarked.svg
 
    # install application
    target.path = $${PREFIX}/bin
