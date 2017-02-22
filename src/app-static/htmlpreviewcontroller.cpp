@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014-2015 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,16 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "htmlpreviewcontroller.h"
 
 #include <QAction>
 #include <QNetworkDiskCache>
 #include <QStandardPaths>
-#include <QWebView>
+
+#include "htmlpreviewcontroller.h"
+#include "html_previewer.h"
 
 static const qreal ZOOM_CHANGE_VALUE = 0.1;
 
-HtmlPreviewController::HtmlPreviewController(QWebView *view, QObject *parent) :
+HtmlPreviewController::HtmlPreviewController(HtmlPreviewer *view, QObject *parent) :
     QObject(parent),
     view(view),
     zoomInAction(0),
@@ -64,7 +65,11 @@ QAction *HtmlPreviewController::createAction(const QString &text, const QKeySequ
 
 void HtmlPreviewController::registerActionsWithView()
 {
+#if WITH_QTWEBENGINE
+    view->addAction(view->pageAction(QWebEnginePage::Copy));
+#else
     view->addAction(view->pageAction(QWebPage::Copy));
+#endif
     //view->addAction(view->pageAction(QWebPage::InspectElement));
     view->addAction(zoomInAction);
     view->addAction(zoomOutAction);
@@ -77,7 +82,11 @@ void HtmlPreviewController::setupNetworkDiskCache()
     QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     diskCache->setCacheDirectory(cacheDir);
 
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     view->page()->networkAccessManager()->setCache(diskCache);
+#endif
 }
 
 void HtmlPreviewController::zoomInView()

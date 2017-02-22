@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014-2015 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,13 +17,13 @@
 #include "htmlpreviewcontrollertest.h"
 
 #include <QtTest>
-#include <QWebView>
+#include "html_previewer.h"
 
 #include "htmlpreviewcontroller.h"
 
 void HtmlPreviewControllerTest::initTestCase()
 {
-    webView = new QWebView();
+    webView = new HtmlPreviewer();
     controller = new HtmlPreviewController(webView);
 
     webView->show();
@@ -100,5 +100,9 @@ void HtmlPreviewControllerTest::resetsZoomOnCtrlZeroKeyPress()
 
 void HtmlPreviewControllerTest::setupsNetworkDiskCache()
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     QVERIFY(webView->page()->networkAccessManager()->cache() != 0);
+#endif
 }

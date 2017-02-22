@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2013-2015 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,9 +36,15 @@
 #include <QStandardPaths>
 #include <QTextDocumentWriter>
 #include <QTimer>
-#include <QWebFrame>
-#include <QWebPage>
-#include <QWebInspector>
+
+#if WITH_QTWEBENGINE
+#   include <QWebEngineSettings>
+// TODO
+#else
+#   include <QWebFrame>
+#   include <QWebPage>
+#   include <QWebInspector>
+#endif
 
 #ifdef Q_OS_WIN
 #include <QWinJumpList>
@@ -57,6 +63,7 @@
 #include "controls/languagemenu.h"
 #include "controls/recentfilesmenu.h"
 #include "aboutdialog.h"
+#include "html_previewer.h"
 #include "htmlpreviewcontroller.h"
 #include "htmlpreviewgenerator.h"
 #include "htmlviewsynchronizer.h"
@@ -127,8 +134,12 @@ void MainWindow::resizeEvent(QResizeEvent *e)
 void MainWindow::initializeApp()
 {
     // inform us when a link in the table of contents or preview view is clicked
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     ui->tocWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+#endif
 
     themeCollection->load(":/builtin-htmlpreview-themes.json");
     loadCustomStyles();
@@ -163,12 +174,16 @@ void MainWindow::initializeApp()
     // set url to markdown syntax help
     ui->webView_2->setUrl(tr("qrc:/syntax.html"));
 
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     // allow loading of remote javascript
     QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
 
     ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     QWebInspector *inspector = new QWebInspector();
     inspector->setPage(ui->webView->page());
+#endif
 
     ui->menuLanguages->loadDictionaries(options->dictionaryLanguage());
 
@@ -281,7 +296,12 @@ void MainWindow::fileExportToHtml()
         QString cssStyle;
         if (dialog.includeCSS()) {
             // get url of current css stylesheet
+#if WITH_QTWEBENGINE
+            // TODO
+            QUrl cssUrl;
+#else
             QUrl cssUrl = ui->webView->page()->settings()->userStyleSheetUrl();
+#endif
 
             // get resource or file name from url
             QString cssFileName;
@@ -328,7 +348,11 @@ void MainWindow::fileExportToPdf()
     ExportPdfDialog dialog(fileName);
     if (dialog.exec() == QDialog::Accepted) {
          QTextDocument doc;
+#if WITH_QTWEBENGINE
+         // TODO
+#else
          doc.setHtml(ui->webView->page()->currentFrame()->toHtml());
+#endif
          doc.print(dialog.printer());
     }
 }
@@ -342,8 +366,12 @@ void MainWindow::filePrint()
     if (ui->webView->hasSelection())
         dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
 
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     if (dlg->exec() == QDialog::Accepted)
         ui->webView->print(&printer);
+#endif
 
     delete dlg;
 }
@@ -528,7 +556,11 @@ void MainWindow::applyCurrentTheme()
 
     generator->setCodeHighlightingStyle(codeHighlighting);
     ui->plainTextEdit->loadStyleFromStylesheet(stylePath(markdownHighlighting));
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     ui->webView->page()->settings()->setUserStyleSheetUrl(QUrl(previewStylesheet));
+#endif
 }
 
 void MainWindow::viewFullScreenMode()
@@ -767,8 +799,12 @@ void MainWindow::previewLinkClicked(const QUrl &url)
 
 void MainWindow::tocLinkClicked(const QUrl &url)
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     QString anchor = url.toString().remove("#");
     ui->webView->page()->mainFrame()->scrollToAnchor(anchor);
+#endif
 }
 
 void MainWindow::splitterMoved(int pos, int index)
@@ -787,8 +823,12 @@ void MainWindow::splitterMoved(int pos, int index)
 
 void MainWindow::addJavaScriptObject()
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     // add view synchronizer object to javascript engine
     ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("synchronizer", viewSynchronizer);
+#endif
 }
 
 bool MainWindow::load(const QString &fileName)
@@ -863,11 +903,13 @@ void MainWindow::markdownConverterChanged()
         connect(generator, SIGNAL(htmlResultReady(QString)),
                 viewSynchronizer, SLOT(rememberScrollBarPos()));
         break;
+
     case Options::RevealMarkdownConverter:
         viewSynchronizer = new RevealViewSynchronizer(ui->webView, ui->plainTextEdit);
         break;
+
     default:
-        viewSynchronizer = 0;
+        viewSynchronizer = nullptr;
         break;
     }
 }
@@ -1063,9 +1105,13 @@ void MainWindow::setupMarkdownEditor()
 
 void MainWindow::setupHtmlPreview()
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     // add our objects everytime JavaScript environment is cleared
     connect(ui->webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()),
             this, SLOT(addJavaScriptObject()));
+#endif
 
     // start background HTML preview generator
     connect(generator, SIGNAL(htmlResultReady(QString)),

@@ -1,7 +1,8 @@
-#ifndef _MKDIO_D
+﻿#ifndef _MKDIO_D
 #define _MKDIO_D
 
 #include <stdio.h>
+#include "config.h"
 
 typedef void MMIOT;
 

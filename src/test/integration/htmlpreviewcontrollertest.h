@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,8 @@
 #define HTMLPREVIEWCONTROLLERTEST_H
 
 #include <QObject>
-class QWebView;
+
+class HtmlPreviewer;
 class HtmlPreviewController;
 
 class HtmlPreviewControllerTest : public QObject
@@ -40,7 +41,7 @@ private slots:
     void setupsNetworkDiskCache();
 
 private:
-    QWebView *webView;
+    HtmlPreviewer *webView;
     HtmlPreviewController *controller;
 };
 

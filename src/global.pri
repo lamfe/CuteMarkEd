@@ -1,9 +1,9 @@
 
-# XXX ÕâÀïÃ²ËÆÊÇqmakeµÄÒ»¸öbug£¬²»»áÖ÷¶¯Ìí¼Ó _DEBUG/NDEBUG ºê
+# XXX è¿™é‡Œè²Œä¼¼æ˜¯qmakeçš„ä¸€ä¸ªbugï¼Œä¸ä¼šä¸»åŠ¨æ·»åŠ  _DEBUG/NDEBUG å®
 CONFIG(debug, debug|release): DEFINES += _DEBUG
 else: DEFINES += NDEBUG
 
-# ÆäËû±äÁ¿
+# å…¶ä»–å˜é‡
 CONFIG(debug, debug|release): DEBUG_MODE = debug
 else: DEBUG_MODE = release
 

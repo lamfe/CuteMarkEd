@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Andreas Reischuck <https://github.com/arBmind>
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
@@ -15,25 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "revealviewsynchronizer.h"
 
 #include <QPlainTextEdit>
 #include <QTextBlock>
-#include <QWebFrame>
-#include <QWebView>
 
+#include "revealviewsynchronizer.h"
+#include "html_previewer.h"
 #include "slidelinemapping.h"
 
 
-RevealViewSynchronizer::RevealViewSynchronizer(QWebView *webView, QPlainTextEdit *editor) :
+RevealViewSynchronizer::RevealViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor) :
     ViewSynchronizer(webView, editor),
     currentSlide(qMakePair(0, 0)),
     slideLineMapping(new SlideLineMapping())
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     connect(webView, SIGNAL(loadFinished(bool)),
             this, SLOT(registerEvents()));
     connect(webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()),
             this, SLOT(restoreSlidePosition()));
+#endif
 
     connect(editor, SIGNAL(cursorPositionChanged()),
             this, SLOT(cursorPositionChanged()));
@@ -73,6 +76,9 @@ void RevealViewSynchronizer::slideChanged(int horizontal, int vertical)
 
 void RevealViewSynchronizer::registerEvents()
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     m_webView->page()->mainFrame()->evaluateJavaScript(
                     "(function(){"
                     "  var mainWinUpdate = false;"
@@ -90,13 +96,18 @@ void RevealViewSynchronizer::registerEvents()
                     "  }"
                     "  synchronizer.gotoSlideRequested.connect(gotoSlide);"
                     "})();");
+#endif
 }
 
 void RevealViewSynchronizer::restoreSlidePosition()
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     static QString restorePosition =
         "window.location.hash = '/'+synchronizer.horizontalSlide+'/'+synchronizer.verticalSlide;";
     m_webView->page()->mainFrame()->evaluateJavaScript(restorePosition);
+#endif
 }
 
 void RevealViewSynchronizer::cursorPositionChanged()

@@ -96,7 +96,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QWebView" name="webView">
+          <widget class="HtmlPreviewer" name="webView">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -323,7 +323,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QWebView" name="tocWebView">
+      <widget class="HtmlPreviewer" name="tocWebView">
        <property name="url">
         <url>
          <string>about:blank</string>
@@ -362,7 +362,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QWebView" name="webView_2">
+      <widget class="HtmlPreviewer" name="webView_2">
        <property name="url">
         <url>
          <string>qrc:/syntax.html</string>
@@ -742,9 +742,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>HtmlPreviewer</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header>html_previewer.h</header>
   </customwidget>
   <customwidget>
    <class>MarkdownEditor</class>

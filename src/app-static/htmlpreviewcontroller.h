@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@
 
 class QAction;
 class QNetworkDiskCache;
-class QWebView;
+class HtmlPreviewer;
 
 class HtmlPreviewController : public QObject
 {
     Q_OBJECT
 public:
-    explicit HtmlPreviewController(QWebView *view, QObject *parent = 0);
+    explicit HtmlPreviewController(HtmlPreviewer *view, QObject *parent = 0);
 
 public slots:
     void zoomInView();
@@ -42,7 +42,7 @@ private:
     void setupNetworkDiskCache();
     
 private:
-    QWebView *view;
+    HtmlPreviewer *view;
     QAction *zoomInAction;
     QAction *zoomOutAction;
     QAction *zoomResetAction;

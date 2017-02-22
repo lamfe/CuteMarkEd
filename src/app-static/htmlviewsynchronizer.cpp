@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "htmlviewsynchronizer.h"
 
 #include <QPlainTextEdit>
 #include <QScrollBar>
-#include <QWebFrame>
-#include <QWebView>
+
+#include "htmlviewsynchronizer.h"
+#include "html_previewer.h"
 
 
-HtmlViewSynchronizer::HtmlViewSynchronizer(QWebView *webView, QPlainTextEdit *editor) :
+HtmlViewSynchronizer::HtmlViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor) :
     ViewSynchronizer(webView, editor),
     scrollBarPos(0)
 {
@@ -31,8 +31,12 @@ HtmlViewSynchronizer::HtmlViewSynchronizer(QWebView *webView, QPlainTextEdit *ed
             this, SLOT(scrollValueChanged(int)));
 
     // restore scrollbar position after content size changed
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     connect(webView->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
             this, SLOT(htmlContentSizeChanged()));
+#endif
 }
 
 HtmlViewSynchronizer::~HtmlViewSynchronizer()
@@ -41,11 +45,15 @@ HtmlViewSynchronizer::~HtmlViewSynchronizer()
 
 void HtmlViewSynchronizer::webViewScrolled()
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     double factor = (double)m_editor->verticalScrollBar()->maximum() /
                     m_webView->page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
     int value = m_webView->page()->mainFrame()->scrollBarValue(Qt::Vertical);
 
     m_editor->verticalScrollBar()->setValue(qRound(value * factor));
+#endif
 
     // remember new vertical scrollbar position of markdown editor
     rememberScrollBarPos();
@@ -53,11 +61,15 @@ void HtmlViewSynchronizer::webViewScrolled()
 
 void HtmlViewSynchronizer::scrollValueChanged(int value)
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     int webMax = m_webView->page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
     int textMax = m_editor->verticalScrollBar()->maximum();
     double factor = (double)webMax / textMax;
 
     m_webView->page()->mainFrame()->setScrollBarValue(Qt::Vertical, qRound(value * factor));
+#endif
 }
 
 void HtmlViewSynchronizer::htmlContentSizeChanged()

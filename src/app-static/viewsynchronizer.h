@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Andreas Reischuck <https://github.com/arBmind>
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
@@ -20,7 +20,7 @@
 
 #include <QObject>
 
-class QWebView;
+class HtmlPreviewer;
 class QPlainTextEdit;
 
 
@@ -29,11 +29,11 @@ class ViewSynchronizer : public QObject
     Q_OBJECT
 
 public:
-    ViewSynchronizer(QWebView *webView, QPlainTextEdit *editor, QObject *parent = 0);
+    ViewSynchronizer(HtmlPreviewer *previewer, QPlainTextEdit *editor, QObject *parent = 0);
     virtual ~ViewSynchronizer() {}
 
 protected:
-    QWebView *m_webView;
+    HtmlPreviewer *m_webView;
     QPlainTextEdit *m_editor;
 };
 

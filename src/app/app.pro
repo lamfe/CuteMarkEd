@@ -9,9 +9,16 @@ TEMPLATE = app
 
 include(../global.pri)
 
-QT += core gui webkitwidgets printsupport
+QT += core gui printsupport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 win32: QT += winextras
+lessThan(QT_VERSION, 5.6) {
+    QT += webkitwidgets
+    DEFINES += WITH_QTWEBENGINE=0
+} else {
+    QT += webenginewidgets webchannel
+    DEFINES += WITH_QTWEBENGINE=1
+}
 
 CONFIG += c++11
 
@@ -160,31 +167,13 @@ QMAKE_EXTRA_COMPILERS += lrelease
 ###################################################################################################
 
 #
-# Add search paths below /usr/local for Mac OSX
-#
-macx {
-  LIBS += -L/usr/local/lib
-  INCLUDEPATH += /usr/local/include
-}
-
-#
 # JSON configuration library
 #
 INCLUDEPATH += $$PWD/../libs/jsonconfig
 
 # Use internal static library: app-static
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../app-static/release/ -lapp-static
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../app-static/debug/ -lapp-static
-else:unix: LIBS += -L$$OUT_PWD/../app-static/ -lapp-static
-
 INCLUDEPATH += $$PWD/../app-static
-DEPENDPATH += $$PWD/../app-static
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../app-static/release/libapp-static.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../app-static/debug/libapp-static.a
-else:win32-msvc*:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../app-static/release/app-static.lib
-else:win32-msvc*:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../app-static/debug/app-static.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../app-static/libapp-static.a
+LIBS += -L$$OUT_PWD/../app-static$${OUT_TAIL} -lapp-static
 
 # discount
 INCLUDEPATH += $$PWD/../../3rdparty/discount
@@ -194,22 +183,9 @@ LIBS += -L$$OUT_PWD/../libs/discount$${OUT_TAIL} -ldiscount
 INCLUDEPATH += $$PWD/../libs/pmh-adapter/..
 LIBS += -L$$OUT_PWD/../libs/pmh-adapter$${OUT_TAIL} -lpmh-adapter
 
-win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../libs/pmh-adapter/$${DEBUG_MODE}/libpmh-adapter.a
-else:win32-msvc*: PRE_TARGETDEPS += $$OUT_PWD/../libs/pmh-adapter/$${DEBUG_MODE}/pmh-adapter.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../libs/peg-markdown-highlight/libpmh-adapter.a
-
 # peg-markdown-highlight
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../3rdparty/peg-markdown-highlight/release/ -lpmh
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../3rdparty/peg-markdown-highlight/debug/ -lpmh
-else:unix: LIBS += -L$$OUT_PWD/../../3rdparty/peg-markdown-highlight/ -lpmh
-
 INCLUDEPATH += $$PWD/../../3rdparty/peg-markdown-highlight
-
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../3rdparty/peg-markdown-highlight/release/libpmh.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../3rdparty/peg-markdown-highlight/debug/libpmh.a
-else:win32-msvc*:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../3rdparty/peg-markdown-highlight/release/pmh.lib
-else:win32-msvc*:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../../3rdparty/peg-markdown-highlight/debug/pmh.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../3rdparty/peg-markdown-highlight/libpmh.a
+LIBS += -L$$OUT_PWD/../../3rdparty/peg-markdown-highlight$${OUT_TAIL} -lpmh
 
 # hunspell
 INCLUDEPATH += $$PWD/../../3rdparty/hunspell/src
@@ -221,16 +197,10 @@ unix:!macx {
 
 # hoedown
 with_hoedown {
-    message("app: Enable hoedown markdown converter support")
     DEFINES += ENABLE_HOEDOWN
-
     INCLUDEPATH += $$PWD/../../3rdparty/hoedown
-
     LIBS += -L$$OUT_PWD/../libs/hoedown$${OUT_TAIL} -lhoedown
 }
-
-message("Using INCLUDEPATH=$$INCLUDEPATH")
-message("Using LIBS=$$LIBS")
 
 ## INSTALLATION
 
@@ -294,4 +264,5 @@ mac {
 }
 
 include(post_link.pri)
+
 include(archive.pri)

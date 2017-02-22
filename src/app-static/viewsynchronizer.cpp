@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Andreas Reischuck <https://github.com/arBmind>
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
@@ -17,9 +17,9 @@
  */
 #include "viewsynchronizer.h"
 
-ViewSynchronizer::ViewSynchronizer(QWebView *webView, QPlainTextEdit *editor, QObject *parent) :
+ViewSynchronizer::ViewSynchronizer(HtmlPreviewer *previewer, QPlainTextEdit *editor, QObject *parent) :
     QObject(parent),
-    m_webView(webView),
+    m_webView(previewer),
     m_editor(editor)
 {
 }

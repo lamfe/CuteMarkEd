@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2013 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,11 @@
  */
 #include "options.h"
 
-#include <QWebSettings>
+#if WITH_QTWEBENGINE
+// TODO
+#else
+#   include <QWebSettings>
+#endif
 
 
 static const char* MARKDOWN_CONVERTER = "General/converter";
@@ -90,6 +94,9 @@ Options::Options(QObject *parent) :
 
 void Options::apply()
 {
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     QWebSettings *globalWebSettings = QWebSettings::globalSettings();
     globalWebSettings->setFontFamily(QWebSettings::StandardFont, m_standardFontFamily);
     globalWebSettings->setFontFamily(QWebSettings::FixedFont, m_fixedFontFamily);
@@ -97,6 +104,7 @@ void Options::apply()
     globalWebSettings->setFontFamily(QWebSettings::SansSerifFont, m_sansSerifFontFamily);
     globalWebSettings->setFontSize(QWebSettings::DefaultFontSize, m_defaultFontSize);
     globalWebSettings->setFontSize(QWebSettings::DefaultFixedFontSize, m_defaultFixedFontSize);
+#endif
 
     emit proxyConfigurationChanged();
     emit markdownConverterChanged();
@@ -502,6 +510,9 @@ void Options::readSettings()
     setEditorFont(f);
 
     // html preview settings
+#if WITH_QTWEBENGINE
+    // TODO
+#else
     QWebSettings *globalWebSettings = QWebSettings::globalSettings();
     m_standardFontFamily = settings.value(PREVIEW_STANDARD_FONT, globalWebSettings->fontFamily(QWebSettings::StandardFont)).toString();
     m_fixedFontFamily = settings.value(PREVIEW_FIXED_FONT, globalWebSettings->fontFamily(QWebSettings::FixedFont)).toString();
@@ -509,6 +520,7 @@ void Options::readSettings()
     m_sansSerifFontFamily = settings.value(PREVIEW_SANSSERIF_FONT, globalWebSettings->fontFamily(QWebSettings::SansSerifFont)).toString();
     m_defaultFontSize = settings.value(PREVIEW_DEFAULT_FONT_SIZE, globalWebSettings->fontSize(QWebSettings::DefaultFontSize)).toInt();
     m_defaultFixedFontSize = settings.value(PREVIEW_DEFAULT_FIXED_FONT_SIZE, globalWebSettings->fontSize(QWebSettings::DefaultFixedFontSize)).toInt();
+#endif
     m_mathInlineSupportEnabled = settings.value(MATHINLINESUPPORT_ENABLED, false).toBool();
 
     // proxy settings

@@ -9,7 +9,14 @@ TARGET = integrationtest
 include(../../global.pri)
 
 QT += testlib
-QT += gui webkitwidgets
+QT += gui
+lessThan(QT_VERSION, 5.6) {
+    QT += webkitwidgets
+    DEFINES += WITH_QTWEBENGINE=0
+} else {
+    QT += webenginewidgets webchannel
+    DEFINES += WITH_QTWEBENGINE=1
+}
 
 CONFIG += console testcase
 CONFIG += c++11
@@ -75,7 +82,7 @@ INCLUDEPATH += $$PWD/../../libs/pmh-adapter
 
 win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/pmh-adapter/$${DEBUG_MODE}/libpmh-adapter.a
 else:win32-msvc*: PRE_TARGETDEPS += $$OUT_PWD/../../libs/pmh-adapter/$${DEBUG_MODE}/pmh-adapter.lib
-else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../libs/peg-markdown-highlight/libpmh-adapter.a
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../libs/pmh-adapter/libpmh-adapter.a
 
 #
 # peg-markdown-highlight

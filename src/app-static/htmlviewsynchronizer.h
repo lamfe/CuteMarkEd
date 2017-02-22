@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ class HtmlViewSynchronizer : public ViewSynchronizer
     Q_OBJECT
 
 public:
-    HtmlViewSynchronizer(QWebView *webView, QPlainTextEdit *editor);
+    HtmlViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor);
     ~HtmlViewSynchronizer();
 
 public slots:

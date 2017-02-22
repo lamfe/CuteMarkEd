@@ -4,10 +4,18 @@
 # Github : https://github.com/cloose/CuteMarkEd
 #
 
-QT += gui webkitwidgets
-
 TARGET = app-static
 TEMPLATE = lib
+
+QT += gui
+lessThan(QT_VERSION, 5.6) {
+    QT += webkitwidgets
+    DEFINES += WITH_QTWEBENGINE=0
+} else {
+    QT += webenginewidgets webchannel
+    DEFINES += WITH_QTWEBENGINE=1
+}
+
 CONFIG += staticlib
 CONFIG += c++11
 
@@ -32,7 +40,8 @@ SOURCES += \
     revealviewsynchronizer.cpp \
     htmlpreviewcontroller.cpp \
     htmlviewsynchronizer.cpp \
-    yamlheaderchecker.cpp
+    yamlheaderchecker.cpp \
+    html_previewer.cpp
 
 HEADERS += \
     snippets/snippet.h \
@@ -59,7 +68,8 @@ HEADERS += \
     revealviewsynchronizer.h \
     htmlpreviewcontroller.h \
     htmlviewsynchronizer.h \
-    yamlheaderchecker.h
+    yamlheaderchecker.h \
+    html_previewer.h
 
 #unix:!symbian {
 #    maemo5 {
@@ -75,11 +85,6 @@ HEADERS += \
 ##################################################
 
 #
-# Add search paths below /usr/local for Mac OSX
-#
-macx:INCLUDEPATH += /usr/local/include
-
-#
 # JSON configuration library
 #
 INCLUDEPATH += $$PWD/../libs/jsonconfig
@@ -87,7 +92,7 @@ INCLUDEPATH += $$PWD/../libs/jsonconfig
 #
 # Discount library
 #
-win32:INCLUDEPATH += $$PWD/../../3rdparty/discount $$PWD/../libs/discount
+INCLUDEPATH += $$PWD/../../3rdparty/discount $$PWD/../libs/discount
 
 #
 # Hoedown library

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2014 Andreas Reischuck <https://github.com/arBmind>
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
@@ -32,7 +32,7 @@ class RevealViewSynchronizer : public ViewSynchronizer
     Q_PROPERTY(int verticalSlide READ verticalSlide NOTIFY gotoSlideRequested)
 
 public:
-    RevealViewSynchronizer(QWebView *webView, QPlainTextEdit *editor);
+    RevealViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor);
     ~RevealViewSynchronizer();
 
     int horizontalSlide() const;
