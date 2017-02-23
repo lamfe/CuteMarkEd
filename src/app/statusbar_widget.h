@@ -32,16 +32,16 @@ private slots:
     void updateStyleLabel();
 
 private:
-    MarkdownEditor* m_editor;
+    MarkdownEditor* _editor;
 
-    QLabel *m_lineColLabel;
-    QLabel *m_wordCountLabel;
+    QLabel *_line_col_label;
+    QLabel *_word_count_label;
 
-    QLabel *m_styleLabel;
+    QLabel *_style_label;
 
-    QActionGroup *m_styleActions;
+    QActionGroup *_style_actions;
 
-    ActiveLabel *m_htmlLabel;
+    ActiveLabel *_html_label;
 };
 
 #endif // STATUSBARWIDGET_H

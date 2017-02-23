@@ -22,13 +22,13 @@
 
 MarkdownManipulator::MarkdownManipulator(QPlainTextEdit *editor)
 {
-    this->editor = editor;
+    _editor = editor;
 }
 
 void MarkdownManipulator::wrapSelectedText(const QString &tag)
 {
-    QTextCursor cursor = editor->textCursor();
-    QTextDocument *doc = editor->document();
+    QTextCursor cursor = _editor->textCursor();
+    QTextDocument *doc = _editor->document();
     int start = cursor.selectionStart();
     int end = cursor.selectionEnd();
     if (cursor.hasSelection() &&
@@ -42,18 +42,18 @@ void MarkdownManipulator::wrapSelectedText(const QString &tag)
         cursor.setPosition(start + tag.length());
         cursor.movePosition(QTextCursor::Right,
                             QTextCursor::KeepAnchor, end - start);
-        editor->setTextCursor(cursor);
+        _editor->setTextCursor(cursor);
     } else if (!cursor.hasSelection()) {
         cursor.insertText(tag+tag);
         cursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, tag.length());
-        editor->setTextCursor(cursor);
+        _editor->setTextCursor(cursor);
     }
 }
 
 void MarkdownManipulator::wrapCurrentParagraph(const QString &startTag, const QString &endTag)
 {
-    QTextCursor cursor = editor->textCursor();
-    QTextDocument *doc = editor->document();
+    QTextCursor cursor = _editor->textCursor();
+    QTextDocument *doc = _editor->document();
 
     cursor.beginEditBlock();
 
@@ -92,7 +92,7 @@ void MarkdownManipulator::wrapCurrentParagraph(const QString &startTag, const QS
 
 void MarkdownManipulator::appendToLine(const QString &text)
 {
-    QTextCursor cursor = editor->textCursor();
+    QTextCursor cursor = _editor->textCursor();
 
     cursor.beginEditBlock();
 
@@ -105,8 +105,8 @@ void MarkdownManipulator::appendToLine(const QString &text)
 
 void MarkdownManipulator::prependToLine(const QChar &mark)
 {
-    QTextCursor cursor = editor->textCursor();
-    QTextDocument *doc = editor->document();
+    QTextCursor cursor = _editor->textCursor();
+    QTextDocument *doc = _editor->document();
 
     cursor.beginEditBlock();
 
@@ -132,7 +132,7 @@ void MarkdownManipulator::prependToLine(const QChar &mark)
 void MarkdownManipulator::increaseHeadingLevel()
 {
     // move cursor to start of line
-    QTextCursor cursor = editor->textCursor();
+    QTextCursor cursor = _editor->textCursor();
     cursor.beginEditBlock();
     cursor.movePosition(QTextCursor::StartOfLine);
 
@@ -147,7 +147,7 @@ void MarkdownManipulator::increaseHeadingLevel()
             cursor.insertText(" ");
         } else {
             int pos = cursor.position();
-            QTextDocument *doc = editor->document();
+            QTextDocument *doc = _editor->document();
             while (' ' == doc->characterAt(pos))
                 ++pos;
             int d = (pos - cursor.position());
@@ -163,7 +163,7 @@ void MarkdownManipulator::increaseHeadingLevel()
 
 void MarkdownManipulator::decreaseHeadingLevel()
 {
-    QTextCursor cursor = editor->textCursor();
+    QTextCursor cursor = _editor->textCursor();
     cursor.movePosition(QTextCursor::StartOfLine);
 
     if ('#' == cursor.document()->characterAt(cursor.position())) {
@@ -180,8 +180,8 @@ void MarkdownManipulator::decreaseHeadingLevel()
 
 void MarkdownManipulator::formatTextAsQuote()
 {
-    QTextCursor cursor = editor->textCursor();
-    QTextDocument *doc = editor->document();
+    QTextCursor cursor = _editor->textCursor();
+    QTextDocument *doc = _editor->document();
 
     int start = cursor.selectionStart();
     int end = cursor.selectionEnd();
@@ -196,7 +196,7 @@ void MarkdownManipulator::formatTextAsQuote()
 
 void MarkdownManipulator::insertTable(int rows, int columns, const QList<Qt::Alignment> &alignments, const QList<QStringList> &cells)
 {
-    QTextCursor cursor = editor->textCursor();
+    QTextCursor cursor = _editor->textCursor();
     cursor.beginEditBlock();
     int pos = cursor.position();
 
@@ -251,12 +251,12 @@ void MarkdownManipulator::insertTable(int rows, int columns, const QList<Qt::Ali
 
     cursor.endEditBlock();
 
-    editor->setTextCursor(cursor);
+    _editor->setTextCursor(cursor);
 }
 
 void MarkdownManipulator::insertImageLink(const QString &alternateText, const QString &imageSource, const QString &optionalTitle)
 {
-    QTextCursor cursor = editor->textCursor();
+    QTextCursor cursor = _editor->textCursor();
     cursor.beginEditBlock();
 
     QString imageLink;
@@ -273,8 +273,8 @@ void MarkdownManipulator::insertImageLink(const QString &alternateText, const QS
 
 void MarkdownManipulator::formatBlock(const QChar &mark)
 {
-    QTextCursor cursor = editor->textCursor();
-    QTextDocument *doc = editor->document();
+    QTextCursor cursor = _editor->textCursor();
+    QTextDocument *doc = _editor->document();
 
     cursor.beginEditBlock();
 

@@ -22,31 +22,30 @@
 #include "export_pdf_dialog.h"
 #include "ui_export_pdf_dialog.h"
 
-ExportPdfDialog::ExportPdfDialog(const QString &fileName, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ExportPdfDialog)
+ExportPdfDialog::ExportPdfDialog(const QString &fileName, QWidget *parent)
+    : QDialog(parent), _ui(new Ui::ExportPdfDialog)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
 
     // change button text of standard Ok button
-    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *okButton = _ui->buttonBox->button(QDialogButtonBox::Ok);
     okButton->setText("Export PDF");
 
     if (!fileName.isEmpty()) {
         QFileInfo info(fileName);
         QString exportFileName = info.absoluteFilePath().replace(info.suffix(), "pdf");
-        ui->exportToLineEdit->setText(exportFileName);
+        _ui->exportToLineEdit->setText(exportFileName);
     }
 
     // fill paper size combobox
-    ui->paperSizeComboBox->addItem(tr("A4 (210 x 297 mm, 8.26 x 11.69 inches)"), QPrinter::A4);
-    ui->paperSizeComboBox->addItem(tr("Letter (8.5 x 11 inches, 215.9 x 279.4 mm)"), QPrinter::Letter);
-    ui->paperSizeComboBox->addItem(tr("Legal (8.5 x 14 inches, 215.9 x 355.6 mm)"), QPrinter::Legal);
-    ui->paperSizeComboBox->addItem(tr("A3 (297 x 420 mm)"), QPrinter::A3);
-    ui->paperSizeComboBox->addItem(tr("A5 (148 x 210 mm)"), QPrinter::A5);
-    ui->paperSizeComboBox->addItem(tr("A6 (105 x 148 mm)"), QPrinter::A6);
-    ui->paperSizeComboBox->addItem(tr("B4 (250 x 353 mm)"), QPrinter::B4);
-    ui->paperSizeComboBox->addItem(tr("B5 (176 x 250 mm, 6.93 x 9.84 inches)"), QPrinter::B5);
+    _ui->paperSizeComboBox->addItem(tr("A4 (210 x 297 mm, 8.26 x 11.69 inches)"), QPrinter::A4);
+    _ui->paperSizeComboBox->addItem(tr("Letter (8.5 x 11 inches, 215.9 x 279.4 mm)"), QPrinter::Letter);
+    _ui->paperSizeComboBox->addItem(tr("Legal (8.5 x 14 inches, 215.9 x 355.6 mm)"), QPrinter::Legal);
+    _ui->paperSizeComboBox->addItem(tr("A3 (297 x 420 mm)"), QPrinter::A3);
+    _ui->paperSizeComboBox->addItem(tr("A5 (148 x 210 mm)"), QPrinter::A5);
+    _ui->paperSizeComboBox->addItem(tr("A6 (105 x 148 mm)"), QPrinter::A6);
+    _ui->paperSizeComboBox->addItem(tr("B4 (250 x 353 mm)"), QPrinter::B4);
+    _ui->paperSizeComboBox->addItem(tr("B5 (176 x 250 mm, 6.93 x 9.84 inches)"), QPrinter::B5);
 
     // initialize Ok button state
     exportToTextChanged(fileName);
@@ -54,21 +53,21 @@ ExportPdfDialog::ExportPdfDialog(const QString &fileName, QWidget *parent) :
 
 ExportPdfDialog::~ExportPdfDialog()
 {
-    delete ui;
+    delete _ui;
 }
 
 QPrinter *ExportPdfDialog::printer()
 {
-    QString fileName = ui->exportToLineEdit->text();
+    QString fileName = _ui->exportToLineEdit->text();
 
     QPrinter::Orientation orientation;
-    if (ui->portraitRadioButton->isChecked()) {
+    if (_ui->portraitRadioButton->isChecked()) {
         orientation = QPrinter::Portrait;
     } else {
         orientation = QPrinter::Landscape;
     }
 
-    QVariant v = ui->paperSizeComboBox->itemData(ui->paperSizeComboBox->currentIndex());
+    QVariant v = _ui->paperSizeComboBox->itemData(_ui->paperSizeComboBox->currentIndex());
     QPrinter::PaperSize size = (QPrinter::PaperSize)v.toInt();
 
     QPrinter *p = new QPrinter();
@@ -83,17 +82,17 @@ QPrinter *ExportPdfDialog::printer()
 void ExportPdfDialog::exportToTextChanged(const QString &text)
 {
     // only enable ok button if a filename was provided
-    QPushButton *okButton = ui->buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton *okButton = _ui->buttonBox->button(QDialogButtonBox::Ok);
     okButton->setEnabled(!text.isEmpty());
 }
 
 void ExportPdfDialog::chooseFileButtonClicked()
 {
-    QString fileName = ui->exportToLineEdit->text();
+    QString fileName = _ui->exportToLineEdit->text();
 
     fileName = QFileDialog::getSaveFileName(this, tr("Export to PDF..."), fileName,
                                                   tr("PDF Files (*.pdf);;All Files (*)"));
     if (!fileName.isEmpty()) {
-        ui->exportToLineEdit->setText(fileName);
+        _ui->exportToLineEdit->setText(fileName);
     }
 }

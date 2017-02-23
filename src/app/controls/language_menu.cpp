@@ -19,11 +19,9 @@
 #include <spellchecker/dictionary.h>
 #include "hunspell/spellchecker.h"
 
-LanguageMenu::LanguageMenu(QWidget *parent) :
-    QMenu(tr("Languages"), parent),
-    dictionariesGroup(new QActionGroup(this))
-{
-}
+LanguageMenu::LanguageMenu(QWidget *parent)
+    : QMenu(tr("Languages"), parent), _dictionaries_group(new QActionGroup(this))
+{}
 
 void LanguageMenu::loadDictionaries(const QString &currentLanguage)
 {
@@ -55,7 +53,7 @@ QAction *LanguageMenu::createAction(const Dictionary &dictionary)
 {
     QAction *action = this->addAction(QString("%1 / %2").arg(dictionary.languageName()).arg(dictionary.countryName()), this, SLOT(languageTriggered()));
     action->setCheckable(true);
-    action->setActionGroup(dictionariesGroup);
+    action->setActionGroup(_dictionaries_group);
 
     QVariant data;
     data.setValue(dictionary);

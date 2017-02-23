@@ -44,7 +44,7 @@ private:
     bool isValidTrigger(const QString &trigger);
 
 private:
-    SnippetCollection *snippetCollection;
+    SnippetCollection *_snippet_collection;
 };
 
 #endif // SNIPPETSTABLEMODEL_H

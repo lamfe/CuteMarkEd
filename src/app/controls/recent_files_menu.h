@@ -42,7 +42,7 @@ private:
     void updateMenu();
 
 private:
-    QStringList recentFiles;
+    QStringList _recent_files;
 };
 
 #endif // RECENTFILESMENU_H

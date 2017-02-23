@@ -33,7 +33,7 @@ void RecentFilesMenu::readState()
     int size = settings.beginReadArray("recentFiles");
     for (int i = 0; i < size; ++i) {
         settings.setArrayIndex(i);
-        recentFiles << settings.value("fileName").toString();
+        _recent_files << settings.value("fileName").toString();
     }
     settings.endArray();
 
@@ -45,9 +45,9 @@ void RecentFilesMenu::saveState() const
     QSettings settings;
 
     settings.beginWriteArray("recentFiles");
-    for (int i = 0; i < recentFiles.size(); ++i) {
+    for (int i = 0; i < _recent_files.size(); ++i) {
         settings.setArrayIndex(i);
-        settings.setValue("fileName", recentFiles.at(i));
+        settings.setValue("fileName", _recent_files.at(i));
     }
     settings.endArray();
 }
@@ -58,12 +58,12 @@ void RecentFilesMenu::addFile(const QString &fileName)
     QString absoluteNativeFileName(QDir::toNativeSeparators(fileInfo.absoluteFilePath()));
 
     // add file to top of list
-    recentFiles.removeAll(absoluteNativeFileName);
-    recentFiles.prepend(absoluteNativeFileName);
+    _recent_files.removeAll(absoluteNativeFileName);
+    _recent_files.prepend(absoluteNativeFileName);
 
     // remove last entry if list contains more than 10 entries
-    if (recentFiles.size() > 10) {
-        recentFiles.removeLast();
+    if (_recent_files.size() > 10) {
+        _recent_files.removeLast();
     }
 
     updateMenu();
@@ -71,7 +71,7 @@ void RecentFilesMenu::addFile(const QString &fileName)
 
 void RecentFilesMenu::clearMenu()
 {
-    recentFiles.clear();
+    _recent_files.clear();
     updateMenu();
 }
 
@@ -85,7 +85,7 @@ void RecentFilesMenu::updateMenu()
 {
     clear();
 
-    foreach (const QString &recentFile, recentFiles) {
+    foreach (const QString &recentFile, _recent_files) {
         QAction *action = addAction(recentFile);
         action->setData(recentFile);
 
@@ -96,5 +96,5 @@ void RecentFilesMenu::updateMenu()
     addSeparator();
     addAction(tr("Clear Menu"), this, SLOT(clearMenu()));
 
-    setEnabled(!recentFiles.empty());
+    setEnabled(!_recent_files.empty());
 }

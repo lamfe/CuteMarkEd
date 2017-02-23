@@ -53,18 +53,16 @@ protected:
 };
 
 MarkdownEditor::MarkdownEditor(QWidget *parent) :
-    QPlainTextEdit(parent),
-    lineNumberArea(new LineNumberArea(this)),
-    spellChecker(new SpellChecker()),
-    completer(0),
-    showHardLinebreaks(false)
+    QPlainTextEdit(parent), _line_number_area(new LineNumberArea(this)),
+    _spell_checker(new SpellChecker()), _completer(0),
+    _show_hard_linebreaks(false)
 {
-    highlighter = new MarkdownHighlighter(this->document(), spellChecker);
+    _highlighter = new MarkdownHighlighter(document(), _spell_checker);
 
     QFont font("Monospace", 10);
     font.setStyleHint(QFont::TypeWriter);
 
-    lineNumberArea->setFont(font);
+    _line_number_area->setFont(font);
     setFont(font);
 
     setVerticalScrollBar(new ScrollBarFix(Qt::Vertical, this));
@@ -91,17 +89,17 @@ MarkdownEditor::MarkdownEditor(QWidget *parent) :
 
 MarkdownEditor::~MarkdownEditor()
 {
-    delete spellChecker;
+    delete _spell_checker;
 }
 
 void MarkdownEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-    QPainter painter(lineNumberArea);
+    QPainter painter(_line_number_area);
 
     int selStart = textCursor().selectionStart();
     int selEnd = textCursor().selectionEnd();
 
-    QPalette palette = lineNumberArea->palette();
+    QPalette palette = _line_number_area->palette();
     palette.setCurrentColorGroup(QPalette::Active);
 
     painter.fillRect(event->rect(), palette.color(QPalette::Background));
@@ -131,7 +129,7 @@ void MarkdownEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
             }
 
             const QString number = QString::number(blockNumber + 1);
-            painter.drawText(0, top, lineNumberArea->width() - 4, height, Qt::AlignRight, number);
+            painter.drawText(0, top, _line_number_area->width() - 4, height, Qt::AlignRight, number);
 
             if (selected)
                 painter.restore();
@@ -151,7 +149,7 @@ int MarkdownEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-    QFont font = lineNumberArea->font();
+    QFont font = _line_number_area->font();
     const QFontMetrics linefmt(font);
 
     int space = 10 + linefmt.width(QLatin1Char('9')) * digits;
@@ -160,7 +158,7 @@ int MarkdownEditor::lineNumberAreaWidth()
 
 void MarkdownEditor::resetHighlighting()
 {
-    highlighter->reset();
+    _highlighter->reset();
 }
 
 void MarkdownEditor::paintEvent(QPaintEvent *e)
@@ -168,12 +166,12 @@ void MarkdownEditor::paintEvent(QPaintEvent *e)
     QPlainTextEdit::paintEvent(e);
 
     // draw line end markers if enabled
-    if (showHardLinebreaks) {
+    if (_show_hard_linebreaks) {
         drawLineEndMarker(e);
     }
 
     // draw column ruler
-    if (rulerEnabled) {
+    if (_ruler_enabled) {
         drawRuler(e);
     }
 }
@@ -184,13 +182,13 @@ void MarkdownEditor::resizeEvent(QResizeEvent *event)
 
     // update line number area
     QRect cr = contentsRect();
-    lineNumberArea->setGeometry(QStyle::visualRect(layoutDirection(), cr,
+    _line_number_area->setGeometry(QStyle::visualRect(layoutDirection(), cr,
                                 QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height())));
 }
 
 void MarkdownEditor::keyPressEvent(QKeyEvent *e)
 {
-    if (completer && completer->isPopupVisible()) {
+    if (_completer && _completer->isPopupVisible()) {
         // The following keys are forwarded by the completer to the widget
        switch (e->key()) {
        case Qt::Key_Enter:
@@ -205,8 +203,8 @@ void MarkdownEditor::keyPressEvent(QKeyEvent *e)
        }
     }
 
-    if (completer)
-        completer->hidePopup();
+    if (_completer)
+        _completer->hidePopup();
 
     QPlainTextEdit::keyPressEvent(e);
 }
@@ -238,9 +236,9 @@ void MarkdownEditor::updateLineNumberAreaWidth(int newBlockCount)
 void MarkdownEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
     if (dy)
-        lineNumberArea->scroll(0, dy);
+        _line_number_area->scroll(0, dy);
     else
-        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+        _line_number_area->update(0, rect.y(), _line_number_area->width(), rect.height());
 
     if (rect.contains(viewport()->rect()))
         updateLineNumberAreaWidth(0);
@@ -248,7 +246,7 @@ void MarkdownEditor::updateLineNumberArea(const QRect &rect, int dy)
 
 void MarkdownEditor::editorFontChanged(const QFont &font)
 {
-    lineNumberArea->setFont(font);
+    _line_number_area->setFont(font);
     setFont(font);
 }
 
@@ -260,13 +258,13 @@ void MarkdownEditor::tabWidthChanged(int tabWidth)
 
 void MarkdownEditor::rulerEnabledChanged(bool enabled)
 {
-    rulerEnabled = enabled;
+    _ruler_enabled = enabled;
     viewport()->update();
 }
 
 void MarkdownEditor::rulerPosChanged(int pos)
 {
-    rulerPos = pos;
+    _ruler_pos = pos;
     viewport()->update();
 }
 
@@ -279,7 +277,7 @@ void MarkdownEditor::showContextMenu(const QPoint &pos)
     cursor.select(QTextCursor::WordUnderCursor);
 
     // if word under cursor not spelled correctly, add suggestions to context menu
-    if (cursor.hasSelection() && !spellChecker->isCorrect(cursor.selectedText())) {
+    if (cursor.hasSelection() && !_spell_checker->isCorrect(cursor.selectedText())) {
         contextMenu->addSeparator();
 
         // add new submenu for the suggestions
@@ -287,7 +285,7 @@ void MarkdownEditor::showContextMenu(const QPoint &pos)
         contextMenu->addMenu(subMenu);
 
         // add action for each suggested replacement
-        QStringList suggestions = spellChecker->suggestions(cursor.selectedText());
+        QStringList suggestions = _spell_checker->suggestions(cursor.selectedText());
         foreach (const QString &suggestion, suggestions) {
             QAction *action = subMenu->addAction(suggestion);
             action->setData(cursorPosition);
@@ -328,13 +326,14 @@ void MarkdownEditor::replaceWithSuggestion()
 
 void MarkdownEditor::performCompletion()
 {
-    if (!completer) return;
+    if (!_completer)
+        return;
 
     QRect popupRect = cursorRect();
     popupRect.setLeft(popupRect.left() + lineNumberAreaWidth());
 
     QStringList words = extractDistinctWordsFromDocument();
-    completer->performCompletion(textUnderCursor(), words, popupRect);
+    _completer->performCompletion(textUnderCursor(), words, popupRect);
 }
 
 void MarkdownEditor::insertSnippet(const QString &completionPrefix, const QString &completion, int newCursorPos)
@@ -361,7 +360,7 @@ void MarkdownEditor::addWordToUserWordlist()
 {
     QAction *action = qobject_cast<QAction*>(sender());
     QString word = action->data().toString();
-    spellChecker->addToUserWordlist(word);
+    _spell_checker->addToUserWordlist(word);
 }
 
 bool MarkdownEditor::isUrlToLocalFile(const QMimeData *source) const
@@ -384,8 +383,8 @@ void MarkdownEditor::loadStyleFromStylesheet(const QString &fileName)
     QVector<PegMarkdownHighlight::HighlightingStyle> styles = parser.highlightingStyles(this->font());
 
     // set new style & rehighlight markdown document
-    highlighter->setStyles(styles);
-    highlighter->rehighlight();
+    _highlighter->setStyles(styles);
+    _highlighter->rehighlight();
 
     // update color palette
     this->setPalette(parser.editorPalette());
@@ -428,7 +427,7 @@ int MarkdownEditor::countWords() const
 
 void MarkdownEditor::setShowSpecialCharacters(bool enabled)
 {
-    showHardLinebreaks = enabled;
+    _show_hard_linebreaks = enabled;
 
     QTextOption textOption = document()->defaultTextOption();
     QTextOption::Flags optionFlags = textOption.flags();
@@ -449,25 +448,25 @@ void MarkdownEditor::setShowSpecialCharacters(bool enabled)
 
 void MarkdownEditor::setSpellingCheckEnabled(bool enabled)
 {
-    highlighter->setSpellingCheckEnabled(enabled);
+    _highlighter->setSpellingCheckEnabled(enabled);
 
     // rehighlight markdown document
-    highlighter->reset();
-    highlighter->rehighlight();
+    _highlighter->reset();
+    _highlighter->rehighlight();
 }
 
 void MarkdownEditor::setSpellingDictionary(const Dictionary &dictionary)
 {
-    spellChecker->loadDictionary(dictionary.filePath());
+    _spell_checker->loadDictionary(dictionary.filePath());
 
     // rehighlight markdown document
-    highlighter->reset();
-    highlighter->rehighlight();
+    _highlighter->reset();
+    _highlighter->rehighlight();
 }
 
 void MarkdownEditor::setSnippetCompleter(SnippetCompleter *completer)
 {
-    this->completer = completer;
+    _completer = completer;
 
     connect(completer, SIGNAL(snippetSelected(QString,QString, int)),
             this, SLOT(insertSnippet(QString,QString, int)));
@@ -475,11 +474,11 @@ void MarkdownEditor::setSnippetCompleter(SnippetCompleter *completer)
 
 void MarkdownEditor::setYamlHeaderSupportEnabled(bool enabled)
 {
-    highlighter->setYamlHeaderSupportEnabled(enabled);
+    _highlighter->setYamlHeaderSupportEnabled(enabled);
 
     // rehighlight markdown document
-    highlighter->reset();
-    highlighter->rehighlight();
+    _highlighter->reset();
+    _highlighter->rehighlight();
 }
 
 void MarkdownEditor::gotoLine(int line)
@@ -525,7 +524,7 @@ void MarkdownEditor::drawRuler(QPaintEvent *e)
 
     // calculate vertical offset corresponding given
     // column margin in font metrics
-    int verticalOffset = qRound(QFontMetricsF(font).averageCharWidth() * rulerPos)
+    int verticalOffset = qRound(QFontMetricsF(font).averageCharWidth() * _ruler_pos)
             + contentOffset().x()
             + document()->documentMargin();
 

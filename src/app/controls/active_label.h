@@ -41,7 +41,7 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 
 private:
-    QAction *m_action;
+    QAction *_action = nullptr;
 };
 
 #endif // ACTIVELABEL_H

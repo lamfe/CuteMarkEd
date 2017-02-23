@@ -63,12 +63,12 @@ private:
     int calculateDelay(const QString &text);
 
 private:
-    Options *options;
-    MarkdownDocument *document;
-    MarkdownConverter *converter;
-    QQueue<QString> tasks;
-    QMutex tasksMutex;
-    QWaitCondition bufferNotEmpty;
+    Options *_options;
+    MarkdownDocument *_document;
+    MarkdownConverter *_converter;
+    QQueue<QString> _tasks;
+    QMutex _tasks_mutex;
+    QWaitCondition _buffer_not_empty;
 };
 
 #endif // HTMLPREVIEWGENERATOR_H

@@ -20,15 +20,14 @@
 #include "snippets_table_model.h"
 #include <snippets/snippet_collection.h>
 
-SnippetsTableModel::SnippetsTableModel(SnippetCollection *collection, QObject *parent) :
-    QAbstractTableModel(parent),
-    snippetCollection(collection)
+SnippetsTableModel::SnippetsTableModel(SnippetCollection *collection, QObject *parent)
+    : QAbstractTableModel(parent), _snippet_collection(collection)
 {
 }
 
 int SnippetsTableModel::rowCount(const QModelIndex &) const
 {
-    return snippetCollection->count();
+    return _snippet_collection->count();
 }
 
 int SnippetsTableModel::columnCount(const QModelIndex &) const
@@ -40,7 +39,7 @@ Qt::ItemFlags SnippetsTableModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags itemFlags = QAbstractTableModel::flags(index);
     if (index.isValid()) {
-        const Snippet snippet = snippetCollection->at(index.row());
+        const Snippet snippet = _snippet_collection->at(index.row());
         if (!snippet.builtin) {
             itemFlags |= Qt::ItemIsEditable;
         }
@@ -54,7 +53,7 @@ QVariant SnippetsTableModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    const Snippet snippet = snippetCollection->at(index.row());
+    const Snippet snippet = _snippet_collection->at(index.row());
 
     if (role == Qt::DisplayRole) {
         if (index.column() == 0) {
@@ -80,7 +79,7 @@ bool SnippetsTableModel::setData(const QModelIndex &index, const QVariant &value
     if (!index.isValid() || role != Qt::EditRole)
         return false;
 
-    Snippet snippet = snippetCollection->at(index.row());
+    Snippet snippet = _snippet_collection->at(index.row());
 
     if (index.column() == 0) {
         const QString &s = value.toString();
@@ -114,7 +113,7 @@ QModelIndex SnippetsTableModel::createSnippet()
 {
     Snippet snippet;
     beginInsertRows(QModelIndex(), 0, 0);
-    int row = snippetCollection->insert(snippet);
+    int row = _snippet_collection->insert(snippet);
     endInsertRows();
 
     return index(row, 0);
@@ -123,8 +122,8 @@ QModelIndex SnippetsTableModel::createSnippet()
 void SnippetsTableModel::removeSnippet(const QModelIndex &index)
 {
     beginRemoveRows(QModelIndex(), index.row(), index.row());
-    Snippet snippet = snippetCollection->at(index.row());
-    snippetCollection->remove(snippet);
+    Snippet snippet = _snippet_collection->at(index.row());
+    _snippet_collection->remove(snippet);
     endRemoveRows();
 }
 
@@ -132,10 +131,10 @@ void SnippetsTableModel::replaceSnippet(const Snippet &snippet, const QModelInde
 {
     const int row = index.row();
 
-    Snippet previousSnippet = snippetCollection->at(index.row());
-    snippetCollection->remove(previousSnippet);
+    Snippet previousSnippet = _snippet_collection->at(index.row());
+    _snippet_collection->remove(previousSnippet);
 
-    int insertedRow = snippetCollection->insert(snippet);
+    int insertedRow = _snippet_collection->insert(snippet);
 
     if (index.row() == insertedRow) {
         if (index.column() == 0)
@@ -156,7 +155,7 @@ bool SnippetsTableModel::isValidTrigger(const QString &trigger)
     if (trigger.isEmpty())
         return false;
 
-    if (snippetCollection->contains(trigger))
+    if (_snippet_collection->contains(trigger))
         return false;
 
     for (int i = 0; i < trigger.length(); ++i) {

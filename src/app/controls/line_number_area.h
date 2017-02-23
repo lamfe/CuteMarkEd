@@ -34,7 +34,7 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    MarkdownEditor *editor;
+    MarkdownEditor *_editor;
 };
 
 #endif // LINENUMBERAREA_H

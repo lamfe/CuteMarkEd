@@ -23,12 +23,12 @@
 class SaveFileAdapter : public QSaveFile
 {
 public:
-    SaveFileAdapter(const QString &name) :
-        QSaveFile(name)
-    {
-    }
+    SaveFileAdapter(const QString &name)
+        : QSaveFile(name)
+    {}
 
-    void close() {
+    void close()
+    {
         // IGNORE - work-around for the problem that QTextDocumentWriter::write()
         // calls close() on the device
     }

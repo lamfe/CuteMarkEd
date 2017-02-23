@@ -28,53 +28,52 @@ using hunspell::SpellChecker;
 #include <spellchecker/dictionary.h>
 #include <data_location.h>
 
-SpellChecker::SpellChecker() :
-    hunspellChecker(0),
-    textCodec(0)
+SpellChecker::SpellChecker()
+    : _hunspell_checker(0), _text_codec(0)
 {
 }
 
 SpellChecker::~SpellChecker()
 {
-    delete hunspellChecker;
+    delete _hunspell_checker;
 }
 
 bool SpellChecker::isCorrect(const QString &word)
 {
-    if (!textCodec || !hunspellChecker) {
+    if (!_text_codec || !_hunspell_checker) {
         return true;
     }
 
-    QByteArray ba = textCodec->fromUnicode(word);
-    return hunspellChecker->spell(ba) != 0;
+    QByteArray ba = _text_codec->fromUnicode(word);
+    return _hunspell_checker->spell(ba) != 0;
 }
 
 QStringList SpellChecker::suggestions(const QString &word)
 {
     QStringList suggestions;
 
-    if (!textCodec || !hunspellChecker) {
+    if (!_text_codec || !_hunspell_checker) {
         return suggestions;
     }
 
     char **suggestedWords;
-    QByteArray ba = textCodec->fromUnicode(word);
-    int count = hunspellChecker->suggest(&suggestedWords, ba);
+    QByteArray ba = _text_codec->fromUnicode(word);
+    int count = _hunspell_checker->suggest(&suggestedWords, ba);
 
     for (int i = 0; i < count; ++i) {
-        suggestions << textCodec->toUnicode(suggestedWords[i]);
+        suggestions << _text_codec->toUnicode(suggestedWords[i]);
     }
 
-    hunspellChecker->free_list(&suggestedWords, count);
+    _hunspell_checker->free_list(&suggestedWords, count);
 
     return suggestions;
 }
 
 void SpellChecker::addToUserWordlist(const QString &word)
 {
-    hunspellChecker->add(textCodec->fromUnicode(word).constData());
-    if(!userWordlist.isEmpty()) {
-        QFile userWordlistFile(userWordlist);
+    _hunspell_checker->add(_text_codec->fromUnicode(word).constData());
+    if(!_user_wordlist.isEmpty()) {
+        QFile userWordlistFile(_user_wordlist);
         if(!userWordlistFile.open(QIODevice::Append))
             return;
 
@@ -86,18 +85,18 @@ void SpellChecker::addToUserWordlist(const QString &word)
 
 void SpellChecker::loadDictionary(const QString &dictFilePath)
 {
-    delete hunspellChecker;
+    delete _hunspell_checker;
 
     qDebug() << "Load dictionary from path" << dictFilePath;
 
     QString affixFilePath(dictFilePath);
     affixFilePath.replace(".dic", ".aff");
 
-    hunspellChecker = new Hunspell(affixFilePath.toLocal8Bit(), dictFilePath.toLocal8Bit());
+    _hunspell_checker = new Hunspell(affixFilePath.toLocal8Bit(), dictFilePath.toLocal8Bit());
 
-    textCodec = QTextCodec::codecForName(hunspellChecker->get_dic_encoding());
-    if (!textCodec) {
-        textCodec = QTextCodec::codecForName("UTF-8");
+    _text_codec = QTextCodec::codecForName(_hunspell_checker->get_dic_encoding());
+    if (!_text_codec) {
+        _text_codec = QTextCodec::codecForName("UTF-8");
     }
 
     // also load user word list
@@ -107,7 +106,7 @@ void SpellChecker::loadDictionary(const QString &dictFilePath)
 
 void SpellChecker::loadUserWordlist(const QString &userWordlistPath)
 {
-    userWordlist = userWordlistPath;
+    _user_wordlist = userWordlistPath;
 
     QFile userWordlistFile(userWordlistPath);
     if (!userWordlistFile.open(QIODevice::ReadOnly))
@@ -115,6 +114,6 @@ void SpellChecker::loadUserWordlist(const QString &userWordlistPath)
 
     QTextStream stream(&userWordlistFile);
     for (QString word = stream.readLine(); !word.isEmpty(); word = stream.readLine()) {
-        hunspellChecker->add(textCodec->fromUnicode(word).constData());
+        _hunspell_checker->add(_text_codec->fromUnicode(word).constData());
     }
 }

@@ -10,13 +10,9 @@
 #include "controls/active_label.h"
 #include "markdown_editor.h"
 
-StatusBarWidget::StatusBarWidget(MarkdownEditor* editor) :
-    m_editor(editor),
-    m_lineColLabel(0),
-    m_wordCountLabel(0),
-    m_styleLabel(0),
-    m_styleActions(0),
-    m_htmlLabel(0)
+StatusBarWidget::StatusBarWidget(MarkdownEditor* editor)
+    : _editor(editor), _line_col_label(0), _word_count_label(0),
+    _style_label(0), _style_actions(0), _html_label(0)
 
 {
     // main layout
@@ -25,36 +21,36 @@ StatusBarWidget::StatusBarWidget(MarkdownEditor* editor) :
     topLayout->setSpacing(4);
 
     // line&column label
-    m_lineColLabel = new QLabel;
-    topLayout->addWidget(m_lineColLabel, 0);
-    m_lineColLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+    _line_col_label = new QLabel;
+    topLayout->addWidget(_line_col_label, 0);
+    _line_col_label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 
     // word count label
-    m_wordCountLabel = new QLabel;
-    m_wordCountLabel->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
-    topLayout->addWidget(m_wordCountLabel, 0);
+    _word_count_label = new QLabel;
+    _word_count_label->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
+    topLayout->addWidget(_word_count_label, 0);
 
     // add spacer
     topLayout->addItem(new QSpacerItem(0,10, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     // styles label
-    m_styleLabel = new QLabel;
-    m_styleLabel->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
-    topLayout->addWidget(m_styleLabel, 0);
+    _style_label = new QLabel;
+    _style_label->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
+    topLayout->addWidget(_style_label, 0);
 
-    m_styleLabel->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(m_styleLabel, &QLabel::customContextMenuRequested, this, &StatusBarWidget::styleContextMenu);
+    _style_label->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(_style_label, &QLabel::customContextMenuRequested, this, &StatusBarWidget::styleContextMenu);
 
     // separator label
     topLayout->addWidget(new QLabel("|"), 0);
 
     // html preview label
-    m_htmlLabel = new ActiveLabel;
-    m_htmlLabel->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
-    topLayout->addWidget(m_htmlLabel, 0);
+    _html_label = new ActiveLabel;
+    _html_label->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
+    topLayout->addWidget(_html_label, 0);
 
-    connect(m_editor, &MarkdownEditor::cursorPositionChanged, this, &StatusBarWidget::cursorPositionChanged);
-    connect(m_editor, &MarkdownEditor::textChanged, this, &StatusBarWidget::textChanged);
+    connect(_editor, &MarkdownEditor::cursorPositionChanged, this, &StatusBarWidget::cursorPositionChanged);
+    connect(_editor, &MarkdownEditor::textChanged, this, &StatusBarWidget::textChanged);
 }
 
 StatusBarWidget::~StatusBarWidget()
@@ -70,38 +66,38 @@ void StatusBarWidget::update()
 void StatusBarWidget::showLineColumn(bool enabled)
 {
     if (enabled)
-        m_lineColLabel->show();
+        _line_col_label->show();
     else
-        m_lineColLabel->hide();
+        _line_col_label->hide();
 }
 
 void StatusBarWidget::setHtmlAction(QAction *action)
 {   
-    m_htmlLabel->setAction(action);
+    _html_label->setAction(action);
 }
 
 void StatusBarWidget::setStyleActions(QActionGroup *actionGroup)
 {
     // if was previously defined, disconnect
-    if (m_styleActions) {
-        disconnect(m_styleActions, &QActionGroup::triggered, this, &StatusBarWidget::updateStyleLabel);
+    if (_style_actions) {
+        disconnect(_style_actions, &QActionGroup::triggered, this, &StatusBarWidget::updateStyleLabel);
     }
 
     // set new actions group
-    m_styleActions = actionGroup;
+    _style_actions = actionGroup;
     updateStyleLabel();
 
-    connect(m_styleActions, &QActionGroup::triggered, this, &StatusBarWidget::updateStyleLabel);
+    connect(_style_actions, &QActionGroup::triggered, this, &StatusBarWidget::updateStyleLabel);
 }
 
 void StatusBarWidget::cursorPositionChanged()
 {
-    QTextCursor cursor = m_editor->textCursor();
+    QTextCursor cursor = _editor->textCursor();
 
     int line = cursor.blockNumber();
     int column = cursor.positionInBlock();
 
-    m_lineColLabel->setText(tr("Line %1, Column %2 %3")
+    _line_col_label->setText(tr("Line %1, Column %2 %3")
             .arg(QLocale().toString(line + 1))
             .arg(QLocale().toString(column + 1))
             .arg("|")
@@ -111,28 +107,28 @@ void StatusBarWidget::cursorPositionChanged()
 void StatusBarWidget::textChanged()
 {
     // update statistics
-    if (m_wordCountLabel) {
-        int words = m_editor->countWords();
-        int lines = m_editor->document()->lineCount();
-        int chars = m_editor->document()->characterCount();
+    if (_word_count_label) {
+        int words = _editor->countWords();
+        int lines = _editor->document()->lineCount();
+        int chars = _editor->document()->characterCount();
 
-        m_wordCountLabel->setText(tr("%1 words").arg(words));
-        m_wordCountLabel->setToolTip(tr("Lines: %1  Words: %2  Characters: %3").arg(lines).arg(words).arg(chars));
+        _word_count_label->setText(tr("%1 words").arg(words));
+        _word_count_label->setToolTip(tr("Lines: %1  Words: %2  Characters: %3").arg(lines).arg(words).arg(chars));
     }
 }
 
 void StatusBarWidget::styleContextMenu(const QPoint &pos)
 {
-    if (m_styleActions) {
+    if (_style_actions) {
         QMenu menu;
-        menu.addActions(m_styleActions->actions());
-        menu.exec(m_styleLabel->mapToGlobal(pos));
+        menu.addActions(_style_actions->actions());
+        menu.exec(_style_label->mapToGlobal(pos));
     }
 }
 
 void StatusBarWidget::updateStyleLabel()
 {
-    QAction* action = m_styleActions->checkedAction();
+    QAction* action = _style_actions->checkedAction();
     if (action)
-        m_styleLabel->setText(tr("Style: %1").arg(action->text()));
+        _style_label->setText(tr("Style: %1").arg(action->text()));
 }

@@ -39,7 +39,7 @@ private slots:
     void chooseFileButtonClicked();
 
 private:
-    Ui::ImageToolDialog *ui;
+    Ui::ImageToolDialog *_ui;
 };
 
 #endif // IMAGETOOLDIALOG_H

@@ -77,42 +77,40 @@ public:
 };
 
 
-OptionsDialog::OptionsDialog(Options *opt, SnippetCollection *collection, const QList<QAction*> &acts, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::OptionsDialog),
-    options(opt),
-    snippetCollection(collection),
-    actions(acts)
+OptionsDialog::OptionsDialog(Options *opt, SnippetCollection *collection, const QList<QAction*> &acts, QWidget *parent)
+    : QDialog(parent), _ui(new Ui::OptionsDialog), _options(opt),
+      _snippet_collection(collection), _actions(acts)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
 
-    ui->tabWidget->setIconSize(QSize(24, 24));
-    ui->tabWidget->setTabIcon(0, QIcon("fa-cog.fontawesome"));
-    ui->tabWidget->setTabIcon(1, QIcon("fa-file-text-o.fontawesome"));
-    ui->tabWidget->setTabIcon(2, QIcon("fa-html5.fontawesome"));
-    ui->tabWidget->setTabIcon(3, QIcon("fa-globe.fontawesome"));
-    ui->tabWidget->setTabIcon(4, QIcon("fa-puzzle-piece.fontawesome"));
-    ui->tabWidget->setTabIcon(5, QIcon("fa-keyboard-o.fontawesome"));
+    _ui->tabWidget->setIconSize(QSize(24, 24));
+    _ui->tabWidget->setTabIcon(0, QIcon("fa-cog.fontawesome"));
+    _ui->tabWidget->setTabIcon(1, QIcon("fa-file-text-o.fontawesome"));
+    _ui->tabWidget->setTabIcon(2, QIcon("fa-html5.fontawesome"));
+    _ui->tabWidget->setTabIcon(3, QIcon("fa-globe.fontawesome"));
+    _ui->tabWidget->setTabIcon(4, QIcon("fa-puzzle-piece.fontawesome"));
+    _ui->tabWidget->setTabIcon(5, QIcon("fa-keyboard-o.fontawesome"));
 
-    foreach (int size, QFontDatabase::standardSizes()) {
-        ui->sizeComboBox->addItem(QString().setNum(size));
-        ui->defaultSizeComboBox->addItem(QString().setNum(size));
-        ui->defaultFixedSizeComboBox->addItem(QString().setNum(size));
+    foreach (int size, QFontDatabase::standardSizes())
+    {
+        _ui->sizeComboBox->addItem(QString().setNum(size));
+        _ui->defaultSizeComboBox->addItem(QString().setNum(size));
+        _ui->defaultFixedSizeComboBox->addItem(QString().setNum(size));
     }
 
-    ui->portLineEdit->setValidator(new QIntValidator(0, 65535));
-    ui->passwordLineEdit->setEchoMode(QLineEdit::Password);
+    _ui->portLineEdit->setValidator(new QIntValidator(0, 65535));
+    _ui->passwordLineEdit->setEchoMode(QLineEdit::Password);
 
-    ui->snippetTableView->setModel(new SnippetsTableModel(snippetCollection, ui->snippetTableView));
-    connect(ui->snippetTableView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+    _ui->snippetTableView->setModel(new SnippetsTableModel(_snippet_collection, _ui->snippetTableView));
+    connect(_ui->snippetTableView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(currentSnippetChanged(QModelIndex,QModelIndex)));
 
-    connect(ui->snippetTextEdit, SIGNAL(textChanged()),
+    connect(_ui->snippetTextEdit, SIGNAL(textChanged()),
             this, SLOT(snippetTextChanged()));
 
     // remove hoedown item from converter combo box, if hoedown is disabled
 #ifndef ENABLE_HOEDOWN
-    ui->converterComboBox->removeItem(1);
+    _ui->converterComboBox->removeItem(1);
 #endif
 
     setupShortcutsTable();
@@ -123,7 +121,7 @@ OptionsDialog::OptionsDialog(Options *opt, SnippetCollection *collection, const 
 
 OptionsDialog::~OptionsDialog()
 {
-    delete ui;
+    delete _ui;
 }
 
 void OptionsDialog::done(int result)
@@ -138,33 +136,33 @@ void OptionsDialog::done(int result)
 
 void OptionsDialog::manualProxyRadioButtonToggled(bool checked)
 {
-    ui->hostLineEdit->setEnabled(checked);
-    ui->portLineEdit->setEnabled(checked);
-    ui->userNameLineEdit->setEnabled(checked);
-    ui->passwordLineEdit->setEnabled(checked);
+    _ui->hostLineEdit->setEnabled(checked);
+    _ui->portLineEdit->setEnabled(checked);
+    _ui->userNameLineEdit->setEnabled(checked);
+    _ui->passwordLineEdit->setEnabled(checked);
 }
 
 void OptionsDialog::currentSnippetChanged(const QModelIndex &current, const QModelIndex &)
 {
-    const Snippet snippet = snippetCollection->at(current.row());
+    const Snippet snippet = _snippet_collection->at(current.row());
 
     // update text edit for snippet content
     QString formattedSnippet(snippet.snippet);
     formattedSnippet.insert(snippet.cursor_position, "$|");
-    ui->snippetTextEdit->setPlainText(formattedSnippet);
-    ui->snippetTextEdit->setReadOnly(snippet.builtin);
+    _ui->snippetTextEdit->setPlainText(formattedSnippet);
+    _ui->snippetTextEdit->setReadOnly(snippet.builtin);
 
     // disable remove button when built-in snippet is selected
-    ui->removeSnippetButton->setEnabled(!snippet.builtin);
+    _ui->removeSnippetButton->setEnabled(!snippet.builtin);
 }
 
 void OptionsDialog::snippetTextChanged()
 {
-    const QModelIndex &modelIndex = ui->snippetTableView->selectionModel()->currentIndex();
+    const QModelIndex &modelIndex = _ui->snippetTableView->selectionModel()->currentIndex();
     if (modelIndex.isValid()) {
-        Snippet snippet = snippetCollection->at(modelIndex.row());
+        Snippet snippet = _snippet_collection->at(modelIndex.row());
         if (!snippet.builtin) {
-            snippet.snippet = ui->snippetTextEdit->toPlainText();
+            snippet.snippet = _ui->snippetTextEdit->toPlainText();
 
             // find cursor marker
             int pos = snippet.snippet.indexOf("$|");
@@ -173,14 +171,14 @@ void OptionsDialog::snippetTextChanged()
                 snippet.snippet.remove(pos, 2);
             }
 
-            snippetCollection->update(snippet);
+            _snippet_collection->update(snippet);
         }
     }
 }
 
 void OptionsDialog::addSnippetButtonClicked()
 {
-    SnippetsTableModel *snippetModel = qobject_cast<SnippetsTableModel*>(ui->snippetTableView->model());
+    SnippetsTableModel *snippetModel = qobject_cast<SnippetsTableModel*>(_ui->snippetTableView->model());
 
     const QModelIndex &index = snippetModel->createSnippet();
 
@@ -188,22 +186,22 @@ void OptionsDialog::addSnippetButtonClicked()
     QModelIndex topLeft = snippetModel->index(row, 0, QModelIndex());
     QModelIndex bottomRight = snippetModel->index(row, 1, QModelIndex());
     QItemSelection selection(topLeft, bottomRight);
-    ui->snippetTableView->selectionModel()->select(selection, QItemSelectionModel::SelectCurrent);
-    ui->snippetTableView->setCurrentIndex(topLeft);
-    ui->snippetTableView->scrollTo(topLeft);
+    _ui->snippetTableView->selectionModel()->select(selection, QItemSelectionModel::SelectCurrent);
+    _ui->snippetTableView->setCurrentIndex(topLeft);
+    _ui->snippetTableView->scrollTo(topLeft);
 
-    ui->snippetTableView->edit(index);
+    _ui->snippetTableView->edit(index);
 }
 
 void OptionsDialog::removeSnippetButtonClicked()
 {
-    const QModelIndex &modelIndex = ui->snippetTableView->selectionModel()->currentIndex();
+    const QModelIndex &modelIndex = _ui->snippetTableView->selectionModel()->currentIndex();
     if (!modelIndex.isValid()) {
         QMessageBox::critical(0, tr("Error", "Title of error message box"), tr("No snippet selected."));
         return;
     }
 
-    SnippetsTableModel *snippetModel = qobject_cast<SnippetsTableModel*>(ui->snippetTableView->model());
+    SnippetsTableModel *snippetModel = qobject_cast<SnippetsTableModel*>(_ui->snippetTableView->model());
     snippetModel->removeSnippet(modelIndex);
 }
 
@@ -213,44 +211,44 @@ void OptionsDialog::validateShortcut(int row, int column)
     if (column != 1)
         return;
 
-    QString newShortcut = ui->shortcutsTable->item(row, column)->text();
+    QString newShortcut = _ui->shortcutsTable->item(row, column)->text();
     QKeySequence ks(newShortcut);
     if (ks.isEmpty() && !newShortcut.isEmpty()) {
         // If new shortcut was invalid, restore the original
-        ui->shortcutsTable->setItem(row, column,
-            new QTableWidgetItem(actions[row]->shortcut().toString()));
+        _ui->shortcutsTable->setItem(row, column,
+            new QTableWidgetItem(_actions[row]->shortcut().toString()));
     } else {
         // Check for conflicts.
         if (!ks.isEmpty()) {
-            for (int c = 0; c < actions.size(); ++c) {
-                if (c != row && ks == QKeySequence(ui->shortcutsTable->item(c, 1)->text())) {
-                    ui->shortcutsTable->setItem(row, column,
-                        new QTableWidgetItem(actions[row]->shortcut().toString()));
-                    QMessageBox::information(this, tr("Conflict"), tr("This shortcut is already used for \"%1\"").arg(actions[c]->text().remove('&')));
+            for (int c = 0; c < _actions.size(); ++c) {
+                if (c != row && ks == QKeySequence(_ui->shortcutsTable->item(c, 1)->text())) {
+                    _ui->shortcutsTable->setItem(row, column,
+                        new QTableWidgetItem(_actions[row]->shortcut().toString()));
+                    QMessageBox::information(this, tr("Conflict"), tr("This shortcut is already used for \"%1\"").arg(_actions[c]->text().remove('&')));
                     return;
                 }
             }
         }
         // If the new shortcut is not the same as the default, make the
         // action label bold.
-        QFont font = ui->shortcutsTable->item(row, 0)->font();
-        font.setBold(ks != actions[row]->property("defaultshortcut").value<QKeySequence>());
-        ui->shortcutsTable->item(row, 0)->setFont(font);
+        QFont font = _ui->shortcutsTable->item(row, 0)->font();
+        font.setBold(ks != _actions[row]->property("defaultshortcut").value<QKeySequence>());
+        _ui->shortcutsTable->item(row, 0)->setFont(font);
     }
 }
 
 void OptionsDialog::setupShortcutsTable()
 {
-    QStyledItemDelegate *delegate = new QStyledItemDelegate(ui->shortcutsTable);
+    QStyledItemDelegate *delegate = new QStyledItemDelegate(_ui->shortcutsTable);
     QItemEditorFactory *factory = new QItemEditorFactory();
     factory->registerEditor(QVariant::nameToType("QKeySequence"), new KeySequenceEditFactory());
     delegate->setItemEditorFactory(factory);
-    ui->shortcutsTable->setItemDelegateForColumn(1, delegate);
+    _ui->shortcutsTable->setItemDelegateForColumn(1, delegate);
 
-    ui->shortcutsTable->setRowCount(actions.size());
+    _ui->shortcutsTable->setRowCount(_actions.size());
 
     int i = 0;
-    foreach (QAction *action, actions) {
+    foreach (QAction *action, _actions) {
         QTableWidgetItem *label = new QTableWidgetItem(action->text().remove('&'));
         label->setFlags(Qt::ItemIsSelectable);
         const QKeySequence &defaultKeySeq = action->property("defaultshortcut").value<QKeySequence>();
@@ -262,66 +260,68 @@ void OptionsDialog::setupShortcutsTable()
         QTableWidgetItem *accel = new KeySequenceTableItem(action->shortcut());
         QTableWidgetItem *def = new QTableWidgetItem(defaultKeySeq.toString());
         def->setFlags(Qt::ItemIsSelectable);
-        ui->shortcutsTable->setItem(i, 0, label);
-        ui->shortcutsTable->setItem(i, 1, accel);
-        ui->shortcutsTable->setItem(i, 2, def);
+        _ui->shortcutsTable->setItem(i, 0, label);
+        _ui->shortcutsTable->setItem(i, 1, accel);
+        _ui->shortcutsTable->setItem(i, 2, def);
         ++i;
     }
 
-    ui->shortcutsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-    ui->shortcutsTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    ui->shortcutsTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    _ui->shortcutsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    _ui->shortcutsTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    _ui->shortcutsTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
-    connect(ui->shortcutsTable, SIGNAL(cellChanged(int,int)),
+    connect(_ui->shortcutsTable, SIGNAL(cellChanged(int,int)),
             this, SLOT(validateShortcut(int,int)));
 }
 
 void OptionsDialog::readState()
 {
     // general settings
-    ui->converterComboBox->setCurrentIndex(options->markdownConverter());
+    _ui->converterComboBox->setCurrentIndex(_options->markdownConverter());
 
     // editor settings
-    QFont font = options->editorFont();
-    ui->fontComboBox->setCurrentFont(font);
-    ui->sizeComboBox->setCurrentText(QString().setNum(font.pointSize()));
-    ui->sourceSingleSizedCheckBox->setChecked(options->isSourceAtSingleSizeEnabled());
-    ui->tabWidthSpinBox->setValue(options->tabWidth());
-    ui->lineColumnCheckBox->setChecked(options->isLineColumnEnabled());
-    ui->rulerEnableCheckBox->setChecked(options->isRulerEnabled());
-    ui->rulerPosSpinBox->setValue(options->rulerPos());
+    QFont font = _options->editorFont();
+    _ui->fontComboBox->setCurrentFont(font);
+    _ui->sizeComboBox->setCurrentText(QString().setNum(font.pointSize()));
+    _ui->sourceSingleSizedCheckBox->setChecked(_options->isSourceAtSingleSizeEnabled());
+    _ui->tabWidthSpinBox->setValue(_options->tabWidth());
+    _ui->lineColumnCheckBox->setChecked(_options->isLineColumnEnabled());
+    _ui->rulerEnableCheckBox->setChecked(_options->isRulerEnabled());
+    _ui->rulerPosSpinBox->setValue(_options->rulerPos());
 
     // html preview settings
-    ui->standardFontComboBox->setCurrentFont(options->standardFont());
-    ui->defaultSizeComboBox->setCurrentText(QString().setNum(options->defaultFontSize()));
-    ui->serifFontComboBox->setCurrentFont(options->serifFont());
-    ui->sansSerifFontComboBox->setCurrentFont(options->sansSerifFont());
-    ui->fixedFontComboBox->setCurrentFont(options->fixedFont());
-    ui->defaultFixedSizeComboBox->setCurrentText(QString().setNum(options->defaultFixedFontSize()));
-    ui->mathInlineCheckBox->setChecked(options->isMathInlineSupportEnabled());
-    ui->mathSupportCheckBox->setChecked(options->isMathSupportEnabled());
+    _ui->standardFontComboBox->setCurrentFont(_options->standardFont());
+    _ui->defaultSizeComboBox->setCurrentText(QString().setNum(_options->defaultFontSize()));
+    _ui->serifFontComboBox->setCurrentFont(_options->serifFont());
+    _ui->sansSerifFontComboBox->setCurrentFont(_options->sansSerifFont());
+    _ui->fixedFontComboBox->setCurrentFont(_options->fixedFont());
+    _ui->defaultFixedSizeComboBox->setCurrentText(QString().setNum(_options->defaultFixedFontSize()));
+    _ui->mathInlineCheckBox->setChecked(_options->isMathInlineSupportEnabled());
+    _ui->mathSupportCheckBox->setChecked(_options->isMathSupportEnabled());
 
     // proxy settings
-    switch (options->proxyMode()) {
+    switch (_options->proxyMode()) {
     case Options::NoProxy:
-        ui->noProxyRadioButton->setChecked(true);
+        _ui->noProxyRadioButton->setChecked(true);
         break;
+
     case Options::SystemProxy:
-        ui->systemProxyRadioButton->setChecked(true);
+        _ui->systemProxyRadioButton->setChecked(true);
         break;
+
     case Options::ManualProxy:
-        ui->manualProxyRadioButton->setChecked(true);
+        _ui->manualProxyRadioButton->setChecked(true);
         break;
     }
-    ui->hostLineEdit->setText(options->proxyHost());
-    ui->portLineEdit->setText(QString::number(options->proxyPort()));
-    ui->userNameLineEdit->setText(options->proxyUser());
-    ui->passwordLineEdit->setText(options->proxyPassword());
+    _ui->hostLineEdit->setText(_options->proxyHost());
+    _ui->portLineEdit->setText(QString::number(_options->proxyPort()));
+    _ui->userNameLineEdit->setText(_options->proxyUser());
+    _ui->passwordLineEdit->setText(_options->proxyPassword());
 
     // shortcut settings
-    for (int i = 0; i < ui->shortcutsTable->rowCount(); ++i) {
-        if (options->hasCustomShortcut(actions[i]->objectName())) {
-            ui->shortcutsTable->item(i, 1)->setData(Qt::EditRole, options->customShortcut(actions[i]->objectName()));
+    for (int i = 0; i < _ui->shortcutsTable->rowCount(); ++i) {
+        if (_options->hasCustomShortcut(_actions[i]->objectName())) {
+            _ui->shortcutsTable->item(i, 1)->setData(Qt::EditRole, _options->customShortcut(_actions[i]->objectName()));
         }
     }
 }
@@ -329,47 +329,47 @@ void OptionsDialog::readState()
 void OptionsDialog::saveState()
 {
     // general settings
-    options->setMarkdownConverter((Options::MarkdownConverter)ui->converterComboBox->currentIndex());
+    _options->setMarkdownConverter((Options::MarkdownConverter)_ui->converterComboBox->currentIndex());
 
     // editor settings
-    QFont font = ui->fontComboBox->currentFont();
-    font.setPointSize(ui->sizeComboBox->currentText().toInt());
-    options->setEditorFont(font);
-    options->setSourceAtSingleSizeEnabled(ui->sourceSingleSizedCheckBox->isChecked());
-    options->setTabWidth(ui->tabWidthSpinBox->value());
-    options->setLineColumnEnabled(ui->lineColumnCheckBox->isChecked());
-    options->setRulerEnabled(ui->rulerEnableCheckBox->isChecked());
-    options->setRulerPos(ui->rulerPosSpinBox->value());
-    options->setMathInlineSupportEnabled(ui->mathInlineCheckBox->isChecked());
-    options->setMathSupportEnabled(ui->mathSupportCheckBox->isChecked());
+    QFont font = _ui->fontComboBox->currentFont();
+    font.setPointSize(_ui->sizeComboBox->currentText().toInt());
+    _options->setEditorFont(font);
+    _options->setSourceAtSingleSizeEnabled(_ui->sourceSingleSizedCheckBox->isChecked());
+    _options->setTabWidth(_ui->tabWidthSpinBox->value());
+    _options->setLineColumnEnabled(_ui->lineColumnCheckBox->isChecked());
+    _options->setRulerEnabled(_ui->rulerEnableCheckBox->isChecked());
+    _options->setRulerPos(_ui->rulerPosSpinBox->value());
+    _options->setMathInlineSupportEnabled(_ui->mathInlineCheckBox->isChecked());
+    _options->setMathSupportEnabled(_ui->mathSupportCheckBox->isChecked());
 
     // html preview settings
-    options->setStandardFont(ui->standardFontComboBox->currentFont());
-    options->setDefaultFontSize(ui->defaultSizeComboBox->currentText().toInt());
-    options->setSerifFont(ui->serifFontComboBox->currentFont());
-    options->setSansSerifFont(ui->sansSerifFontComboBox->currentFont());
-    options->setFixedFont(ui->fixedFontComboBox->currentFont());
-    options->setDefaultFixedFontSize(ui->defaultFixedSizeComboBox->currentText().toInt());
+    _options->setStandardFont(_ui->standardFontComboBox->currentFont());
+    _options->setDefaultFontSize(_ui->defaultSizeComboBox->currentText().toInt());
+    _options->setSerifFont(_ui->serifFontComboBox->currentFont());
+    _options->setSansSerifFont(_ui->sansSerifFontComboBox->currentFont());
+    _options->setFixedFont(_ui->fixedFontComboBox->currentFont());
+    _options->setDefaultFixedFontSize(_ui->defaultFixedSizeComboBox->currentText().toInt());
 
     // proxy settings
-    if (ui->noProxyRadioButton->isChecked()) {
-        options->setProxyMode(Options::NoProxy);
-    } else if (ui->systemProxyRadioButton->isChecked()) {
-        options->setProxyMode(Options::SystemProxy);
-    } else if (ui->manualProxyRadioButton->isChecked()) {
-        options->setProxyMode(Options::ManualProxy);
+    if (_ui->noProxyRadioButton->isChecked()) {
+        _options->setProxyMode(Options::NoProxy);
+    } else if (_ui->systemProxyRadioButton->isChecked()) {
+        _options->setProxyMode(Options::SystemProxy);
+    } else if (_ui->manualProxyRadioButton->isChecked()) {
+        _options->setProxyMode(Options::ManualProxy);
     }
-    options->setProxyHost(ui->hostLineEdit->text());
-    options->setProxyPort(ui->portLineEdit->text().toInt());
-    options->setProxyUser(ui->userNameLineEdit->text());
-    options->setProxyPassword(ui->passwordLineEdit->text());
+    _options->setProxyHost(_ui->hostLineEdit->text());
+    _options->setProxyPort(_ui->portLineEdit->text().toInt());
+    _options->setProxyUser(_ui->userNameLineEdit->text());
+    _options->setProxyPassword(_ui->passwordLineEdit->text());
 
     // shortcut settings
-    for (int i = 0; i < ui->shortcutsTable->rowCount(); ++i) {
-        QKeySequence customKeySeq(ui->shortcutsTable->item(i, 1)->text());
-        options->addCustomShortcut(actions[i]->objectName(), customKeySeq);
+    for (int i = 0; i < _ui->shortcutsTable->rowCount(); ++i) {
+        QKeySequence customKeySeq(_ui->shortcutsTable->item(i, 1)->text());
+        _options->addCustomShortcut(_actions[i]->objectName(), customKeySeq);
     }
     
-    options->apply();
+    _options->apply();
 }
 

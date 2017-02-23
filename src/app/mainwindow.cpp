@@ -80,21 +80,16 @@
 #include "table_tool_dialog.h"
 #include "statusbar_widget.h"
 
-MainWindow::MainWindow(const QString &fileName, QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    options(new Options(this)),
-    stylesGroup(new QActionGroup(this)),
-    statusBarWidget(0),
-    generator(new HtmlPreviewGenerator(options, this)),
-    snippetCollection(new SnippetCollection(this)),
-    viewSynchronizer(0),
-    htmlPreviewController(0),
-    themeCollection(new ThemeCollection()),
-    splitFactor(0.5),
-    rightViewCollapsed(false)
+MainWindow::MainWindow(const QString &fileName, QWidget *parent)
+    : QMainWindow(parent), _ui(new Ui::MainWindow), _options(new Options(this)),
+    _styles_group(new QActionGroup(this)), _status_bar_widget(0),
+    _generator(new HtmlPreviewGenerator(_options, this)),
+    _snippet_collection(new SnippetCollection(this)),
+    _view_synchronizer(0), _html_preview_controller(0),
+    _theme_collection(new ThemeCollection()),
+    _split_factor(0.5), _right_view_collapsed(false)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
     setupUi();
 
     setFileName(fileName);
@@ -104,14 +99,14 @@ MainWindow::MainWindow(const QString &fileName, QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete viewSynchronizer;
+    delete _view_synchronizer;
 
     // stop background HTML preview generator
-    generator->markdownTextChanged(QString());
-    generator->wait();
-    delete generator;
+    _generator->markdownTextChanged(QString());
+    _generator->wait();
+    delete _generator;
 
-    delete ui;
+    delete _ui;
 }
 
 void MainWindow::closeEvent(QCloseEvent *e)
@@ -137,42 +132,42 @@ void MainWindow::initializeApp()
 #if WITH_QTWEBENGINE
     // TODO
 #else
-    ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-    ui->tocWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    _ui->webView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    _ui->tocWebView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 #endif
 
-    themeCollection->load(":/builtin-htmlpreview-themes.json");
+    _theme_collection->load(":/builtin-htmlpreview-themes.json");
     loadCustomStyles();
     setupHtmlPreviewThemes();
 
     // apply last used theme
     lastUsedTheme();
 
-    ui->plainTextEdit->tabWidthChanged(options->tabWidth());
-    ui->plainTextEdit->rulerEnabledChanged(options->isRulerEnabled());
-    ui->plainTextEdit->rulerPosChanged(options->rulerPos());
+    _ui->plainTextEdit->tabWidthChanged(_options->tabWidth());
+    _ui->plainTextEdit->rulerEnabledChanged(_options->isRulerEnabled());
+    _ui->plainTextEdit->rulerPosChanged(_options->rulerPos());
 
     // init extension flags
-    ui->actionAutolink->setChecked(options->isAutolinkEnabled());
-    ui->actionStrikethroughOption->setChecked(options->isStrikethroughEnabled());
-    ui->actionAlphabeticLists->setChecked(options->isAlphabeticListsEnabled());
-    ui->actionDefinitionLists->setChecked(options->isDefinitionListsEnabled());
-    ui->actionSmartyPants->setChecked(options->isSmartyPantsEnabled());
-    ui->actionFootnotes->setChecked(options->isFootnotesEnabled());
-    ui->actionSuperscript->setChecked(options->isSuperscriptEnabled());
+    _ui->actionAutolink->setChecked(_options->isAutolinkEnabled());
+    _ui->actionStrikethroughOption->setChecked(_options->isStrikethroughEnabled());
+    _ui->actionAlphabeticLists->setChecked(_options->isAlphabeticListsEnabled());
+    _ui->actionDefinitionLists->setChecked(_options->isDefinitionListsEnabled());
+    _ui->actionSmartyPants->setChecked(_options->isSmartyPantsEnabled());
+    _ui->actionFootnotes->setChecked(_options->isFootnotesEnabled());
+    _ui->actionSuperscript->setChecked(_options->isSuperscriptEnabled());
 
     // init option flags
-    ui->actionMathSupport->setChecked(options->isMathSupportEnabled());
-    ui->actionDiagramSupport->setChecked(options->isDiagramSupportEnabled());
-    ui->actionCodeHighlighting->setChecked(options->isCodeHighlightingEnabled());
-    ui->actionShowSpecialCharacters->setChecked(options->isShowSpecialCharactersEnabled());
-    ui->actionWordWrap->setChecked(options->isWordWrapEnabled());
-    ui->actionCheckSpelling->setChecked(options->isSpellingCheckEnabled());
-    ui->plainTextEdit->setSpellingCheckEnabled(options->isSpellingCheckEnabled());
-    ui->actionYamlHeaderSupport->setChecked(options->isYamlHeaderSupportEnabled());
+    _ui->actionMathSupport->setChecked(_options->isMathSupportEnabled());
+    _ui->actionDiagramSupport->setChecked(_options->isDiagramSupportEnabled());
+    _ui->actionCodeHighlighting->setChecked(_options->isCodeHighlightingEnabled());
+    _ui->actionShowSpecialCharacters->setChecked(_options->isShowSpecialCharactersEnabled());
+    _ui->actionWordWrap->setChecked(_options->isWordWrapEnabled());
+    _ui->actionCheckSpelling->setChecked(_options->isSpellingCheckEnabled());
+    _ui->plainTextEdit->setSpellingCheckEnabled(_options->isSpellingCheckEnabled());
+    _ui->actionYamlHeaderSupport->setChecked(_options->isYamlHeaderSupportEnabled());
 
     // set url to markdown syntax help
-    ui->webView_2->setUrl(tr("qrc:/syntax.html"));
+    _ui->webView_2->setUrl(tr("qrc:/syntax.html"));
 
 #if WITH_QTWEBENGINE
     // TODO
@@ -180,20 +175,20 @@ void MainWindow::initializeApp()
     // allow loading of remote javascript
     QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
 
-    ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    _ui->webView->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     QWebInspector *inspector = new QWebInspector();
-    inspector->setPage(ui->webView->page());
+    inspector->setPage(_ui->webView->page());
 #endif
 
-    ui->menuLanguages->loadDictionaries(options->dictionaryLanguage());
+    _ui->menuLanguages->loadDictionaries(_options->dictionaryLanguage());
 
     //: path to built-in snippets resource.
-    JsonFile<Snippet>::load(":/markdown-snippets.json", snippetCollection);
+    JsonFile<Snippet>::load(":/markdown-snippets.json", _snippet_collection);
     QString path = DataLocation::writableLocation();
-    JsonFile<Snippet>::load(path + "/user-snippets.json", snippetCollection);
+    JsonFile<Snippet>::load(path + "/user-snippets.json", _snippet_collection);
 
     // setup file explorer
-    connect(ui->fileExplorerDockContents, SIGNAL(fileSelected(QString)),
+    connect(_ui->fileExplorerDockContents, SIGNAL(fileSelected(QString)),
             this, SLOT(openRecentFile(QString)));
 
     // setup jump list on windows
@@ -203,8 +198,8 @@ void MainWindow::initializeApp()
 #endif
 
     // load file passed to application on start
-    if (!fileName.isEmpty()) {
-        load(fileName);
+    if (!_file_name.isEmpty()) {
+        load(_file_name);
     }
 }
 
@@ -217,17 +212,17 @@ void MainWindow::openRecentFile(const QString &fileName)
 
 void MainWindow::languageChanged(const Dictionary &dictionary)
 {
-    options->setDictionaryLanguage(dictionary.language());
-    ui->plainTextEdit->setSpellingDictionary(dictionary);
+    _options->setDictionaryLanguage(dictionary.language());
+    _ui->plainTextEdit->setSpellingDictionary(dictionary);
 }
 
 void MainWindow::fileNew()
 {
     if (maybeSave()) {
-        ui->plainTextEdit->clear();
-        ui->plainTextEdit->resetHighlighting();
-        ui->webView->setHtml(QString());
-        ui->htmlSourceTextEdit->clear();
+        _ui->plainTextEdit->clear();
+        _ui->plainTextEdit->resetHighlighting();
+        _ui->webView->setHtml(QString());
+        _ui->htmlSourceTextEdit->clear();
         setFileName(QString());
     }
 }
@@ -246,26 +241,26 @@ void MainWindow::fileOpen()
 bool MainWindow::fileSave()
 {
     // file has no name yet?
-    if (fileName.isEmpty()) {
+    if (_file_name.isEmpty()) {
         return fileSaveAs();
     }
 
-    SaveFileAdapter file(fileName);
+    SaveFileAdapter file(_file_name);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return false;
     }
 
     QTextDocumentWriter writer(&file, "plaintext");
-    bool success = writer.write(ui->plainTextEdit->document());
+    bool success = writer.write(_ui->plainTextEdit->document());
     if (success) {
         file.commit();
 
         // set status to unmodified
-        ui->plainTextEdit->document()->setModified(false);
+        _ui->plainTextEdit->document()->setModified(false);
         setWindowModified(false);
 
         // add to recent file list
-        recentFilesMenu->addFile(fileName);
+        _recent_files_menu->addFile(_file_name);
     }
 
     return success;
@@ -290,7 +285,7 @@ bool MainWindow::fileSaveAs()
 
 void MainWindow::fileExportToHtml()
 {
-    ExportHtmlDialog dialog(fileName);
+    ExportHtmlDialog dialog(_file_name);
     if (dialog.exec() == QDialog::Accepted) {
 
         QString cssStyle;
@@ -300,7 +295,7 @@ void MainWindow::fileExportToHtml()
             // TODO
             QUrl cssUrl;
 #else
-            QUrl cssUrl = ui->webView->page()->settings()->userStyleSheetUrl();
+            QUrl cssUrl = _ui->webView->page()->settings()->userStyleSheetUrl();
 #endif
 
             // get resource or file name from url
@@ -326,7 +321,7 @@ void MainWindow::fileExportToHtml()
             }
         }
 
-        QString html = generator->exportHtml(cssStyle, highlightJs);
+        QString html = _generator->exportHtml(cssStyle, highlightJs);
 
         // write HTML source to disk
         QFile f(dialog.fileName());
@@ -345,13 +340,13 @@ void MainWindow::fileExportToPdf()
     // of QWebView::print() method (possible bug in Qt?)
     // more info here: http://stackoverflow.com/questions/11629093/add-working-url-into-pdf-using-qt-qprinter
 
-    ExportPdfDialog dialog(fileName);
+    ExportPdfDialog dialog(_file_name);
     if (dialog.exec() == QDialog::Accepted) {
          QTextDocument doc;
 #if WITH_QTWEBENGINE
          // TODO
 #else
-         doc.setHtml(ui->webView->page()->currentFrame()->toHtml());
+         doc.setHtml(_ui->webView->page()->currentFrame()->toHtml());
 #endif
          doc.print(dialog.printer());
     }
@@ -363,14 +358,14 @@ void MainWindow::filePrint()
     QPrintDialog *dlg = new QPrintDialog(&printer, this);
     dlg->setWindowTitle(tr("Print Document"));
 
-    if (ui->webView->hasSelection())
+    if (_ui->webView->hasSelection())
         dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
 
 #if WITH_QTWEBENGINE
     // TODO
 #else
     if (dlg->exec() == QDialog::Accepted)
-        ui->webView->print(&printer);
+        _ui->webView->print(&printer);
 #endif
 
     delete dlg;
@@ -378,22 +373,22 @@ void MainWindow::filePrint()
 
 void MainWindow::editUndo()
 {
-    if (ui->plainTextEdit->document()->isUndoAvailable()) {
-        ui->plainTextEdit->document()->undo();
+    if (_ui->plainTextEdit->document()->isUndoAvailable()) {
+        _ui->plainTextEdit->document()->undo();
     }
 }
 
 void MainWindow::editRedo()
 {
-    if (ui->plainTextEdit->document()->isRedoAvailable()) {
-        ui->plainTextEdit->document()->redo();
+    if (_ui->plainTextEdit->document()->isRedoAvailable()) {
+        _ui->plainTextEdit->document()->redo();
     }
 }
 
 void MainWindow::editCopyHtml()
 {
     QClipboard* clipboard = QApplication::clipboard();
-    clipboard->setText(ui->htmlSourceTextEdit->toPlainText());
+    clipboard->setText(_ui->htmlSourceTextEdit->toPlainText());
 }
 
 void MainWindow::editGotoLine()
@@ -401,75 +396,75 @@ void MainWindow::editGotoLine()
     const int STEP = 1;
     const int MIN_VALUE = 1;
 
-    QTextCursor cursor = ui->plainTextEdit->textCursor();
+    QTextCursor cursor = _ui->plainTextEdit->textCursor();
     int currentLine = cursor.blockNumber()+1;
-    int maxValue = ui->plainTextEdit->document()->blockCount();
+    int maxValue = _ui->plainTextEdit->document()->blockCount();
 
     bool ok;
     int line = QInputDialog::getInt(this, tr("Go to..."),
                                           tr("Line: ", "Line number in the Markdown editor"), currentLine, MIN_VALUE, maxValue, STEP, &ok);
     if (!ok) return;
-    ui->plainTextEdit->gotoLine(line);
+    _ui->plainTextEdit->gotoLine(line);
 }
 
 void MainWindow::editFindReplace()
 {
-    ui->findReplaceWidget->setTextEdit(ui->plainTextEdit);
-    ui->findReplaceWidget->show();
-    ui->findReplaceWidget->setFocus();
+    _ui->findReplaceWidget->setTextEdit(_ui->plainTextEdit);
+    _ui->findReplaceWidget->show();
+    _ui->findReplaceWidget->setFocus();
 }
 
 void MainWindow::editStrong()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.wrapSelectedText("**");
 }
 
 void MainWindow::editEmphasize()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.wrapSelectedText("*");
 }
 
 void MainWindow::editStrikethrough()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.wrapSelectedText("~~");
 }
 
 void MainWindow::editInlineCode()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.wrapSelectedText("`");
 }
 
 void MainWindow::editCenterParagraph()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.wrapCurrentParagraph("->", "<-");
 }
 
 void MainWindow::editHardLinebreak()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.appendToLine("  \n");
 }
 
 void MainWindow::editBlockquote()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.formatTextAsQuote();
 }
 
 void MainWindow::editIncreaseHeaderLevel()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.increaseHeadingLevel();
 }
 
 void MainWindow::editDecreaseHeaderLevel()
 {
-    MarkdownManipulator manipulator(ui->plainTextEdit);
+    MarkdownManipulator manipulator(_ui->plainTextEdit);
     manipulator.decreaseHeadingLevel();
 }
 
@@ -477,7 +472,7 @@ void MainWindow::editInsertTable()
 {
     TableToolDialog dialog;
     if (dialog.exec() == QDialog::Accepted) {
-        MarkdownManipulator manipulator(ui->plainTextEdit);
+        MarkdownManipulator manipulator(_ui->plainTextEdit);
         manipulator.insertTable(dialog.rows(), dialog.columns(),
                                 dialog.alignments(), dialog.tableCells());
     }
@@ -487,7 +482,7 @@ void MainWindow::editInsertImage()
 {
     ImageToolDialog dialog(this);
     if (dialog.exec() == QDialog::Accepted) {
-        MarkdownManipulator manipulator(ui->plainTextEdit);
+        MarkdownManipulator manipulator(_ui->plainTextEdit);
         manipulator.insertImageLink(dialog.alternateText(), dialog.imageSourceLink(), dialog.optionalTitle());
     }
 }
@@ -495,37 +490,37 @@ void MainWindow::editInsertImage()
 void MainWindow::viewChangeSplit()
 {
     QAction* action = qobject_cast<QAction*>(sender());
-    if (action->objectName() == ui->actionSplit_1_1->objectName()) {
-        splitFactor = 0.5;
-    } else if (action->objectName() == ui->actionSplit_2_1->objectName()) {
-        splitFactor = 0.666;
-    } else if (action->objectName() == ui->actionSplit_1_2->objectName()) {
-        splitFactor = 0.333;
-    } else if (action->objectName() == ui->actionSplit_3_1->objectName()) {
-        splitFactor = 0.75;
-    } else if (action->objectName() == ui->actionSplit_1_3->objectName()) {
-        splitFactor = 0.25;
+    if (action->objectName() == _ui->actionSplit_1_1->objectName()) {
+        _split_factor = 0.5;
+    } else if (action->objectName() == _ui->actionSplit_2_1->objectName()) {
+        _split_factor = 0.666;
+    } else if (action->objectName() == _ui->actionSplit_1_2->objectName()) {
+        _split_factor = 0.333;
+    } else if (action->objectName() == _ui->actionSplit_3_1->objectName()) {
+        _split_factor = 0.75;
+    } else if (action->objectName() == _ui->actionSplit_1_3->objectName()) {
+        _split_factor = 0.25;
     }
 
     updateSplitter();
 
     // web view was collapsed and is now visible again, so update it
-    if (rightViewCollapsed) {
+    if (_right_view_collapsed) {
         syncWebViewToHtmlSource();
     }
 }
 
 void MainWindow::lastUsedTheme()
 {
-    QString themeName = options->lastUsedTheme();
+    QString themeName = _options->lastUsedTheme();
 
-    currentTheme = themeCollection->theme(themeName);
+    _current_theme = _theme_collection->theme(themeName);
     applyCurrentTheme();
 
-    for (auto action : stylesGroup->actions()) {
+    for (auto action : _styles_group->actions()) {
         if (action->text() == themeName) {
             action->setChecked(true);
-            stylesGroup->triggered(action);
+            _styles_group->triggered(action);
             break;
         }
     }
@@ -536,36 +531,36 @@ void MainWindow::themeChanged()
     QAction *action = qobject_cast<QAction*>(sender());
     QString themeName = action->text();
 
-    currentTheme = themeCollection->theme(themeName);
+    _current_theme = _theme_collection->theme(themeName);
     applyCurrentTheme();
 
-    options->setLastUsedTheme(themeName);
+    _options->setLastUsedTheme(themeName);
 }
 
 void MainWindow::editorStyleChanged()
 {
-    QString markdownHighlighting = StyleManager::markdownHighlightingPath(currentTheme);
-    ui->plainTextEdit->loadStyleFromStylesheet(stylePath(markdownHighlighting));
+    QString markdownHighlighting = StyleManager::markdownHighlightingPath(_current_theme);
+    _ui->plainTextEdit->loadStyleFromStylesheet(stylePath(markdownHighlighting));
 }
 
 void MainWindow::applyCurrentTheme()
 {
-    QString markdownHighlighting = StyleManager::markdownHighlightingPath(currentTheme);
-    QString codeHighlighting = StyleManager::codeHighlightingPath(currentTheme);
-    QString previewStylesheet = StyleManager::previewStylesheetPath(currentTheme);
+    QString markdownHighlighting = StyleManager::markdownHighlightingPath(_current_theme);
+    QString codeHighlighting = StyleManager::codeHighlightingPath(_current_theme);
+    QString previewStylesheet = StyleManager::previewStylesheetPath(_current_theme);
 
-    generator->setCodeHighlightingStyle(codeHighlighting);
-    ui->plainTextEdit->loadStyleFromStylesheet(stylePath(markdownHighlighting));
+    _generator->setCodeHighlightingStyle(codeHighlighting);
+    _ui->plainTextEdit->loadStyleFromStylesheet(stylePath(markdownHighlighting));
 #if WITH_QTWEBENGINE
     // TODO
 #else
-    ui->webView->page()->settings()->setUserStyleSheetUrl(QUrl(previewStylesheet));
+    _ui->webView->page()->settings()->setUserStyleSheetUrl(QUrl(previewStylesheet));
 #endif
 }
 
 void MainWindow::viewFullScreenMode()
 {
-    if (ui->actionFullScreenMode->isChecked()) {
+    if (_ui->actionFullScreenMode->isChecked()) {
         showFullScreen();
     } else {
         showNormal();
@@ -575,133 +570,133 @@ void MainWindow::viewFullScreenMode()
 void MainWindow::viewHorizontalLayout(bool checked)
 {
     if (checked) {
-        ui->splitter->setOrientation(Qt::Vertical);
+        _ui->splitter->setOrientation(Qt::Vertical);
     } else {
-        ui->splitter->setOrientation(Qt::Horizontal);
+        _ui->splitter->setOrientation(Qt::Horizontal);
     }
 }
 
 void MainWindow::extrasShowSpecialCharacters(bool checked)
 {
-    options->setShowSpecialCharactersEnabled(checked);
-    ui->plainTextEdit->setShowSpecialCharacters(checked);
+    _options->setShowSpecialCharactersEnabled(checked);
+    _ui->plainTextEdit->setShowSpecialCharacters(checked);
 }
 
 void MainWindow::extrasYamlHeaderSupport(bool checked)
 {
-    options->setYamlHeaderSupportEnabled(checked);
-    ui->plainTextEdit->setYamlHeaderSupportEnabled(checked);
+    _options->setYamlHeaderSupportEnabled(checked);
+    _ui->plainTextEdit->setYamlHeaderSupportEnabled(checked);
     plainTextChanged();
 }
 
 void MainWindow::extrasWordWrap(bool checked)
 {
-    options->setWordWrapEnabled(checked);
-    ui->plainTextEdit->setLineWrapMode(checked ? MarkdownEditor::WidgetWidth : MarkdownEditor::NoWrap);
+    _options->setWordWrapEnabled(checked);
+    _ui->plainTextEdit->setLineWrapMode(checked ? MarkdownEditor::WidgetWidth : MarkdownEditor::NoWrap);
 }
 
 void MainWindow::extensionsAutolink(bool checked)
 {
-    options->setAutolinkEnabled(checked);
+    _options->setAutolinkEnabled(checked);
     plainTextChanged();
 }
 
 void MainWindow::extensionsStrikethrough(bool checked)
 {
-    options->setStrikethroughEnabled(checked);
+    _options->setStrikethroughEnabled(checked);
     plainTextChanged();
 }
 
 void MainWindow::extensionsAlphabeticLists(bool checked)
 {
-    options->setAlphabeticListsEnabled(checked);
+    _options->setAlphabeticListsEnabled(checked);
     plainTextChanged();
 }
 
 void MainWindow::extensionsDefinitionLists(bool checked)
 {
-    options->setDefinitionListsEnabled(checked);
+    _options->setDefinitionListsEnabled(checked);
     plainTextChanged();
 }
 
 void MainWindow::extensionsSmartyPants(bool checked)
 {
-    options->setSmartyPantsEnabled(checked);
+    _options->setSmartyPantsEnabled(checked);
     plainTextChanged();
 }
 
 void MainWindow::extensionsFootnotes(bool enabled)
 {
-    options->setFootnotesEnabled(enabled);
+    _options->setFootnotesEnabled(enabled);
     plainTextChanged();
 }
 
 void MainWindow::extensionsSuperscript(bool enabled)
 {
-    options->setSuperscriptEnabled(enabled);
+    _options->setSuperscriptEnabled(enabled);
     plainTextChanged();
 }
 
 void MainWindow::extrasCheckSpelling(bool checked)
 {
-    ui->plainTextEdit->setSpellingCheckEnabled(checked);
-    options->setSpellingCheckEnabled(checked);
+    _ui->plainTextEdit->setSpellingCheckEnabled(checked);
+    _options->setSpellingCheckEnabled(checked);
 }
 
 void MainWindow::extrasOptions()
 {
     QList<QAction*> actions;
     // file menu
-    actions << ui->actionNew
-            << ui->actionOpen
-            << ui->actionSave
-            << ui->actionSaveAs
-            << ui->actionExportToHTML
-            << ui->actionExportToPDF
-            << ui->action_Print
-            << ui->actionExit;
+    actions << _ui->actionNew
+            << _ui->actionOpen
+            << _ui->actionSave
+            << _ui->actionSaveAs
+            << _ui->actionExportToHTML
+            << _ui->actionExportToPDF
+            << _ui->action_Print
+            << _ui->actionExit;
     // edit menu
-    actions << ui->actionUndo
-            << ui->actionRedo
-            << ui->actionCut
-            << ui->actionCopy
-            << ui->actionPaste
-            << ui->actionStrong
-            << ui->actionCopyHtmlToClipboard
-            << ui->actionEmphasize
-            << ui->actionStrikethrough
-            << ui->actionInline_Code
-            << ui->actionCenterParagraph
-            << ui->actionBlockquote
-            << ui->actionIncreaseHeaderLevel
-            << ui->actionDecreaseHeaderLevel
-            << ui->actionInsertTable
-            << ui->actionInsertImage
-            << ui->actionFindReplace
-            << ui->actionFindNext
-            << ui->actionFindPrevious
-            << ui->actionGotoLine;
+    actions << _ui->actionUndo
+            << _ui->actionRedo
+            << _ui->actionCut
+            << _ui->actionCopy
+            << _ui->actionPaste
+            << _ui->actionStrong
+            << _ui->actionCopyHtmlToClipboard
+            << _ui->actionEmphasize
+            << _ui->actionStrikethrough
+            << _ui->actionInline_Code
+            << _ui->actionCenterParagraph
+            << _ui->actionBlockquote
+            << _ui->actionIncreaseHeaderLevel
+            << _ui->actionDecreaseHeaderLevel
+            << _ui->actionInsertTable
+            << _ui->actionInsertImage
+            << _ui->actionFindReplace
+            << _ui->actionFindNext
+            << _ui->actionFindPrevious
+            << _ui->actionGotoLine;
     // view menu
-    actions << ui->dockWidget->toggleViewAction()
-            << ui->fileExplorerDockWidget->toggleViewAction()
-            << ui->actionHtmlSource
-            << ui->actionSplit_1_1
-            << ui->actionSplit_2_1
-            << ui->actionSplit_1_2
-            << ui->actionSplit_3_1
-            << ui->actionSplit_1_3
-            << ui->actionFullScreenMode
-            << ui->actionHorizontalLayout;
+    actions << _ui->dockWidget->toggleViewAction()
+            << _ui->fileExplorerDockWidget->toggleViewAction()
+            << _ui->actionHtmlSource
+            << _ui->actionSplit_1_1
+            << _ui->actionSplit_2_1
+            << _ui->actionSplit_1_2
+            << _ui->actionSplit_3_1
+            << _ui->actionSplit_1_3
+            << _ui->actionFullScreenMode
+            << _ui->actionHorizontalLayout;
 
     // snippet complete
-    actions << ui->plainTextEdit->actions();
+    actions << _ui->plainTextEdit->actions();
 
-    OptionsDialog dialog(options, snippetCollection, actions, this);
+    OptionsDialog dialog(_options, _snippet_collection, actions, this);
     if (dialog.exec() == QDialog::Accepted) {
-        options->writeSettings();
+        _options->writeSettings();
 
         QString path = DataLocation::writableLocation();
-        QSharedPointer<SnippetCollection> userDefinedSnippets = snippetCollection->userDefinedSnippets();
+        QSharedPointer<SnippetCollection> userDefinedSnippets = _snippet_collection->userDefinedSnippets();
         JsonFile<Snippet>::save(path + "/user-snippets.json", userDefinedSnippets.data());
 
         // update shortcuts
@@ -711,7 +706,7 @@ void MainWindow::extrasOptions()
 
 void MainWindow::helpMarkdownSyntax()
 {
-    ui->dockWidget_2->show();
+    _ui->dockWidget_2->show();
 }
 
 void MainWindow::helpAbout()
@@ -723,61 +718,61 @@ void MainWindow::helpAbout()
 void MainWindow::setHtmlSource(bool enabled)
 {
     if (enabled) {
-        ui->stackedWidget->setCurrentWidget(ui->htmlSourcePage);
+        _ui->stackedWidget->setCurrentWidget(_ui->htmlSourcePage);
 
         // activate HTML highlighter
-        htmlHighlighter->setEnabled(true);
-        htmlHighlighter->rehighlight();
+        _html_highlighter->setEnabled(true);
+        _html_highlighter->rehighlight();
     } else {
-        ui->stackedWidget->setCurrentWidget(ui->webViewPage);
+        _ui->stackedWidget->setCurrentWidget(_ui->webViewPage);
 
         // deactivate HTML highlighter
-        htmlHighlighter->setEnabled(false);
+        _html_highlighter->setEnabled(false);
 
         // update webView now since it was not updated while hidden
         syncWebViewToHtmlSource();
     }
 
     // sync view menu action
-    if (ui->actionHtmlSource->isChecked() != enabled)
-        ui->actionHtmlSource->setChecked(enabled);
+    if (_ui->actionHtmlSource->isChecked() != enabled)
+        _ui->actionHtmlSource->setChecked(enabled);
 
     updateSplitter();
 }
 
 void MainWindow::plainTextChanged()
 {
-    QString code = ui->plainTextEdit->toPlainText();
+    QString code = _ui->plainTextEdit->toPlainText();
 
     // generate HTML from markdown
-    generator->markdownTextChanged(code);
+    _generator->markdownTextChanged(code);
 
     // show modification indicator in window title
-    setWindowModified(ui->plainTextEdit->document()->isModified());
+    setWindowModified(_ui->plainTextEdit->document()->isModified());
 }
 
 void MainWindow::htmlResultReady(const QString &html)
 {
     // show html preview
     QUrl baseUrl;
-    if (fileName.isEmpty()) {
+    if (_file_name.isEmpty()) {
         baseUrl = QUrl::fromLocalFile(qApp->applicationDirPath());
     } else {
-        baseUrl = QUrl::fromLocalFile(QFileInfo(fileName).absolutePath() + "/");
+        baseUrl = QUrl::fromLocalFile(QFileInfo(_file_name).absolutePath() + "/");
     }
 
-    QList<int> childSizes = ui->splitter->sizes();
-    if (ui->webView->isVisible() && childSizes[1] != 0) {
-        ui->webView->setHtml(html, baseUrl);
+    QList<int> childSizes = _ui->splitter->sizes();
+    if (_ui->webView->isVisible() && childSizes[1] != 0) {
+        _ui->webView->setHtml(html, baseUrl);
     }
 
     // show html source
-    ui->htmlSourceTextEdit->setPlainText(html);
+    _ui->htmlSourceTextEdit->setPlainText(html);
 }
 
 void MainWindow::tocResultReady(const QString &toc)
 {
-    ui->tocWebView->setHtml(toc);
+    _ui->tocWebView->setHtml(toc);
 }
 
 void MainWindow::previewLinkClicked(const QUrl &url)
@@ -803,7 +798,7 @@ void MainWindow::tocLinkClicked(const QUrl &url)
     // TODO
 #else
     QString anchor = url.toString().remove("#");
-    ui->webView->page()->mainFrame()->scrollToAnchor(anchor);
+    _ui->webView->page()->mainFrame()->scrollToAnchor(anchor);
 #endif
 }
 
@@ -811,14 +806,14 @@ void MainWindow::splitterMoved(int pos, int index)
 {
     Q_UNUSED(index)
 
-    int maxViewWidth = ui->splitter->size().width() - ui->splitter->handleWidth();
-    splitFactor = (float)pos / maxViewWidth;
+    int maxViewWidth = _ui->splitter->size().width() - _ui->splitter->handleWidth();
+    _split_factor = (float)pos / maxViewWidth;
 
     // web view was collapsed and is now visible again, so update it
-    if (rightViewCollapsed && ui->splitter->sizes().at(1) > 0) {
+    if (_right_view_collapsed && _ui->splitter->sizes().at(1) > 0) {
         syncWebViewToHtmlSource();
     }
-    rightViewCollapsed = (ui->splitter->sizes().at(1) == 0);
+    _right_view_collapsed = (_ui->splitter->sizes().at(1) == 0);
 }
 
 void MainWindow::addJavaScriptObject()
@@ -827,7 +822,7 @@ void MainWindow::addJavaScriptObject()
     // TODO
 #else
     // add view synchronizer object to javascript engine
-    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("synchronizer", viewSynchronizer);
+    _ui->webView->page()->mainFrame()->addToJavaScriptWindowObject("synchronizer", _view_synchronizer);
 #endif
 }
 
@@ -847,33 +842,33 @@ bool MainWindow::load(const QString &fileName)
     QByteArray content = file.readAll();
     QString text = QString::fromUtf8(content);
 
-    ui->plainTextEdit->resetHighlighting();
-    ui->plainTextEdit->setPlainText(text);
+    _ui->plainTextEdit->resetHighlighting();
+    _ui->plainTextEdit->setPlainText(text);
 
     // remember name of new file
     setFileName(fileName);
 
     // add to recent files
-    recentFilesMenu->addFile(fileName);
+    _recent_files_menu->addFile(fileName);
 
     return true;
 }
 
 void MainWindow::proxyConfigurationChanged()
 {
-    if (options->proxyMode() == Options::SystemProxy) {
+    if (_options->proxyMode() == Options::SystemProxy) {
         qDebug() << "Use system proxy configuration";
         QNetworkProxyFactory::setUseSystemConfiguration(true);
-    } else if (options->proxyMode() == Options::ManualProxy) {
-        qDebug() << "Use proxy" << options->proxyHost();
+    } else if (_options->proxyMode() == Options::ManualProxy) {
+        qDebug() << "Use proxy" << _options->proxyHost();
         QNetworkProxyFactory::setUseSystemConfiguration(false);
 
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::HttpProxy);
-        proxy.setHostName(options->proxyHost());
-        proxy.setPort(options->proxyPort());
-        proxy.setUser(options->proxyUser());
-        proxy.setPassword(options->proxyPassword());
+        proxy.setHostName(_options->proxyHost());
+        proxy.setPort(_options->proxyPort());
+        proxy.setUser(_options->proxyUser());
+        proxy.setPassword(_options->proxyPassword());
         QNetworkProxy::setApplicationProxy(proxy);
     } else {
         qDebug() << "Don't use a proxy";
@@ -893,30 +888,30 @@ void MainWindow::markdownConverterChanged()
     // disable unsupported extensions
     updateExtensionStatus();
 
-    delete viewSynchronizer;
-    switch (options->markdownConverter()) {
+    delete _view_synchronizer;
+    switch (_options->markdownConverter()) {
 #ifdef ENABLE_HOEDOWN
     case Options::HoedownMarkdownConverter:
 #endif
     case Options::DiscountMarkdownConverter:
-        viewSynchronizer = new HtmlViewSynchronizer(ui->webView, ui->plainTextEdit);
-        connect(generator, SIGNAL(htmlResultReady(QString)),
-                viewSynchronizer, SLOT(rememberScrollBarPos()));
+        _view_synchronizer = new HtmlViewSynchronizer(_ui->webView, _ui->plainTextEdit);
+        connect(_generator, SIGNAL(htmlResultReady(QString)),
+                _view_synchronizer, SLOT(rememberScrollBarPos()));
         break;
 
     case Options::RevealMarkdownConverter:
-        viewSynchronizer = new RevealViewSynchronizer(ui->webView, ui->plainTextEdit);
+        _view_synchronizer = new RevealViewSynchronizer(_ui->webView, _ui->plainTextEdit);
         break;
 
     default:
-        viewSynchronizer = nullptr;
+        _view_synchronizer = nullptr;
         break;
     }
 }
 
 void MainWindow::setupUi()
 {
-    htmlPreviewController = new HtmlPreviewController(ui->webView, this);
+    _html_preview_controller = new HtmlPreviewController(_ui->webView, this);
 
     setupActions();
     setupMarkdownEditor();
@@ -925,32 +920,32 @@ void MainWindow::setupUi()
     setupStatusBar();
 
     // hide find/replace widget on startup
-    ui->findReplaceWidget->hide();
-    connect(ui->findReplaceWidget, SIGNAL(dialogClosed()),
-            ui->plainTextEdit, SLOT(setFocus()));
+    _ui->findReplaceWidget->hide();
+    connect(_ui->findReplaceWidget, SIGNAL(dialogClosed()),
+            _ui->plainTextEdit, SLOT(setFocus()));
 
     // close table of contents dockwidget
-    ui->dockWidget->close();
+    _ui->dockWidget->close();
 
     // hide markdown syntax help dockwidget
-    ui->dockWidget_2->hide();
-    ui->dockWidget_2->setFloating(true);
-    ui->dockWidget_2->resize(550, 400);
+    _ui->dockWidget_2->hide();
+    _ui->dockWidget_2->setFloating(true);
+    _ui->dockWidget_2->resize(550, 400);
 
     // show HTML preview on right panel
-    setHtmlSource(ui->actionHtmlSource->isChecked());
+    setHtmlSource(_ui->actionHtmlSource->isChecked());
 
-    connect(options, SIGNAL(proxyConfigurationChanged()),
+    connect(_options, SIGNAL(proxyConfigurationChanged()),
             this, SLOT(proxyConfigurationChanged()));
-    connect(options, SIGNAL(markdownConverterChanged()),
+    connect(_options, SIGNAL(markdownConverterChanged()),
             this, SLOT(markdownConverterChanged()));
-    connect(options, &Options::editorStyleChanged,
+    connect(_options, &Options::editorStyleChanged,
             this, &MainWindow::editorStyleChanged);
 
     readSettings();
     setupCustomShortcuts();
 
-    ui->actionFullScreenMode->setChecked(this->isFullScreen());
+    _ui->actionFullScreenMode->setChecked(this->isFullScreen());
 }
 
 void SetActionShortcut(QAction *action, const QKeySequence &shortcut)
@@ -962,145 +957,145 @@ void SetActionShortcut(QAction *action, const QKeySequence &shortcut)
 void MainWindow::setupActions()
 {
     // file menu
-    SetActionShortcut(ui->actionNew, QKeySequence::New);
-    SetActionShortcut(ui->actionOpen, QKeySequence::Open);
-    SetActionShortcut(ui->actionSave, QKeySequence::Save);
-    SetActionShortcut(ui->actionSaveAs, QKeySequence::SaveAs);
-    SetActionShortcut(ui->action_Print, QKeySequence::Print);
-    SetActionShortcut(ui->actionExit, QKeySequence::Quit);
+    SetActionShortcut(_ui->actionNew, QKeySequence::New);
+    SetActionShortcut(_ui->actionOpen, QKeySequence::Open);
+    SetActionShortcut(_ui->actionSave, QKeySequence::Save);
+    SetActionShortcut(_ui->actionSaveAs, QKeySequence::SaveAs);
+    SetActionShortcut(_ui->action_Print, QKeySequence::Print);
+    SetActionShortcut(_ui->actionExit, QKeySequence::Quit);
 
-    recentFilesMenu = new RecentFilesMenu(ui->menuFile);
-    ui->menuFile->insertMenu(ui->actionSave, recentFilesMenu);
+    _recent_files_menu = new RecentFilesMenu(_ui->menuFile);
+    _ui->menuFile->insertMenu(_ui->actionSave, _recent_files_menu);
 
-    connect(recentFilesMenu, SIGNAL(recentFileTriggered(QString)),
+    connect(_recent_files_menu, SIGNAL(recentFileTriggered(QString)),
             this, SLOT(openRecentFile(QString)));
 
     // edit menu
-    SetActionShortcut(ui->actionUndo, QKeySequence::Undo);
-    SetActionShortcut(ui->actionRedo, QKeySequence::Redo);
+    SetActionShortcut(_ui->actionUndo, QKeySequence::Undo);
+    SetActionShortcut(_ui->actionRedo, QKeySequence::Redo);
 
-    SetActionShortcut(ui->actionCut, QKeySequence::Cut);
-    SetActionShortcut(ui->actionCopy, QKeySequence::Copy);
-    SetActionShortcut(ui->actionPaste, QKeySequence::Paste);
+    SetActionShortcut(_ui->actionCut, QKeySequence::Cut);
+    SetActionShortcut(_ui->actionCopy, QKeySequence::Copy);
+    SetActionShortcut(_ui->actionPaste, QKeySequence::Paste);
 
-    SetActionShortcut(ui->actionStrong, QKeySequence::Bold);
-    SetActionShortcut(ui->actionEmphasize, QKeySequence::Italic);
+    SetActionShortcut(_ui->actionStrong, QKeySequence::Bold);
+    SetActionShortcut(_ui->actionEmphasize, QKeySequence::Italic);
 
-    SetActionShortcut(ui->actionFindReplace, QKeySequence::Find);
-    SetActionShortcut(ui->actionFindNext, QKeySequence::FindNext);
-    SetActionShortcut(ui->actionFindPrevious, QKeySequence::FindPrevious);
+    SetActionShortcut(_ui->actionFindReplace, QKeySequence::Find);
+    SetActionShortcut(_ui->actionFindNext, QKeySequence::FindNext);
+    SetActionShortcut(_ui->actionFindPrevious, QKeySequence::FindPrevious);
 
-    connect(ui->actionFindNext, SIGNAL(triggered()),
-            ui->findReplaceWidget, SLOT(findNextClicked()));
+    connect(_ui->actionFindNext, SIGNAL(triggered()),
+            _ui->findReplaceWidget, SLOT(findNextClicked()));
 
-    connect(ui->actionFindPrevious, SIGNAL(triggered()),
-            ui->findReplaceWidget, SLOT(findPreviousClicked()));
+    connect(_ui->actionFindPrevious, SIGNAL(triggered()),
+            _ui->findReplaceWidget, SLOT(findPreviousClicked()));
 
     // view menu
-    ui->menuView->insertAction(ui->menuView->actions()[0], ui->dockWidget->toggleViewAction());
-    ui->menuView->insertAction(ui->menuView->actions()[1], ui->fileExplorerDockWidget->toggleViewAction());
-    SetActionShortcut(ui->fileExplorerDockWidget->toggleViewAction(), QKeySequence(Qt::ALT + Qt::Key_E));
-    SetActionShortcut(ui->actionFullScreenMode, QKeySequence::FullScreen);
+    _ui->menuView->insertAction(_ui->menuView->actions()[0], _ui->dockWidget->toggleViewAction());
+    _ui->menuView->insertAction(_ui->menuView->actions()[1], _ui->fileExplorerDockWidget->toggleViewAction());
+    SetActionShortcut(_ui->fileExplorerDockWidget->toggleViewAction(), QKeySequence(Qt::ALT + Qt::Key_E));
+    SetActionShortcut(_ui->actionFullScreenMode, QKeySequence::FullScreen);
 
     // extras menu
-    connect(ui->actionMathSupport, SIGNAL(triggered(bool)),
-            generator, SLOT(setMathSupportEnabled(bool)));
-    connect(ui->actionDiagramSupport, SIGNAL(triggered(bool)),
-            generator, SLOT(setDiagramSupportEnabled(bool)));
-     connect(ui->actionCodeHighlighting, SIGNAL(triggered(bool)),
-            generator, SLOT(setCodeHighlightingEnabled(bool)));
-    connect(ui->menuLanguages, SIGNAL(languageTriggered(Dictionary)),
+    connect(_ui->actionMathSupport, SIGNAL(triggered(bool)),
+            _generator, SLOT(setMathSupportEnabled(bool)));
+    connect(_ui->actionDiagramSupport, SIGNAL(triggered(bool)),
+            _generator, SLOT(setDiagramSupportEnabled(bool)));
+     connect(_ui->actionCodeHighlighting, SIGNAL(triggered(bool)),
+            _generator, SLOT(setCodeHighlightingEnabled(bool)));
+    connect(_ui->menuLanguages, SIGNAL(languageTriggered(Dictionary)),
             this, SLOT(languageChanged(Dictionary)));
 
     // help menu
-    ui->actionMarkdownSyntax->setShortcut(QKeySequence::HelpContents);
+    _ui->actionMarkdownSyntax->setShortcut(QKeySequence::HelpContents);
 
     // set actions icons
     setActionsIcons();
 
     // set names for dock widget actions
-    ui->dockWidget->toggleViewAction()->setObjectName("actionTableOfContents");
-    ui->fileExplorerDockWidget->toggleViewAction()->setObjectName("actionFileExplorer");
+    _ui->dockWidget->toggleViewAction()->setObjectName("actionTableOfContents");
+    _ui->fileExplorerDockWidget->toggleViewAction()->setObjectName("actionFileExplorer");
 
     // setup default shortcuts
-    ui->actionGotoLine->setProperty("defaultshortcut", ui->actionGotoLine->shortcut());
-    ui->actionBlockquote->setProperty("defaultshortcut", ui->actionBlockquote->shortcut());
-    ui->actionIncreaseHeaderLevel->setProperty("defaultshortcut", ui->actionIncreaseHeaderLevel->shortcut());
-    ui->actionDecreaseHeaderLevel->setProperty("defaultshortcut", ui->actionDecreaseHeaderLevel->shortcut());
-    ui->actionInsertTable->setProperty("defaultshortcut", ui->actionInsertTable->shortcut());
-    ui->actionInsertImage->setProperty("defaultshortcut", ui->actionInsertImage->shortcut());
-    ui->dockWidget->toggleViewAction()->setProperty("defaultshortcut", ui->dockWidget->toggleViewAction()->shortcut());
-    ui->fileExplorerDockWidget->toggleViewAction()->setProperty("defaultshortcut", ui->fileExplorerDockWidget->toggleViewAction()->shortcut());
-    ui->actionHtmlSource->setProperty("defaultshortcut", ui->actionHtmlSource->shortcut());
+    _ui->actionGotoLine->setProperty("defaultshortcut", _ui->actionGotoLine->shortcut());
+    _ui->actionBlockquote->setProperty("defaultshortcut", _ui->actionBlockquote->shortcut());
+    _ui->actionIncreaseHeaderLevel->setProperty("defaultshortcut", _ui->actionIncreaseHeaderLevel->shortcut());
+    _ui->actionDecreaseHeaderLevel->setProperty("defaultshortcut", _ui->actionDecreaseHeaderLevel->shortcut());
+    _ui->actionInsertTable->setProperty("defaultshortcut", _ui->actionInsertTable->shortcut());
+    _ui->actionInsertImage->setProperty("defaultshortcut", _ui->actionInsertImage->shortcut());
+    _ui->dockWidget->toggleViewAction()->setProperty("defaultshortcut", _ui->dockWidget->toggleViewAction()->shortcut());
+    _ui->fileExplorerDockWidget->toggleViewAction()->setProperty("defaultshortcut", _ui->fileExplorerDockWidget->toggleViewAction()->shortcut());
+    _ui->actionHtmlSource->setProperty("defaultshortcut", _ui->actionHtmlSource->shortcut());
 }
 
 void MainWindow::setActionsIcons()
 {
 #ifndef Q_OS_OSX
   // file menu
-  ui->actionSave->setIcon(QIcon("fa-floppy-o.fontawesome"));
-  ui->actionExportToPDF->setIcon(QIcon("fa-file-pdf-o.fontawesome"));
-  ui->action_Print->setIcon(QIcon("fa-print.fontawesome"));
+  _ui->actionSave->setIcon(QIcon("fa-floppy-o.fontawesome"));
+  _ui->actionExportToPDF->setIcon(QIcon("fa-file-pdf-o.fontawesome"));
+  _ui->action_Print->setIcon(QIcon("fa-print.fontawesome"));
 
   // edit menu
-  ui->actionUndo->setIcon(QIcon("fa-undo.fontawesome"));
-  ui->actionRedo->setIcon(QIcon("fa-repeat.fontawesome"));
+  _ui->actionUndo->setIcon(QIcon("fa-undo.fontawesome"));
+  _ui->actionRedo->setIcon(QIcon("fa-repeat.fontawesome"));
 
-  ui->actionCut->setIcon(QIcon("fa-scissors.fontawesome"));
-  ui->actionCopy->setIcon(QIcon("fa-files-o.fontawesome"));
-  ui->actionPaste->setIcon(QIcon("fa-clipboard.fontawesome"));
+  _ui->actionCut->setIcon(QIcon("fa-scissors.fontawesome"));
+  _ui->actionCopy->setIcon(QIcon("fa-files-o.fontawesome"));
+  _ui->actionPaste->setIcon(QIcon("fa-clipboard.fontawesome"));
 
-  ui->actionStrong->setIcon(QIcon("fa-bold.fontawesome"));
-  ui->actionEmphasize->setIcon(QIcon("fa-italic.fontawesome"));
-  ui->actionStrikethrough->setIcon(QIcon("fa-strikethrough.fontawesome"));
-  ui->actionCenterParagraph->setIcon(QIcon("fa-align-center.fontawesome"));
-  ui->actionIncreaseHeaderLevel->setIcon(QIcon("fa-level-up.fontawesome"));
-  ui->actionBlockquote->setIcon(QIcon("fa-quote-left.fontawesome"));
-  ui->actionDecreaseHeaderLevel->setIcon(QIcon("fa-level-down.fontawesome"));
+  _ui->actionStrong->setIcon(QIcon("fa-bold.fontawesome"));
+  _ui->actionEmphasize->setIcon(QIcon("fa-italic.fontawesome"));
+  _ui->actionStrikethrough->setIcon(QIcon("fa-strikethrough.fontawesome"));
+  _ui->actionCenterParagraph->setIcon(QIcon("fa-align-center.fontawesome"));
+  _ui->actionIncreaseHeaderLevel->setIcon(QIcon("fa-level-up.fontawesome"));
+  _ui->actionBlockquote->setIcon(QIcon("fa-quote-left.fontawesome"));
+  _ui->actionDecreaseHeaderLevel->setIcon(QIcon("fa-level-down.fontawesome"));
 
-  ui->actionInsertTable->setIcon(QIcon("fa-table.fontawesome"));
-  ui->actionInsertImage->setIcon(QIcon("fa-picture-o.fontawesome"));
+  _ui->actionInsertTable->setIcon(QIcon("fa-table.fontawesome"));
+  _ui->actionInsertImage->setIcon(QIcon("fa-picture-o.fontawesome"));
 
-  ui->actionFindReplace->setIcon(QIcon("fa-search.fontawesome"));
+  _ui->actionFindReplace->setIcon(QIcon("fa-search.fontawesome"));
 
   // view menu
-  ui->actionFullScreenMode->setIcon(QIcon("fa-arrows-alt.fontawesome"));
+  _ui->actionFullScreenMode->setIcon(QIcon("fa-arrows-alt.fontawesome"));
 
-  ui->webView->pageAction(QWebPage::Copy)->setIcon(QIcon("fa-copy.fontawesome"));
+  _ui->webView->pageAction(QWebPage::Copy)->setIcon(QIcon("fa-copy.fontawesome"));
 #endif
 }
 
 void MainWindow::setupStatusBar()
 {
-    statusBarWidget = new StatusBarWidget(ui->plainTextEdit);
-    statusBarWidget->setHtmlAction(ui->actionHtmlSource);
+    _status_bar_widget = new StatusBarWidget(_ui->plainTextEdit);
+    _status_bar_widget->setHtmlAction(_ui->actionHtmlSource);
 
-    connect(options, &Options::lineColumnEnabledChanged,
-            statusBarWidget, &StatusBarWidget::showLineColumn);
+    connect(_options, &Options::lineColumnEnabledChanged,
+            _status_bar_widget, &StatusBarWidget::showLineColumn);
 
-    statusBarWidget->update();
+    _status_bar_widget->update();
 
     // remove border around statusbar widgets
     statusBar()->setStyleSheet("QStatusBar::item { border: 0px solid black }; ");
-    statusBar()->addPermanentWidget(statusBarWidget, 1);
+    statusBar()->addPermanentWidget(_status_bar_widget, 1);
 }
 
 void MainWindow::setupMarkdownEditor()
 {
-    ui->plainTextEdit->setSnippetCompleter(new SnippetCompleter(snippetCollection, ui->plainTextEdit));
+    _ui->plainTextEdit->setSnippetCompleter(new SnippetCompleter(_snippet_collection, _ui->plainTextEdit));
 
     // load file that are dropped on the editor
-    connect(ui->plainTextEdit, SIGNAL(loadDroppedFile(QString)),
+    connect(_ui->plainTextEdit, SIGNAL(loadDroppedFile(QString)),
             this, SLOT(load(QString)));
 
-    connect(options, &Options::editorFontChanged,
-            ui->plainTextEdit, &MarkdownEditor::editorFontChanged);
-    connect(options, &Options::tabWidthChanged,
-            ui->plainTextEdit, &MarkdownEditor::tabWidthChanged);
-    connect(options, &Options::rulerEnabledChanged,
-            ui->plainTextEdit, &MarkdownEditor::rulerEnabledChanged);
-    connect(options, &Options::rulerPosChanged,
-            ui->plainTextEdit, &MarkdownEditor::rulerPosChanged);
+    connect(_options, &Options::editorFontChanged,
+            _ui->plainTextEdit, &MarkdownEditor::editorFontChanged);
+    connect(_options, &Options::tabWidthChanged,
+            _ui->plainTextEdit, &MarkdownEditor::tabWidthChanged);
+    connect(_options, &Options::rulerEnabledChanged,
+            _ui->plainTextEdit, &MarkdownEditor::rulerEnabledChanged);
+    connect(_options, &Options::rulerPosChanged,
+            _ui->plainTextEdit, &MarkdownEditor::rulerPosChanged);
 }
 
 void MainWindow::setupHtmlPreview()
@@ -1109,33 +1104,33 @@ void MainWindow::setupHtmlPreview()
     // TODO
 #else
     // add our objects everytime JavaScript environment is cleared
-    connect(ui->webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()),
+    connect(_ui->webView->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()),
             this, SLOT(addJavaScriptObject()));
 #endif
 
     // start background HTML preview generator
-    connect(generator, SIGNAL(htmlResultReady(QString)),
+    connect(_generator, SIGNAL(htmlResultReady(QString)),
             this, SLOT(htmlResultReady(QString)));
-    connect(generator, SIGNAL(tocResultReady(QString)),
+    connect(_generator, SIGNAL(tocResultReady(QString)),
             this, SLOT(tocResultReady(QString)));
-    generator->start();
+    _generator->start();
 }
 
 void MainWindow::setupHtmlSourceView()
 {
     QFont font("Monospace", 10);
     font.setStyleHint(QFont::TypeWriter);
-    ui->htmlSourceTextEdit->setFont(font);
-    htmlHighlighter = new HtmlHighlighter(ui->htmlSourceTextEdit->document());
+    _ui->htmlSourceTextEdit->setFont(font);
+    _html_highlighter = new HtmlHighlighter(_ui->htmlSourceTextEdit->document());
 }
 
 void MainWindow::setupCustomShortcuts()
 {
-    setCustomShortcut(ui->menuFile);
-    setCustomShortcut(ui->menuEdit);
-    setCustomShortcut(ui->menuView);
+    setCustomShortcut(_ui->menuFile);
+    setCustomShortcut(_ui->menuEdit);
+    setCustomShortcut(_ui->menuView);
 
-    foreach (QAction *action, ui->plainTextEdit->actions()) {
+    foreach (QAction *action, _ui->plainTextEdit->actions()) {
         setCustomShortcut(action);
     }
 }
@@ -1154,33 +1149,33 @@ void MainWindow::setCustomShortcut(QMenu *menu)
 
 void MainWindow::setCustomShortcut(QAction *action)
 {
-    if (options->hasCustomShortcut(action->objectName())) {
-        action->setShortcut(options->customShortcut(action->objectName()));
+    if (_options->hasCustomShortcut(action->objectName())) {
+        action->setShortcut(_options->customShortcut(action->objectName()));
     }
 }
 
 void MainWindow::updateExtensionStatus()
 {
-    ui->actionAutolink->setEnabled(generator->isSupported(MarkdownConverter::AutolinkOption));
-    ui->actionAlphabeticLists->setEnabled(generator->isSupported(MarkdownConverter::NoAlphaListOption));
-    ui->actionDefinitionLists->setEnabled(generator->isSupported(MarkdownConverter::NoDefinitionListOption));
-    ui->actionFootnotes->setEnabled(generator->isSupported(MarkdownConverter::ExtraFootnoteOption));
-    ui->actionSmartyPants->setEnabled(generator->isSupported(MarkdownConverter::NoSmartypantsOption));
-    ui->actionStrikethroughOption->setEnabled(generator->isSupported(MarkdownConverter::NoStrikethroughOption));
-    ui->actionSuperscript->setEnabled(generator->isSupported(MarkdownConverter::NoSuperscriptOption));
+    _ui->actionAutolink->setEnabled(_generator->isSupported(MarkdownConverter::AutolinkOption));
+    _ui->actionAlphabeticLists->setEnabled(_generator->isSupported(MarkdownConverter::NoAlphaListOption));
+    _ui->actionDefinitionLists->setEnabled(_generator->isSupported(MarkdownConverter::NoDefinitionListOption));
+    _ui->actionFootnotes->setEnabled(_generator->isSupported(MarkdownConverter::ExtraFootnoteOption));
+    _ui->actionSmartyPants->setEnabled(_generator->isSupported(MarkdownConverter::NoSmartypantsOption));
+    _ui->actionStrikethroughOption->setEnabled(_generator->isSupported(MarkdownConverter::NoStrikethroughOption));
+    _ui->actionSuperscript->setEnabled(_generator->isSupported(MarkdownConverter::NoSuperscriptOption));
 }
 
 void MainWindow::syncWebViewToHtmlSource()
 {
-    htmlResultReady(ui->htmlSourceTextEdit->toPlainText());
+    htmlResultReady(_ui->htmlSourceTextEdit->toPlainText());
 }
 
 bool MainWindow::maybeSave()
 {
-    if (!ui->plainTextEdit->document()->isModified())
+    if (!_ui->plainTextEdit->document()->isModified())
         return true;
 
-    if (fileName.startsWith(QLatin1String(":/")))
+    if (_file_name.startsWith(QLatin1String(":/")))
         return true;
 
     QMessageBox::StandardButton ret;
@@ -1199,10 +1194,10 @@ bool MainWindow::maybeSave()
 
 void MainWindow::setFileName(const QString &fileName)
 {
-    this->fileName = fileName;
+    _file_name = fileName;
 
     // set to unmodified
-    ui->plainTextEdit->document()->setModified(false);
+    _ui->plainTextEdit->document()->setModified(false);
     setWindowModified(false);
 
     // update window title
@@ -1217,52 +1212,52 @@ void MainWindow::setFileName(const QString &fileName)
 void MainWindow::updateSplitter()
 {
     // not fully initialized yet?
-    if (centralWidget()->size() != ui->splitter->size()) {
+    if (centralWidget()->size() != _ui->splitter->size()) {
         return;
     }
 
     // calculate new width of left and right pane
-    QList<int> childSizes = ui->splitter->sizes();
-    childSizes[0] = ui->splitter->width() * splitFactor;
-    childSizes[1] = ui->splitter->width() * (1 - splitFactor);
+    QList<int> childSizes = _ui->splitter->sizes();
+    childSizes[0] = _ui->splitter->width() * _split_factor;
+    childSizes[1] = _ui->splitter->width() * (1 - _split_factor);
 
-    ui->splitter->setSizes(childSizes);
+    _ui->splitter->setSizes(childSizes);
 }
 
 void MainWindow::setupHtmlPreviewThemes()
 {
-    ui->menuStyles->clear();
+    _ui->menuStyles->clear();
 
-    delete stylesGroup;
-    stylesGroup = new QActionGroup(this);
+    delete _styles_group;
+    _styles_group = new QActionGroup(this);
 
     int key = 1;
     bool separatorAdded = false;
-    foreach(const QString &themeName, themeCollection->themeNames()) {
-        if (!separatorAdded && !themeCollection->theme(themeName).isBuiltIn()) {
+    foreach(const QString &themeName, _theme_collection->themeNames()) {
+        if (!separatorAdded && !_theme_collection->theme(themeName).isBuiltIn()) {
             addSeparatorAfterBuiltInThemes();
             separatorAdded = true;
         }
 
-        QAction *action = ui->menuStyles->addAction(themeName);
+        QAction *action = _ui->menuStyles->addAction(themeName);
         action->setShortcut(QKeySequence(tr("Ctrl+%1").arg(key++)));
         action->setCheckable(true);
-        action->setActionGroup(stylesGroup);
+        action->setActionGroup(_styles_group);
         connect(action, &QAction::triggered,
                 this, &MainWindow::themeChanged);
     }
 
-    if (statusBarWidget)
-        statusBarWidget->setStyleActions(stylesGroup);
+    if (_status_bar_widget)
+        _status_bar_widget->setStyleActions(_styles_group);
 }
 
 void MainWindow::addSeparatorAfterBuiltInThemes()
 {
-    ui->menuStyles->addSeparator();
+    _ui->menuStyles->addSeparator();
 
-    QAction *separator = new QAction(stylesGroup);
+    QAction *separator = new QAction(_styles_group);
     separator->setSeparator(true);
-    stylesGroup->addAction(separator);
+    _styles_group->addAction(separator);
 }
 
 void MainWindow::loadCustomStyles()
@@ -1282,7 +1277,7 @@ void MainWindow::loadCustomStyles()
             QString stylePath = QUrl::fromLocalFile(it.filePath()).toString();
 
             Theme customTheme { styleName, "Default", "Default", styleName };
-            themeCollection->insert(customTheme);
+            _theme_collection->insert(customTheme);
 
             StyleManager styleManager;
             styleManager.insertCustomPreviewStylesheet(styleName, stylePath);
@@ -1298,17 +1293,17 @@ void MainWindow::readSettings()
     restoreState(settings.value("mainWindow/windowState").toByteArray());
 
     // restore recent files menu
-    recentFilesMenu->readState();
+    _recent_files_menu->readState();
 
-    options->readSettings();
+    _options->readSettings();
 }
 
 void MainWindow::writeSettings()
 {
-    options->writeSettings();
+    _options->writeSettings();
 
     // save recent files menu
-    recentFilesMenu->saveState();
+    _recent_files_menu->saveState();
 
     // save window size, position and state
     QSettings settings;
@@ -1318,6 +1313,6 @@ void MainWindow::writeSettings()
 
 QString MainWindow::stylePath(const QString &styleName)
 {
-    QString suffix = options->isSourceAtSingleSizeEnabled() ? "" : "+";
+    QString suffix = _options->isSourceAtSingleSizeEnabled() ? "" : "+";
     return QString(":/theme/%1%2.txt").arg(styleName).arg(suffix);
 }

@@ -33,50 +33,48 @@ using hunspell::SpellChecker;
 
 #include <QDebug>
 
-MarkdownHighlighter::MarkdownHighlighter(QTextDocument *document, hunspell::SpellChecker *spellChecker) :
-    QSyntaxHighlighter(document),
-    workerThread(new HighlightWorkerThread(this)),
-    spellingCheckEnabled(false),
-    yamlHeaderSupportEnabled(false)
+MarkdownHighlighter::MarkdownHighlighter(QTextDocument *document, hunspell::SpellChecker *spellChecker)
+    : QSyntaxHighlighter(document), _worker_thread(new HighlightWorkerThread(this)),
+    _spelling_check_enabled(false), _yaml_header_support_enabled(false)
 {
-    this->spellChecker = spellChecker;
+    _spell_checker = spellChecker;
 
     // QTextCharFormat::SpellCheckUnderline has issues with Qt 5.
-    spellFormat.setUnderlineStyle(QTextCharFormat::WaveUnderline);
-    spellFormat.setUnderlineColor(Qt::red);
+    _spell_format.setUnderlineStyle(QTextCharFormat::WaveUnderline);
+    _spell_format.setUnderlineColor(Qt::red);
 
-    connect(workerThread, SIGNAL(resultReady(pmh_element**, unsigned long)),
+    connect(_worker_thread, SIGNAL(resultReady(pmh_element**, unsigned long)),
             this, SLOT(resultReady(pmh_element**, unsigned long)));
-    workerThread->start();
+    _worker_thread->start();
 }
 
 MarkdownHighlighter::~MarkdownHighlighter()
 {
     // stop background worker thread
-    workerThread->enqueue(QString());
-    workerThread->wait();
-    delete workerThread;
+    _worker_thread->enqueue(QString());
+    _worker_thread->wait();
+    delete _worker_thread;
 }
 
 void MarkdownHighlighter::reset()
 {
-    previousText.clear();
+    _previous_text.clear();
 }
 
 void MarkdownHighlighter::setStyles(const QVector<PegMarkdownHighlight::HighlightingStyle> &styles)
 {
-    highlightingStyles = styles;
+    _highlighting_styles = styles;
     reset();
 }
 
 void MarkdownHighlighter::setSpellingCheckEnabled(bool enabled)
 {
-    spellingCheckEnabled = enabled;
+    _spelling_check_enabled = enabled;
 }
 
 void MarkdownHighlighter::setYamlHeaderSupportEnabled(bool enabled)
 {
-    yamlHeaderSupportEnabled = enabled;
+    _yaml_header_support_enabled = enabled;
 }
 
 void MarkdownHighlighter::highlightBlock(const QString &textBlock)
@@ -86,21 +84,21 @@ void MarkdownHighlighter::highlightBlock(const QString &textBlock)
     }
 
     // check spelling of passed text block
-    if (spellingCheckEnabled) {
+    if (_spelling_check_enabled) {
         checkSpelling(textBlock);
     }
 
     QString text = document()->toPlainText();
 
     // document changed since last call?
-    if (text == previousText) {
+    if (text == _previous_text) {
         return;
     }
 
     // cut YAML headers
     QString actualText;
     unsigned long offset = 0;
-    if (yamlHeaderSupportEnabled) {
+    if (_yaml_header_support_enabled) {
         YamlHeaderChecker checker(text);
         actualText = checker.body();
         offset = checker.bodyOffset();
@@ -108,9 +106,9 @@ void MarkdownHighlighter::highlightBlock(const QString &textBlock)
         actualText = text;
     }
 
-    workerThread->enqueue(actualText, offset);
+    _worker_thread->enqueue(actualText, offset);
 
-    previousText = text;
+    _previous_text = text;
 }
 
 void MarkdownHighlighter::applyFormat(unsigned long pos, unsigned long end,
@@ -174,8 +172,8 @@ void MarkdownHighlighter::checkSpelling(const QString &textBlock)
     foreach (QString word, wordList) {
         index = textBlock.indexOf(word, index);
 
-        if (!spellChecker->isCorrect(word)) {
-            setFormat(index, word.length(), spellFormat);
+        if (!_spell_checker->isCorrect(word)) {
+            setFormat(index, word.length(), _spell_format);
         }
         index += word.length();
     }
@@ -194,8 +192,8 @@ void MarkdownHighlighter::resultReady(pmh_element **elements, unsigned long base
     }
 
     // apply highlight results
-    for (int i = 0; i < highlightingStyles.size(); i++) {
-        HighlightingStyle style = highlightingStyles.at(i);
+    for (int i = 0; i < _highlighting_styles.size(); i++) {
+        HighlightingStyle style = _highlighting_styles.at(i);
         pmh_element *elem_cursor = elements[style.type];
         while (elem_cursor != NULL) {
             unsigned long pos = elem_cursor->pos + base_offset;

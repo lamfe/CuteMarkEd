@@ -88,13 +88,13 @@ private:
     QStringList filterWordList(const QStringList &words, UnaryPredicate predicate) const;
 
 private:
-    QWidget *lineNumberArea;
-    MarkdownHighlighter *highlighter;
-    hunspell::SpellChecker *spellChecker;
-    SnippetCompleter *completer;
-    bool showHardLinebreaks;
-    bool rulerEnabled;
-    int rulerPos;
+    QWidget *_line_number_area;
+    MarkdownHighlighter *_highlighter;
+    hunspell::SpellChecker *_spell_checker;
+    SnippetCompleter *_completer;
+    bool _show_hard_linebreaks;
+    bool _ruler_enabled;
+    int _ruler_pos;
 };
 
 #endif // MARKDOWNEDITOR_H

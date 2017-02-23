@@ -42,9 +42,9 @@ public:
     static QMap<QString, Dictionary> availableDictionaries();
 
 private:
-    Hunspell *hunspellChecker;
-    QString userWordlist;
-    QTextCodec *textCodec;
+    Hunspell *_hunspell_checker;
+    QString _user_wordlist;
+    QTextCodec *_text_codec;
 };
 
 } // namespace Hunspell

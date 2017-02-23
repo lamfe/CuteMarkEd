@@ -36,11 +36,11 @@ private:
         QRegExp pattern;
         QTextCharFormat *format;
     };
-    QList<HighlightingRule> highlightingRules;
+    QList<HighlightingRule> _highlighting_rules;
 
-    QTextCharFormat keywordFormat;
-    QTextCharFormat imageFormat;
-    QTextCharFormat linkFormat;
+    QTextCharFormat _keyword_format;
+    QTextCharFormat _image_format;
+    QTextCharFormat _link_format;
     bool enabled;
 };
 

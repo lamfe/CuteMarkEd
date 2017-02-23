@@ -44,8 +44,8 @@ private:
     void replaceClipboardVariable(QString &snippetContent);
 
 private:
-    SnippetCollection *snippetCollection;
-    QCompleter *completer;
+    SnippetCollection *_snippet_collection;
+    QCompleter *_completer;
 };
 
 #endif // SNIPPETCOMPLETER_H

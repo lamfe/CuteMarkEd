@@ -47,7 +47,7 @@ public:
 private:
     void formatBlock(const QChar &mark);
 
-    QPlainTextEdit *editor;
+    QPlainTextEdit *_editor;
 };
 
 #endif // MARKDOWNMANIPULATOR_H

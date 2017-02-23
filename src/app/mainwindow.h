@@ -149,21 +149,21 @@ private:
     QString stylePath(const QString &styleName);
 
 private:
-    Ui::MainWindow *ui;
-    RecentFilesMenu *recentFilesMenu;
-    Options *options;
-    QActionGroup *stylesGroup;
-    StatusBarWidget* statusBarWidget;
-    HtmlPreviewGenerator* generator;
-    HtmlHighlighter *htmlHighlighter;
-    SnippetCollection *snippetCollection;
-    ViewSynchronizer *viewSynchronizer;
-    HtmlPreviewController *htmlPreviewController;
-    ThemeCollection *themeCollection;
-    Theme currentTheme { "Default", "Default", "Default", "Default" };
-    QString fileName;
-    float splitFactor;
-    bool rightViewCollapsed;
+    Ui::MainWindow *_ui;
+    RecentFilesMenu *_recent_files_menu;
+    Options *_options;
+    QActionGroup *_styles_group;
+    StatusBarWidget* _status_bar_widget;
+    HtmlPreviewGenerator* _generator;
+    HtmlHighlighter *_html_highlighter;
+    SnippetCollection *_snippet_collection;
+    ViewSynchronizer *_view_synchronizer;
+    HtmlPreviewController *_html_preview_controller;
+    ThemeCollection *_theme_collection;
+    Theme _current_theme { "Default", "Default", "Default", "Default" };
+    QString _file_name;
+    float _split_factor;
+    bool _right_view_collapsed;
 };
 
 #endif // MAINWINDOW_H

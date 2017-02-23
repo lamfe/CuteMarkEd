@@ -21,33 +21,30 @@
 #include "find_replace_widget.h"
 #include "ui_find_replace_widget.h"
 
-FindReplaceWidget::FindReplaceWidget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::FindReplaceWidget),
-    textEditor(0),
-    findCaseSensitively(false),
-    findWholeWordsOnly(false),
-    findUseRegExp(false)
+FindReplaceWidget::FindReplaceWidget(QWidget *parent)
+    : QWidget(parent), _ui(new Ui::FindReplaceWidget), _text_editor(0),
+    _find_case_sensitively(false), _find_whole_words_only(false),
+    _find_use_regexp(false)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
 
     setupFindOptionsMenu();
-    setFocusProxy(ui->findLineEdit);
+    setFocusProxy(_ui->findLineEdit);
 }
 
 FindReplaceWidget::~FindReplaceWidget()
 {
-    delete ui;
+    delete _ui;
 }
 
 void FindReplaceWidget::setTextEdit(QPlainTextEdit *editor)
 {
-    textEditor = editor;
+    _text_editor = editor;
 }
 
 void FindReplaceWidget::showEvent(QShowEvent *)
 {
-    ui->findLineEdit->selectAll();
+    _ui->findLineEdit->selectAll();
 }
 
 void FindReplaceWidget::keyPressEvent(QKeyEvent *event)
@@ -61,24 +58,26 @@ void FindReplaceWidget::keyPressEvent(QKeyEvent *event)
 
 void FindReplaceWidget::findPreviousClicked()
 {
-    if (!textEditor) return;
+    if (!_text_editor)
+        return;
 
-    find(ui->findLineEdit->text(), QTextDocument::FindBackward);
+    find(_ui->findLineEdit->text(), QTextDocument::FindBackward);
 }
 
 void FindReplaceWidget::findNextClicked()
 {
-    if (!textEditor) return;
+    if (!_text_editor)
+        return;
 
-    find(ui->findLineEdit->text());
+    find(_ui->findLineEdit->text());
 }
 
 void FindReplaceWidget::replaceClicked()
 {
-    QString oldText = ui->findLineEdit->text();
-    QString newText = ui->replaceLineEdit->text();
+    QString oldText = _ui->findLineEdit->text();
+    QString newText = _ui->replaceLineEdit->text();
 
-    QTextCursor cursor = textEditor->textCursor();
+    QTextCursor cursor = _text_editor->textCursor();
     cursor.beginEditBlock();
 
     if (cursor.hasSelection()) {
@@ -92,16 +91,16 @@ void FindReplaceWidget::replaceClicked()
 
 void FindReplaceWidget::replaceAllClicked()
 {
-    QString oldText = ui->findLineEdit->text();
-    QString newText = ui->replaceLineEdit->text();
+    QString oldText = _ui->findLineEdit->text();
+    QString newText = _ui->replaceLineEdit->text();
 
-    textEditor->moveCursor(QTextCursor::Start);
-    QTextCursor cursor = textEditor->textCursor();
+    _text_editor->moveCursor(QTextCursor::Start);
+    QTextCursor cursor = _text_editor->textCursor();
     cursor.beginEditBlock();
 
     bool found = find(oldText);
     while (found) {
-        QTextCursor tc = textEditor->textCursor();
+        QTextCursor tc = _text_editor->textCursor();
         if (tc.hasSelection()) {
             tc.insertText(newText);
         }
@@ -113,17 +112,17 @@ void FindReplaceWidget::replaceAllClicked()
 
 void FindReplaceWidget::caseSensitiveToggled(bool enabled)
 {
-    findCaseSensitively = enabled;
+    _find_case_sensitively = enabled;
 }
 
 void FindReplaceWidget::wholeWordsOnlyToggled(bool enabled)
 {
-    findWholeWordsOnly = enabled;
+    _find_whole_words_only = enabled;
 }
 
 void FindReplaceWidget::useRegularExpressionsToggled(bool enabled)
 {
-    findUseRegExp = enabled;
+    _find_use_regexp = enabled;
 }
 
 void FindReplaceWidget::showOptionsMenu()
@@ -131,7 +130,7 @@ void FindReplaceWidget::showOptionsMenu()
     QMenu *findOptionsMenu = qobject_cast<QAction*>(sender())->menu();
 
     // show menu above the line edit
-    QPoint pos = ui->findLineEdit->mapToGlobal(QPoint(0, 0));
+    QPoint pos = _ui->findLineEdit->mapToGlobal(QPoint(0, 0));
     pos.ry() -= findOptionsMenu->sizeHint().height();
     findOptionsMenu->exec(pos);
 }
@@ -157,32 +156,32 @@ void FindReplaceWidget::setupFindOptionsMenu()
     action->setIcon(QIcon("fa-search.fontawesome"));
     action->setMenu(findOptionsMenu);
     connect(action, SIGNAL(triggered(bool)), SLOT(showOptionsMenu()));
-    ui->findLineEdit->addAction(action, QLineEdit::LeadingPosition);
+    _ui->findLineEdit->addAction(action, QLineEdit::LeadingPosition);
 }
 
 bool FindReplaceWidget::find(const QString &searchString, QTextDocument::FindFlags findOptions) const
 {
-    if (findCaseSensitively)
+    if (_find_case_sensitively)
         findOptions |= QTextDocument::FindCaseSensitively;
 
-    if (findWholeWordsOnly)
+    if (_find_whole_words_only)
         findOptions |= QTextDocument::FindWholeWords;
 
-    if (findUseRegExp) {
+    if (_find_use_regexp) {
         return findUsingRegExp(searchString, findOptions);
     } else {
-        return textEditor->find(searchString, findOptions);
+        return _text_editor->find(searchString, findOptions);
     }
 }
 
 bool FindReplaceWidget::findUsingRegExp(const QString &pattern, QTextDocument::FindFlags findOptions) const
 {
-    QRegExp rx(pattern, findCaseSensitively ? Qt::CaseSensitive : Qt::CaseInsensitive);
+    QRegExp rx(pattern, _find_case_sensitively ? Qt::CaseSensitive : Qt::CaseInsensitive);
 
-    QTextCursor search = textEditor->document()->find(rx, textEditor->textCursor(), findOptions);
+    QTextCursor search = _text_editor->document()->find(rx, _text_editor->textCursor(), findOptions);
     if (search.isNull())
         return false;
 
-    textEditor->setTextCursor(search);
+    _text_editor->setTextCursor(search);
     return true;
 }

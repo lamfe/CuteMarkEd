@@ -50,13 +50,13 @@ private:
     void applyFormat(unsigned long pos, unsigned long end, QTextCharFormat format, bool merge);
     void checkSpelling(const QString &textBlock);
 
-    HighlightWorkerThread *workerThread;
-    QVector<PegMarkdownHighlight::HighlightingStyle> highlightingStyles;
-    QString previousText;
-    QTextCharFormat spellFormat;
-    hunspell::SpellChecker *spellChecker;
-    bool spellingCheckEnabled;
-    bool yamlHeaderSupportEnabled;
+    HighlightWorkerThread *_worker_thread;
+    QVector<PegMarkdownHighlight::HighlightingStyle> _highlighting_styles;
+    QString _previous_text;
+    QTextCharFormat _spell_format;
+    hunspell::SpellChecker *_spell_checker;
+    bool _spelling_check_enabled;
+    bool _yaml_header_support_enabled;
 };
 
 #endif // MARKDOWNHIGHLIGHTER_H

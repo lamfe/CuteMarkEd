@@ -21,31 +21,30 @@
 #include <QFileDialog>
 #include <QUrl>
 
-ImageToolDialog::ImageToolDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ImageToolDialog)
+ImageToolDialog::ImageToolDialog(QWidget *parent)
+    : QDialog(parent), _ui(new Ui::ImageToolDialog)
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
 }
 
 ImageToolDialog::~ImageToolDialog()
 {
-    delete ui;
+    delete _ui;
 }
 
 QString ImageToolDialog::alternateText() const
 {
-    return ui->alternateTextEdit->text();
+    return _ui->alternateTextEdit->text();
 }
 
 QString ImageToolDialog::imageSourceLink() const
 {
-    return ui->imageLinkEdit->text();
+    return _ui->imageLinkEdit->text();
 }
 
 QString ImageToolDialog::optionalTitle() const
 {
-    return ui->optionalTitleEdit->text();
+    return _ui->optionalTitleEdit->text();
 }
 
 void ImageToolDialog::chooseFileButtonClicked()
@@ -54,6 +53,6 @@ void ImageToolDialog::chooseFileButtonClicked()
                                                     QString(),
                                                     tr("Images (*.bmp *.gif *.jpg *.jpe *.jpeg *.png *.tif *.tiff *.xpm);;All Files (*)"));
     if (!fileName.isEmpty()) {
-        ui->imageLinkEdit->setText(QUrl::fromLocalFile(fileName).toDisplayString());
+        _ui->imageLinkEdit->setText(QUrl::fromLocalFile(fileName).toDisplayString());
     }
 }

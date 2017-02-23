@@ -51,10 +51,10 @@ private:
     void saveState();
 
 private:
-    Ui::OptionsDialog *ui;
-    Options *options;
-    SnippetCollection *snippetCollection;
-    QList<QAction*> actions;
+    Ui::OptionsDialog *_ui;
+    Options *_options;
+    SnippetCollection *_snippet_collection;
+    QList<QAction*> _actions;
 };
 
 #endif // OPTIONSDIALOG_H

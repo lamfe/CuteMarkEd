@@ -32,37 +32,34 @@
 #include "options.h"
 #include "yaml_header_checker.h"
 
-HtmlPreviewGenerator::HtmlPreviewGenerator(Options *opt, QObject *parent) :
-    QThread(parent),
-    options(opt),
-    document(0),
-    converter(0)
+HtmlPreviewGenerator::HtmlPreviewGenerator(Options *opt, QObject *parent)
+    : QThread(parent), _options(opt), _document(0), _converter(0)
 {
-    connect(options, SIGNAL(markdownConverterChanged()), SLOT(markdownConverterChanged()));
+    connect(_options, SIGNAL(markdownConverterChanged()), SLOT(markdownConverterChanged()));
     markdownConverterChanged();
 }
 
 bool HtmlPreviewGenerator::isSupported(MarkdownConverter::ConverterOption option) const
 {
-    return converter->supportedOptions().testFlag(option);
+    return _converter->supportedOptions().testFlag(option);
 }
 
 void HtmlPreviewGenerator::markdownTextChanged(const QString &text)
 {
     // cut YAML header
     YamlHeaderChecker checker(text);
-    QString actualText = checker.hasHeader() && options->isYamlHeaderSupportEnabled() ?
-                            checker.body()
-                          : text;
+    QString actualText = checker.hasHeader() && _options->isYamlHeaderSupportEnabled() ?
+                            checker.body() : text;
     // enqueue task to parse the markdown text and generate a new HTML document
-    QMutexLocker locker(&tasksMutex);
-    tasks.enqueue(actualText);
-    bufferNotEmpty.wakeOne();
+    QMutexLocker locker(&_tasks_mutex);
+    _tasks.enqueue(actualText);
+    _buffer_not_empty.wakeOne();
 }
 
 QString HtmlPreviewGenerator::exportHtml(const QString &styleSheet, const QString &highlightingScript)
 {
-    if (!document) return QString();
+    if (!_document)
+        return QString();
 
     QString header;
     if (!styleSheet.isEmpty()) {
@@ -72,7 +69,8 @@ QString HtmlPreviewGenerator::exportHtml(const QString &styleSheet, const QStrin
     if (!highlightingScript.isEmpty()) {
         // FIXME: doesn't really belong here
         QString highlightStyle;
-        QFile f(QString(":/resources/scripts/highlight.js/styles/%1.css").arg(converter->templateRenderer()->codeHighlightingStyle()));
+        QFile f(QString(":/resources/scripts/highlight.js/styles/%1.css").arg(
+                    _converter->templateRenderer()->codeHighlightingStyle()));
         if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
             highlightStyle = f.readAll();
         }
@@ -82,12 +80,13 @@ QString HtmlPreviewGenerator::exportHtml(const QString &styleSheet, const QStrin
         header += "\n<script>hljs.initHighlightingOnLoad();</script>";
     }
 
-    return converter->templateRenderer()->exportAsHtml(header, converter->renderAsHtml(document), renderOptions());
+    return _converter->templateRenderer()->exportAsHtml(header,
+        _converter->renderAsHtml(_document), renderOptions());
 }
 
 void HtmlPreviewGenerator::setMathSupportEnabled(bool enabled)
 {
-    options->setMathSupportEnabled(enabled);
+    _options->setMathSupportEnabled(enabled);
 
     // regenerate a HTML document
     generateHtmlFromMarkdown();
@@ -95,7 +94,7 @@ void HtmlPreviewGenerator::setMathSupportEnabled(bool enabled)
 
 void HtmlPreviewGenerator::setDiagramSupportEnabled(bool enabled)
 {
-    options->setDiagramSupportEnabled(enabled);
+    _options->setDiagramSupportEnabled(enabled);
 
     // regenerate a HTML document
     generateHtmlFromMarkdown();
@@ -103,7 +102,7 @@ void HtmlPreviewGenerator::setDiagramSupportEnabled(bool enabled)
 
 void HtmlPreviewGenerator::setCodeHighlightingEnabled(bool enabled)
 {
-    options->setCodeHighlightingEnabled(enabled);
+    _options->setCodeHighlightingEnabled(enabled);
 
     // regenerate a HTML document
     generateHtmlFromMarkdown();
@@ -111,7 +110,7 @@ void HtmlPreviewGenerator::setCodeHighlightingEnabled(bool enabled)
 
 void HtmlPreviewGenerator::setCodeHighlightingStyle(const QString &style)
 {
-    converter->templateRenderer()->setCodeHighlightingStyle(style);
+    _converter->templateRenderer()->setCodeHighlightingStyle(style);
 
     // regenerate a HTML document
     generateHtmlFromMarkdown();
@@ -121,28 +120,28 @@ void HtmlPreviewGenerator::markdownConverterChanged()
 {
     QString style;
 
-    if (converter) {
-        style = converter->templateRenderer()->codeHighlightingStyle();
-        delete converter;
+    if (_converter) {
+        style = _converter->templateRenderer()->codeHighlightingStyle();
+        delete _converter;
     }
 
-    switch (options->markdownConverter()) {
+    switch (_options->markdownConverter()) {
 #ifdef ENABLE_HOEDOWN
     case Options::HoedownMarkdownConverter:
-        converter = new HoedownMarkdownConverter();
-        converter->templateRenderer()->setCodeHighlightingStyle(style);
+        _converter = new HoedownMarkdownConverter();
+        _converter->templateRenderer()->setCodeHighlightingStyle(style);
         break;
 #endif
 
     case Options::RevealMarkdownConverter:
-        converter = new RevealMarkdownConverter();
-        converter->templateRenderer()->setCodeHighlightingStyle(style);
+        _converter = new RevealMarkdownConverter();
+        _converter->templateRenderer()->setCodeHighlightingStyle(style);
         break;
 
     case Options::DiscountMarkdownConverter:
     default:
-        converter = new DiscountMarkdownConverter();
-        converter->templateRenderer()->setCodeHighlightingStyle(style);
+        _converter = new DiscountMarkdownConverter();
+        _converter->templateRenderer()->setCodeHighlightingStyle(style);
         break;
     }
 }
@@ -154,14 +153,14 @@ void HtmlPreviewGenerator::run()
 
         {
             // wait for new task
-            QMutexLocker locker(&tasksMutex);
-            while (tasks.count() == 0) {
-                bufferNotEmpty.wait(&tasksMutex);
+            QMutexLocker locker(&_tasks_mutex);
+            while (_tasks.count() == 0) {
+                _buffer_not_empty.wait(&_tasks_mutex);
             }
 
             // get last task from queue and skip all previous tasks
-            while (!tasks.isEmpty())
-                text = tasks.dequeue();
+            while (!_tasks.isEmpty())
+                text = _tasks.dequeue();
         }
 
         // end processing?
@@ -174,12 +173,12 @@ void HtmlPreviewGenerator::run()
         this->msleep(calculateDelay(text));
 
         // no more new tasks?
-        if (tasks.isEmpty()) {
+        if (_tasks.isEmpty()) {
             // delete previous markdown document
-            delete document;
+            delete _document;
 
             // generate HTML from markdown
-            document = converter->createDocument(text, converterOptions());
+            _document = _converter->createDocument(text, converterOptions());
             generateHtmlFromMarkdown();
 
             // generate table of contents
@@ -190,17 +189,20 @@ void HtmlPreviewGenerator::run()
 
 void HtmlPreviewGenerator::generateHtmlFromMarkdown()
 {
-    if (!document) return;
+    if (!_document)
+        return;
 
-    QString html = converter->templateRenderer()->render(converter->renderAsHtml(document), renderOptions());
+    QString html = _converter->templateRenderer()->render(
+                _converter->renderAsHtml(_document), renderOptions());
     emit htmlResultReady(html);
 }
 
 void HtmlPreviewGenerator::generateTableOfContents()
 {
-    if (!document) return;
+    if (!_document)
+        return;
 
-    QString toc = converter->renderAsTableOfContents(document);
+    QString toc = _converter->renderAsTableOfContents(_document);
     QString styledToc = QString("<html><head>\n<style type=\"text/css\">ul { list-style-type: none; padding: 0; margin-left: 1em; } a { text-decoration: none; }</style>\n</head><body>%1</body></html>").arg(toc);
     emit tocResultReady(styledToc);
 }
@@ -210,37 +212,37 @@ MarkdownConverter::ConverterOptions HtmlPreviewGenerator::converterOptions() con
     MarkdownConverter::ConverterOptions parserOptionFlags(MarkdownConverter::TableOfContentsOption | MarkdownConverter::NoStyleOption);
 
     // autolink
-    if (options->isAutolinkEnabled()) {
+    if (_options->isAutolinkEnabled()) {
         parserOptionFlags |= MarkdownConverter::AutolinkOption;
     }
 
     // strikethrough
-    if (!options->isStrikethroughEnabled()) {
+    if (!_options->isStrikethroughEnabled()) {
         parserOptionFlags |= MarkdownConverter::NoStrikethroughOption;
     }
 
     // alphabetic lists
-    if (!options->isAlphabeticListsEnabled()) {
+    if (!_options->isAlphabeticListsEnabled()) {
         parserOptionFlags |= MarkdownConverter::NoAlphaListOption;
     }
 
     // definition lists
-    if (!options->isDefinitionListsEnabled()) {
+    if (!_options->isDefinitionListsEnabled()) {
         parserOptionFlags |= MarkdownConverter::NoDefinitionListOption;
     }
 
     // SmartyPants
-    if (!options->isSmartyPantsEnabled()) {
+    if (!_options->isSmartyPantsEnabled()) {
         parserOptionFlags |= MarkdownConverter::NoSmartypantsOption;
     }
 
     // Footnotes
-    if (options->isFootnotesEnabled()) {
+    if (_options->isFootnotesEnabled()) {
         parserOptionFlags |= MarkdownConverter::ExtraFootnoteOption;
     }
 
     // Superscript
-    if (!options->isSuperscriptEnabled()) {
+    if (!_options->isSuperscriptEnabled()) {
         parserOptionFlags |= MarkdownConverter::NoSuperscriptOption;
     }
 
@@ -252,22 +254,22 @@ Template::RenderOptions HtmlPreviewGenerator::renderOptions() const
     Template::RenderOptions renderOptionFlags;
 
     // math support
-    if (options->isMathSupportEnabled()) {
+    if (_options->isMathSupportEnabled()) {
         renderOptionFlags |= Template::MathSupport;
     }
 
     // inline math support
-    if (options->isMathInlineSupportEnabled()) {
+    if (_options->isMathInlineSupportEnabled()) {
         renderOptionFlags |= Template::MathInlineSupport;
     }
 
     // diagram support
-    if (options->isDiagramSupportEnabled()) {
+    if (_options->isDiagramSupportEnabled()) {
         renderOptionFlags |= Template::DiagramSupport;
     }
 
     // code highlighting
-    if (options->isCodeHighlightingEnabled()) {
+    if (_options->isCodeHighlightingEnabled()) {
         renderOptionFlags |= Template::CodeHighlighting;
     }
 

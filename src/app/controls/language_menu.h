@@ -39,7 +39,7 @@ private:
     QAction *createAction(const Dictionary &dictionary);
 
 private:
-    QActionGroup *dictionariesGroup;
+    QActionGroup *_dictionaries_group;
 };
 
 #endif // LANGUAGEMENU_H

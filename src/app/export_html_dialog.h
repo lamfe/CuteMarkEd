@@ -41,7 +41,7 @@ private slots:
     void chooseFileButtonClicked();
 
 private:
-    Ui::ExportHtmlDialog *ui;
+    Ui::ExportHtmlDialog *_ui;
 };
 
 #endif // EXPORTHTMLDIALOG_H

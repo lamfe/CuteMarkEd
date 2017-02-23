@@ -26,43 +26,40 @@ protected:
 };
 
 
-FileExplorerWidget::FileExplorerWidget(QWidget *parent) :
-    QWidget(parent),
-    initialized(false),
-    ui(new Ui::FileExplorerWidget),
-    model(new QFileSystemModel(this)),
-    sortModel(new FileSortFilterProxyModel(this))
+FileExplorerWidget::FileExplorerWidget(QWidget *parent)
+    : QWidget(parent), _initialized(false), _ui(new Ui::FileExplorerWidget),
+    _model(new QFileSystemModel(this)), _sort_model(new FileSortFilterProxyModel(this))
 {
-    ui->setupUi(this);
+    _ui->setupUi(this);
 
-    sortModel->setDynamicSortFilter(true);
-    sortModel->setSourceModel(model);
+    _sort_model->setDynamicSortFilter(true);
+    _sort_model->setSourceModel(_model);
 
-    ui->fileTreeView->setModel(sortModel);
-    ui->fileTreeView->hideColumn(1);
-    ui->fileTreeView->sortByColumn(0, Qt::AscendingOrder);
+    _ui->fileTreeView->setModel(_sort_model);
+    _ui->fileTreeView->hideColumn(1);
+    _ui->fileTreeView->sortByColumn(0, Qt::AscendingOrder);
 
-    connect(ui->fileTreeView, SIGNAL(doubleClicked(QModelIndex)),
+    connect(_ui->fileTreeView, SIGNAL(doubleClicked(QModelIndex)),
             SLOT(fileOpen(QModelIndex)));
 }
 
 FileExplorerWidget::~FileExplorerWidget()
 {
-    delete ui;
+    delete _ui;
 }
 
 void FileExplorerWidget::showEvent(QShowEvent *event)
 {
-    if (!initialized) {
-        model->setRootPath("");
-        initialized = true;
+    if (!_initialized) {
+        _model->setRootPath("");
+        _initialized = true;
     }
     QWidget::showEvent(event);
 }
 
 void FileExplorerWidget::fileOpen(const QModelIndex &index)
 {
-    QFileInfo info = model->fileInfo(sortModel->mapToSource(index));
+    QFileInfo info = _model->fileInfo(_sort_model->mapToSource(index));
     if (info.isFile()) {
         const QString filePath = info.filePath();
 

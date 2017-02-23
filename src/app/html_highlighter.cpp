@@ -21,12 +21,12 @@ HtmlHighlighter::HtmlHighlighter(QTextDocument *document) :
     QSyntaxHighlighter(document),
     enabled(false)
 {
-    keywordFormat.setForeground(QColor("#6c71c4"));
-    keywordFormat.setFontWeight(QFont::Bold);
+    _keyword_format.setForeground(QColor("#6c71c4"));
+    _keyword_format.setFontWeight(QFont::Bold);
 
-    imageFormat.setForeground(QColor("#cf009a"));
+    _image_format.setForeground(QColor("#cf009a"));
 
-    linkFormat.setForeground(QColor("#4e279a"));
+    _link_format.setForeground(QColor("#4e279a"));
 
     HighlightingRule rule;
 
@@ -76,17 +76,17 @@ HtmlHighlighter::HtmlHighlighter(QTextDocument *document) :
 
     foreach(QString keyword, keywords) {
         rule.pattern = QRegExp(keyword);
-        rule.format = &keywordFormat;
-        highlightingRules.append(rule);
+        rule.format = &_keyword_format;
+        _highlighting_rules.append(rule);
     }
 
     rule.pattern = QRegExp(htmlTagRegExp.arg("img"));
-    rule.format = &imageFormat;
-    highlightingRules.append(rule);
+    rule.format = &_image_format;
+    _highlighting_rules.append(rule);
 
     rule.pattern = QRegExp(htmlTagRegExp.arg("a"));
-    rule.format = &linkFormat;
-    highlightingRules.append(rule);
+    rule.format = &_link_format;
+    _highlighting_rules.append(rule);
 }
 
 bool HtmlHighlighter::isEnabled() const
@@ -102,7 +102,7 @@ void HtmlHighlighter::setEnabled(bool enabled)
 void HtmlHighlighter::highlightBlock(const QString &text)
 {
     if (enabled) {
-        foreach(HighlightingRule rule, highlightingRules) {
+        foreach(HighlightingRule rule, _highlighting_rules) {
             QRegExp expression(rule.pattern);
             int index = text.indexOf(expression);
             while (index >= 0) {

@@ -27,22 +27,20 @@
 
 #include "snippet_completer.h"
 
-SnippetCompleter::SnippetCompleter(SnippetCollection *collection, QWidget *parentWidget) :
-    QObject(parentWidget),
-    snippetCollection(collection),
-    completer(new QCompleter(this))
+SnippetCompleter::SnippetCompleter(SnippetCollection *collection, QWidget *parentWidget)
+    : QObject(parentWidget), _snippet_collection(collection), _completer(new QCompleter(this))
 {
-    completer->setWidget(parentWidget);
-    completer->setCompletionMode(QCompleter::PopupCompletion);
-    completer->setCaseSensitivity(Qt::CaseSensitive);
+    _completer->setWidget(parentWidget);
+    _completer->setCompletionMode(QCompleter::PopupCompletion);
+    _completer->setCaseSensitivity(Qt::CaseSensitive);
 
-    connect(completer, SIGNAL(activated(QString)),
+    connect(_completer, SIGNAL(activated(QString)),
             this, SLOT(insertSnippet(QString)));
 
-    CompletionListModel *model = new CompletionListModel(completer);
+    CompletionListModel *model = new CompletionListModel(_completer);
     connect(collection, SIGNAL(collectionChanged(SnippetCollection::CollectionChangedType,Snippet)),
             model, SLOT(snippetCollectionChanged(SnippetCollection::CollectionChangedType,Snippet)));
-    completer->setModel(model);
+    _completer->setModel(model);
 }
 
 void SnippetCompleter::performCompletion(const QString &textUnderCursor, const QStringList &words, const QRect &popupRect)
@@ -50,47 +48,47 @@ void SnippetCompleter::performCompletion(const QString &textUnderCursor, const Q
     const QString completionPrefix = textUnderCursor;
 
     // TODO: find more elegant solution
-    qobject_cast<CompletionListModel*>(completer->model())->setWords(words);
+    qobject_cast<CompletionListModel*>(_completer->model())->setWords(words);
 
-    if (completionPrefix != completer->completionPrefix()) {
-        completer->setCompletionPrefix(completionPrefix);
-        completer->popup()->setCurrentIndex(completer->completionModel()->index(0, 0));
+    if (completionPrefix != _completer->completionPrefix()) {
+        _completer->setCompletionPrefix(completionPrefix);
+        _completer->popup()->setCurrentIndex(_completer->completionModel()->index(0, 0));
     }
 
-    if (completer->completionCount() == 1) {
-        insertSnippet(completer->currentCompletion());
+    if (_completer->completionCount() == 1) {
+        insertSnippet(_completer->currentCompletion());
     } else {
         QRect rect = popupRect;
-        rect.setWidth(completer->popup()->sizeHintForColumn(0) +
-                completer->popup()->verticalScrollBar()->sizeHint().width());
-        completer->complete(rect);
+        rect.setWidth(_completer->popup()->sizeHintForColumn(0) +
+                _completer->popup()->verticalScrollBar()->sizeHint().width());
+        _completer->complete(rect);
     }
 }
 
 bool SnippetCompleter::isPopupVisible() const
 {
-    return completer->popup()->isVisible();
+    return _completer->popup()->isVisible();
 }
 
 void SnippetCompleter::hidePopup()
 {
-    completer->popup()->hide();
+    _completer->popup()->hide();
 }
 
 void SnippetCompleter::insertSnippet(const QString &trigger)
 {
-    if (!snippetCollection || !snippetCollection->contains(trigger)) {
+    if (!_snippet_collection || !_snippet_collection->contains(trigger)) {
         // insert word directly
-        emit snippetSelected(completer->completionPrefix(), trigger, trigger.length());
+        emit snippetSelected(_completer->completionPrefix(), trigger, trigger.length());
         return;
     }
 
-    const Snippet snippet = snippetCollection->snippet(trigger);
+    const Snippet snippet = _snippet_collection->snippet(trigger);
 
     QString snippetContent(snippet.snippet);
     replaceClipboardVariable(snippetContent);
 
-    emit snippetSelected(completer->completionPrefix(), snippetContent, snippet.cursor_position);
+    emit snippetSelected(_completer->completionPrefix(), snippetContent, snippet.cursor_position);
 }
 
 void SnippetCompleter::replaceClipboardVariable(QString &snippetContent)

@@ -55,11 +55,11 @@ private:
     void updateTabOrder();
 
 private:
-    Ui::TableToolDialog *ui;
-    int previousRowCount;
-    int previousColumnCount;
-    QList<QComboBox *> alignmentComboBoxList;
-    QMap<QPoint, QLineEdit *> cellEditorMap;
+    Ui::TableToolDialog *_ui;
+    int _previous_row_count;
+    int _previous_column_count;
+    QList<QComboBox *> _alignment_combo_box_list;
+    QMap<QPoint, QLineEdit *> _cell_editor_map;
 };
 
 #endif // TABLETOOLDIALOG_H

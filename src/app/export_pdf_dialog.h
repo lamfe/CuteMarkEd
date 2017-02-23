@@ -39,7 +39,7 @@ private slots:
     void chooseFileButtonClicked();
 
 private:
-    Ui::ExportPdfDialog *ui;
+    Ui::ExportPdfDialog *_ui;
 };
 
 #endif // EXPORTPDFDIALOG_H

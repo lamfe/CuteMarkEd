@@ -59,12 +59,12 @@ private:
     bool find(const QString &searchString, QTextDocument::FindFlags findOptions = 0) const;
     bool findUsingRegExp(const QString &pattern, QTextDocument::FindFlags findOptions = 0) const;
 
-    Ui::FindReplaceWidget *ui;
-    QPlainTextEdit *textEditor;
+    Ui::FindReplaceWidget *_ui;
+    QPlainTextEdit *_text_editor;
 
-    bool findCaseSensitively;
-    bool findWholeWordsOnly;
-    bool findUseRegExp;
+    bool _find_case_sensitively;
+    bool _find_whole_words_only;
+    bool _find_use_regexp;
 };
 
 #endif // FINDREPLACEWIDGET_H

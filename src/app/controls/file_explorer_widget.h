@@ -28,10 +28,10 @@ private slots:
     void fileOpen(const QModelIndex &index);
 
 private:
-    bool initialized;
-    Ui::FileExplorerWidget *ui;
-    QFileSystemModel *model;
-    QSortFilterProxyModel *sortModel;
+    bool _initialized;
+    Ui::FileExplorerWidget *_ui;
+    QFileSystemModel *_model;
+    QSortFilterProxyModel *_sort_model;
 };
 
 #endif // FILEEXPLORERWIDGET_H

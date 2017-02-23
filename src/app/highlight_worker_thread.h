@@ -46,9 +46,9 @@ protected:
     virtual void run();
 
 private:
-    QQueue<Task> tasks;
-    QMutex tasksMutex;
-    QWaitCondition bufferNotEmpty;
+    QQueue<Task> _tasks;
+    QMutex _tasks_mutex;
+    QWaitCondition _buffer_not_empty;
 };
 
 #endif // HIGHLIGHTWORKERTHREAD_H
