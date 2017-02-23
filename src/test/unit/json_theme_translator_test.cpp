@@ -14,13 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "jsonthemetranslatortest.h"
 
 #include <QtTest>
 
-#include <themes/jsonthemetranslator.h>
+#include <themes/json_theme_translator.h>
 #include <themes/theme.h>
-#include <themes/themecollection.h>
+#include <themes/theme_collection.h>
+
+#include "json_theme_translator_test.h"
+
 
 static const QLatin1String A_THEME_NAME("mytheme");
 static const QLatin1String A_MARKDOWN_HIGHLIGHTING("default");

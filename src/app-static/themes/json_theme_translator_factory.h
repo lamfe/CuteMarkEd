@@ -17,8 +17,8 @@
 #ifndef JSONTHEMETRANSLATORFACTORY_H
 #define JSONTHEMETRANSLATORFACTORY_H
 
-#include <jsontranslatorfactory.h>
-#include <jsontranslator.h>
+#include <json_translator_factory.h>
+#include <json_translator.h>
 
 #include "themes/theme.h"
 #include "themes/json_theme_translator.h"

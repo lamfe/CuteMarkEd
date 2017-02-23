@@ -24,9 +24,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "fontawesomeiconengineplugin.h"
 
-#include "fontawesomeiconengine.h"
+#include "font_awesome_icon_engine_plugin.h"
+#include "font_awesome_icon_engine.h"
 
 FontAwesomeIconEnginePlugin::FontAwesomeIconEnginePlugin(QObject *parent) :
     QIconEnginePlugin(parent)

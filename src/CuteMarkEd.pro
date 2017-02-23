@@ -13,7 +13,7 @@ SUBDIRS = \
     libs \
     app-static \
     app \
-    fontawesomeicon \
+    font-awesome-icon \
     test
 
 # build order: 3rdparty -> libs -> app-static -> app & test

@@ -17,7 +17,7 @@
 #ifndef JSONSNIPPETTRANSLATOR_H
 #define JSONSNIPPETTRANSLATOR_H
 
-#include <jsontranslator.h>
+#include <json_translator.h>
 #include <QJsonObject>
 struct Snippet;
 

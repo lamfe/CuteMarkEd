@@ -19,7 +19,7 @@
 
 #include <QObject>
 #include <QMap>
-#include <jsoncollection.h>
+#include <json_collection.h>
 #include "snippet.h"
 
 

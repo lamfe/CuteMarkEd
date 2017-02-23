@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "yamlheadercheckertest.h"
-#include "yamlheaderchecker.h"
+
+#include "yaml_header_checker_test.h"
+#include "yaml_header_checker.h"
 
 void YamlHeaderCheckerTest::multipleOccurance()
 {

@@ -14,13 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "styleparser.h"
-using namespace PegMarkdownHighlight;
 
 #include <QFont>
 #include <QFontDatabase>
 #include <QPalette>
 #include <QPlainTextEdit>
+
+#include "style_parser.h"
+
+using namespace PegMarkdownHighlight;
 
 static QString availableFontFamilyFromPreferenceList(QString familyList)
 {

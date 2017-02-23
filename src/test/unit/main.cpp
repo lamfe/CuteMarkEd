@@ -16,18 +16,18 @@
  */
 #include <QTest>
 
-#include "dictionarytest.h"
-#include "jsonsnippettranslatortest.h"
-#include "jsonthemetranslatortest.h"
-#include "jsontranslatorfactorytest.h"
-#include "slidelinemappingtest.h"
-#include "snippetcollectiontest.h"
-#include "completionlistmodeltest.h"
-#include "snippettest.h"
-#include "stylemanagertest.h"
-#include "themecollectiontest.h"
-#include "themetest.h"
-#include "yamlheadercheckertest.h"
+#include "dictionary_test.h"
+#include "json_snippet_translator_test.h"
+#include "json_theme_translator_test.h"
+#include "json_translator_factory_test.h"
+#include "slideline_mapping_test.h"
+#include "snippet_collection_test.h"
+#include "completion_list_model_test.h"
+#include "snippet_test.h"
+#include "style_manager_test.h"
+#include "theme_collection_test.h"
+#include "theme_test.h"
+#include "yaml_header_checker_test.h"
 
 int main(int argc, char *argv[])
 {

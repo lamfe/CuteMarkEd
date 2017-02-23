@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "pmhmarkdownparser.h"
 
 #include <QString>
 
 #include <pmh_definitions.h>
 #include <pmh_parser.h>
+
+#include "pmh_markdown_parser.h"
 
 QMap<MarkdownElement::Type, QList<MarkdownElement> > PmhMarkdownParser::parseMarkdown(const QString &text)
 {

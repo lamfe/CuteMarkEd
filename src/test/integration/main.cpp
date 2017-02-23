@@ -18,14 +18,14 @@
 
 #include <QApplication>
 
-#include "discountmarkdownconvertertest.h"
-#include "htmlpreviewcontrollertest.h"
-#include "htmltemplatetest.h"
-#include "jsonsnippetfiletest.h"
-#include "jsonthemefiletest.h"
-#include "pmhmarkdownparsertest.h"
-#include "revealmarkdownconvertertest.h"
-#include "themecollectiontest.h"
+#include "discount_markdown_converter_test.h"
+#include "html_preview_controller_test.h"
+#include "html_template_test.h"
+#include "json_snippet_file_test.h"
+#include "json_theme_file_test.h"
+#include "pmh_markdown_parser_test.h"
+#include "reveal_markdown_converter_test.h"
+#include "theme_collection_test.h"
 
 #ifdef ENABLE_HOEDOWN
 #include "hoedownmarkdownconvertertest.h"

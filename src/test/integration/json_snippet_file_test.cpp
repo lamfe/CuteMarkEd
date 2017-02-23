@@ -14,15 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "jsonsnippetfiletest.h"
 
 #include <QtTest>
 #include <QTemporaryFile>
 #include <QTextStream>
 
 #include <jsonfile.h>
-#include <snippets/jsonsnippettranslatorfactory.h>
-#include <snippets/snippetcollection.h>
+#include <snippets/json_snippet_translator_factory.h>
+#include <snippets/snippet_collection.h>
+
+#include "json_snippet_file_test.h"
 
 void JsonSnippetFileTest::loadsEmptySnippetsCollectionFromFile()
 {

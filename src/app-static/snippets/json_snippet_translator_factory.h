@@ -17,8 +17,8 @@
 #ifndef JSONSNIPPETTRANSLATORFACTORY_H
 #define JSONSNIPPETTRANSLATORFACTORY_H
 
-#include <jsontranslatorfactory.h>
-#include <jsontranslator.h>
+#include <json_translator_factory.h>
+#include <json_translator.h>
 
 #include "snippets/snippet.h"
 #include "snippets/json_snippet_translator.h"

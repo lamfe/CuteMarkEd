@@ -33,7 +33,7 @@
 class FontAwesomeIconEnginePlugin : public QIconEnginePlugin
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QIconEngineFactoryInterface" FILE "fontawesomeicon.json")
+    Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QIconEngineFactoryInterface" FILE "font-awesome-icon.json")
     
 public:
     FontAwesomeIconEnginePlugin(QObject *parent = 0);

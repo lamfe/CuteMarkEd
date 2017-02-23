@@ -1,10 +1,10 @@
-#include "completionlistmodeltest.h"
 
 #include <QtTest>
 
 #include <snippets/snippet.h>
-#include <completionlistmodel.h>
+#include <completion_list_model.h>
 
+#include "completion_list_model_test.h"
 
 void CompletionListModelTest::acceptsNewSnippet()
 {

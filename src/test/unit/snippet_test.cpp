@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "snippettest.h"
 
 #include <QTest>
 
 #include <snippets/snippet.h>
+
+#include "snippet_test.h"
 
 void SnippetTest::isLessThanComparable()
 {

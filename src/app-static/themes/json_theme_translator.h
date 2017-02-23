@@ -17,7 +17,7 @@
 #ifndef JSONTHEMETRANSLATOR_H
 #define JSONTHEMETRANSLATOR_H
 
-#include <jsontranslator.h>
+#include <json_translator.h>
 #include <QJsonObject>
 #include "theme.h"
 

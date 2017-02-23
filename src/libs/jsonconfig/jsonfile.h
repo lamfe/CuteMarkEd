@@ -20,9 +20,9 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QTextStream>
-#include "jsoncollection.h"
-#include "jsontranslator.h"
-#include "jsontranslatorfactory.h"
+#include "json_collection.h"
+#include "json_translator.h"
+#include "json_translator_factory.h"
 
 class QString;
 

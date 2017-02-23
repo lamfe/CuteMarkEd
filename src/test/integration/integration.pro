@@ -22,25 +22,25 @@ CONFIG += console testcase
 CONFIG += c++11
 
 SOURCES += \
-    discountmarkdownconvertertest.cpp \
-    htmlpreviewcontrollertest.cpp \
-    htmltemplatetest.cpp \
-    jsonsnippetfiletest.cpp \
-    jsonthemefiletest.cpp \
+    discount_markdown_converter_test.cpp \
+    html_preview_controller_test.cpp \
+    html_template_test.cpp \
+    json_snippet_file_test.cpp \
+    json_theme_file_test.cpp \
     main.cpp \
-    pmhmarkdownparsertest.cpp \
-    revealmarkdownconvertertest.cpp \
-    themecollectiontest.cpp
+    pmh_markdown_parser_test.cpp \
+    reveal_markdown_converter_test.cpp \
+    theme_collection_test.cpp
 
 HEADERS += \
-    discountmarkdownconvertertest.h \
-    htmlpreviewcontrollertest.h \
-    htmltemplatetest.h \
-    jsonsnippetfiletest.h \
-    jsonthemefiletest.h \
-    pmhmarkdownparsertest.h \
-    revealmarkdownconvertertest.h \
-    themecollectiontest.h
+    discount_markdown_converter_test.h \
+    html_preview_controller_test.h \
+    html_template_test.h \
+    json_snippet_file_test.h \
+    json_theme_file_test.h \
+    pmh_markdown_parser_test.h \
+    reveal_markdown_converter_test.h \
+    theme_collection_test.h
 
 target.CONFIG += no_default_install
 

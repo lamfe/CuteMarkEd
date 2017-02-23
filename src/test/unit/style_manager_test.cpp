@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "stylemanagertest.h"
 
 #include <QtTest>
 
-#include <themes/stylemanager.h>
+#include <themes/style_manager.h>
+#include "style_manager_test.h"
 
 static const Theme defaultTheme("Default", "Default", "Default", "Default");
 static const Theme githubTheme("Github", "Github", "Github", "Github");

@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-TARGET = fontawesomeicon
+TARGET = font-awesome-icon
 TEMPLATE = lib
 CONFIG += plugin
 
@@ -15,13 +15,17 @@ win32 {
    release:DESTDIR = $$OUT_PWD/../app/release/iconengines
 }
 
-SOURCES += fontawesomeiconengineplugin.cpp \
-    fontawesomeiconengine.cpp
+SOURCES += \
+    font_awesome_icon_engine_plugin.cpp \
+    font_awesome_icon_engine.cpp
 
-HEADERS += fontawesomeiconengineplugin.h \
-    fontawesomeiconengine.h
-OTHER_FILES += fontawesomeicon.json \
-    fontawesome.ttf
+HEADERS += \
+    font_awesome_icon_engine_plugin.h \
+    font_awesome_icon_engine.h
+
+OTHER_FILES += \
+    font-awesome-icon.json \
+    font-awesome.ttf
 
 #unix:!symbian {
 #    maemo5 {
@@ -33,7 +37,7 @@ OTHER_FILES += fontawesomeicon.json \
 #}
 
 RESOURCES += \
-    fontawesomeicon.qrc
+    font-awesome-icon.qrc
 
 ## INSTALLATION
 

@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "jsonsnippettranslatortest.h"
 
 #include <QtTest>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 
-#include <snippets/jsonsnippettranslator.h>
+#include <snippets/json_snippet_translator.h>
 #include <snippets/snippet.h>
-#include <snippets/snippetcollection.h>
+#include <snippets/snippet_collection.h>
 
+#include "json_snippet_translator_test.h"
 
 QJsonDocument NewSnippetDocumentWithObject(const QJsonObject &jsonObject)
 {

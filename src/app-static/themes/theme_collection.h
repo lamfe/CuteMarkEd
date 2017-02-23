@@ -19,7 +19,7 @@
 
 #include <QString>
 #include <QStringList>
-#include <jsoncollection.h>
+#include <json_collection.h>
 #include "theme.h"
 
 

@@ -14,11 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "themetest.h"
 
 #include <QTest>
 
 #include <themes/theme.h>
+
+#include "theme_test.h"
+
 
 static const QLatin1String A_THEME_NAME("name");
 static const QLatin1String A_MARKDOWN_HIGHLIGHTING("markdown");

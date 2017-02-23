@@ -27,7 +27,7 @@
 #include <QScrollBar>
 
 #include <controls/line_number_area.h>
-#include <pmh-adapter/styleparser.h>
+#include <pmh-adapter/style_parser.h>
 #include <markdown_highlighter.h>
 #include "markdown_manipulator.h"
 #include "snippet_completer.h"

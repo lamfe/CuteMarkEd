@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "htmltemplatetest.h"
 
 #include <QtTest>
 
-#include <template/htmltemplate.h>
-#include "loremipsumtestdata.h"
+#include <template/html_template.h>
+#include "html_template_test.h"
+#include "lorem_ipsum_test_data.h"
 
 static const QString HTML_TEMPLATE = QStringLiteral("<html><head><!--__HTML_HEADER__--></head><body><!--__HTML_CONTENT__--></body></html>");
 static const QString SCROLL_SCRIPT = QStringLiteral("<script type=\"text/javascript\">window.onscroll = function() { synchronizer.webViewScrolled(); }; </script>");

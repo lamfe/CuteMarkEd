@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "pmhmarkdownparsertest.h"
 
 #include <QtTest>
 
-#include <pmhmarkdownparser.h>
-#include "loremipsumtestdata.h"
+#include <pmh_markdown_parser.h>
+#include "pmh_markdown_parser_test.h"
+#include "lorem_ipsum_test_data.h"
 
 void PmhMarkdownParserTest::initTestCase()
 {

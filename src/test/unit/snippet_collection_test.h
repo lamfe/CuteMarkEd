@@ -18,7 +18,8 @@
 #define SNIPPETCOLLECTIONTEST_H
 
 #include <QObject>
-#include <snippets/snippetcollection.h>
+
+#include <snippets/snippet_collection.h>
 
 
 class SnippetCollectionTest : public QObject

@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "revealmarkdownconvertertest.h"
 
 #include <QtTest>
 
-#include <converter/revealmarkdownconverter.h>
+#include <converter/reveal_markdown_converter.h>
+
+#include "reveal_markdown_converter_test.h"
 
 void RevealMarkdownConverterTest::initTestCase()
 {

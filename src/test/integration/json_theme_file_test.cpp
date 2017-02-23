@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "jsonthemefiletest.h"
 
 
 #include <QtTest>
@@ -22,8 +21,10 @@
 #include <QTextStream>
 
 #include <jsonfile.h>
-#include <themes/jsonthemetranslatorfactory.h>
-#include <themes/themecollection.h>
+#include <themes/json_theme_translator_factory.h>
+#include <themes/theme_collection.h>
+
+#include "json_theme_file_test.h"
 
 
 void JsonThemeFileTest::loadsEmptyThemeCollectionFromFile()

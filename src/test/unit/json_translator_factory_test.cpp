@@ -14,18 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef JSONTRANSLATORFACTORY_H
-#define JSONTRANSLATORFACTORY_H
 
-#include "jsontranslator.h"
+#include <QTest>
+
+#include <json_translator.h>
+#include <json_translator_factory.h>
+#include <snippets/json_snippet_translator_factory.h>
+#include <snippets/snippet.h>
+
+#include "json_translator_factory_test.h"
 
 
-template <class T>
-class JsonTranslatorFactory
+void JsonTranslatorFactoryTest::returnsNullIfNoJsonTranslatorExists()
 {
-public:
-    static JsonTranslator<T> *create() { return 0; }
-};
+    JsonTranslator<int> *translator = JsonTranslatorFactory<int>::create();
 
-#endif // JSONTRANSLATORFACTORY_H
+    QVERIFY(translator == 0);
+}
 
+void JsonTranslatorFactoryTest::returnsValidJsonTranslatorForSnippets()
+{
+    JsonTranslator<Snippet> *translator = JsonTranslatorFactory<Snippet>::create();
+
+    QVERIFY(translator != 0);
+}

@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "themecollectiontest.h"
 
 #include <QtTest>
 
-#include <themes/themecollection.h>
+#include <themes/theme_collection.h>
+
+#include "theme_collection_test.h"
 
 void ThemeCollectionTest::initTestCase()
 {

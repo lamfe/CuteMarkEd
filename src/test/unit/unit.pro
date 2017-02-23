@@ -12,32 +12,32 @@ CONFIG += c++11
 
 SOURCES += \
     main.cpp \
-    completionlistmodeltest.cpp \
-    snippettest.cpp \
-    jsonsnippettranslatortest.cpp \
-    jsonthemetranslatortest.cpp \
-    jsontranslatorfactorytest.cpp \
-    slidelinemappingtest.cpp \
-    snippetcollectiontest.cpp \
-    dictionarytest.cpp \
-    yamlheadercheckertest.cpp \
-    themetest.cpp \
-    themecollectiontest.cpp \
-    stylemanagertest.cpp
+    completion_list_model_test.cpp \
+    snippet_test.cpp \
+    json_snippet_translator_test.cpp \
+    json_theme_translator_test.cpp \
+    json_translator_factory_test.cpp \
+    slideline_mapping_test.cpp \
+    snippet_collection_test.cpp \
+    dictionary_test.cpp \
+    yaml_header_checker_test.cpp \
+    theme_test.cpp \
+    theme_collection_test.cpp \
+    style_manager_test.cpp
 
 HEADERS += \
-    completionlistmodeltest.h \
-    snippettest.h \
-    jsonsnippettranslatortest.h \
-    jsonthemetranslatortest.h \
-    jsontranslatorfactorytest.h \
-    slidelinemappingtest.h \
-    snippetcollectiontest.h \
-    dictionarytest.h \
-    yamlheadercheckertest.h \
-    themetest.h \
-    themecollectiontest.h \
-    stylemanagertest.h
+    completion_list_model_test.h \
+    snippet_test.h \
+    json_snippet_translator_test.h \
+    json_theme_translator_test.h \
+    json_translator_factory_test.h \
+    slideline_mapping_test.h \
+    snippet_collection_test.h \
+    dictionary_test.h \
+    yaml_header_checker_test.h \
+    theme_test.h \
+    theme_collection_test.h \
+    style_manager_test.h
 
 target.CONFIG += no_default_install
 

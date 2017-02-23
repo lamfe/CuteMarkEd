@@ -13,12 +13,12 @@ QT += core gui widgets
 CONFIG += c++11
 
 SOURCES += \
-    pmhmarkdownparser.cpp \
-    styleparser.cpp
+    pmh_markdown_parser.cpp \
+    style_parser.cpp
 
 HEADERS  += \
-    pmhmarkdownparser.h \
-    styleparser.h \
+    pmh_markdown_parser.h \
+    style_parser.h \
     definitions.h
 
 ###################################################################################################

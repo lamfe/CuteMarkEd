@@ -20,7 +20,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include "jsoncollection.h"
+#include "json_collection.h"
 
 template <class T>
 class JsonTranslator

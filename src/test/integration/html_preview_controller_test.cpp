@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "htmlpreviewcontrollertest.h"
 
 #include <QtTest>
-#include "html_previewer.h"
 
-#include "htmlpreviewcontroller.h"
+#include "html_preview_controller_test.h"
+#include "html_previewer.h"
+#include "html_preview_controller.h"
 
 void HtmlPreviewControllerTest::initTestCase()
 {

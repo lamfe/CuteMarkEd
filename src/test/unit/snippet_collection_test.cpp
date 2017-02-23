@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "snippetcollectiontest.h"
-
 #include <QtTest>
 
-#include <snippets/snippetcollection.h>
+#include <snippets/snippet_collection.h>
+
+#include "snippet_collection_test.h"
 
 
 void SnippetCollectionTest::initTestCase()

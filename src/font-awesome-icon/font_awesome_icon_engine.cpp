@@ -24,12 +24,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "fontawesomeiconengine.h"
 
 #include <QFontDatabase>
 #include <QPainter>
 #include <QPalette>
 #include <QPixmapCache>
+
+#include "font_awesome_icon_engine.h"
 
 int FontAwesomeIconEngine::fontId = -1;
 QString FontAwesomeIconEngine::fontName;
@@ -100,7 +101,7 @@ QPixmap FontAwesomeIconEngine::pixmap(const QSize &size, QIcon::Mode mode, QIcon
 void FontAwesomeIconEngine::loadFont()
 {
     if (fontId < 0) {
-        fontId = QFontDatabase::addApplicationFont(":/fonts/fontawesome.ttf");
+        fontId = QFontDatabase::addApplicationFont(":/fonts/font-awesome.ttf");
 
         QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
         fontName = fontFamilies.at(0);

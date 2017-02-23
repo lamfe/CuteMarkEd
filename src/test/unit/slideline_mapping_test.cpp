@@ -14,11 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "slidelinemappingtest.h"
 
 #include <QTest>
 
-#include <slidelinemapping.h>
+#include <slideline_mapping.h>
+
+#include "slideline_mapping_test.h"
+
 
 void SlideLineMappingTest::holdsSingleEntryForEmptyDocuments()
 {

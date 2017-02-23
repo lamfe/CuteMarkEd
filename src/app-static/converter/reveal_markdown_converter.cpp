@@ -3,7 +3,7 @@
 
 #include "reveal_markdown_converter.h"
 #include "markdown_document.h"
-#include "template/presentationtemplate.h"
+#include "template/presentation_template.h"
 
 class RevealMarkdownDocument : public MarkdownDocument
 {
