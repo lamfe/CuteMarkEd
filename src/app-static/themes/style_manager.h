@@ -32,7 +32,7 @@ public:
     static QString previewStylesheetPath(const Theme &theme);
 
 private:
-    static QMap<QString, QString> customPreviewStylesheets;
+    static QMap<QString, QString> _custom_preview_stylesheets;
 };
 
 #endif // STYLEMANAGER_H

@@ -25,29 +25,29 @@ YamlHeaderChecker::YamlHeaderChecker(const QString &text)
                           QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch match = rx.match(text);
     if (match.hasMatch()) {
-        m_header = match.captured(0);
-        m_body = text.mid(m_header.length());
+        _header = match.captured(0);
+        _body = text.mid(_header.length());
     } else {
-        m_body = text;
+        _body = text;
     }
 }
 
 bool YamlHeaderChecker::hasHeader() const
 {
-    return !m_header.isEmpty();
+    return !_header.isEmpty();
 }
 
 QString YamlHeaderChecker::header() const
 {
-    return m_header;
+    return _header;
 }
 
 QString YamlHeaderChecker::body() const
 {
-    return m_body;
+    return _body;
 }
 
 int YamlHeaderChecker::bodyOffset() const
 {
-    return m_header.length();
+    return _header.length();
 }

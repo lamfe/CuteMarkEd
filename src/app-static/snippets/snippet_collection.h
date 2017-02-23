@@ -55,7 +55,7 @@ signals:
     void collectionChanged(SnippetCollection::CollectionChangedType changedType, const Snippet &snippet);
 
 private:
-    QMap<QString, Snippet> snippets;
+    QMap<QString, Snippet> _snippets;
 };
 
 #endif // SNIPPETCOLLECTION_H

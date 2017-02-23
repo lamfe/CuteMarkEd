@@ -19,41 +19,37 @@
 #include <QLocale>
 
 Dictionary::Dictionary()
-{
-}
+{}
 
-Dictionary::Dictionary(const QString &language, const QString &filePath) :
-    m_language(language),
-    m_filePath(filePath)
-{
-}
+Dictionary::Dictionary(const QString &language, const QString &filePath)
+    : _language(language), _file_path(filePath)
+{}
 
 Dictionary::Dictionary(const Dictionary &other)
 {
-    m_language = other.m_language;
-    m_filePath = other.m_filePath;
+    _language = other._language;
+    _file_path = other._file_path;
 }
 
 Dictionary::~Dictionary()
-{
-}
+{}
 
 QString Dictionary::language() const
 {
-    return m_language;
+    return _language;
 }
 
 QString Dictionary::languageName() const
 {
-    return QLocale(m_language).nativeLanguageName();
+    return QLocale(_language).nativeLanguageName();
 }
 
 QString Dictionary::countryName() const
 {
-    return QLocale(m_language).nativeCountryName();
+    return QLocale(_language).nativeCountryName();
 }
 
 QString Dictionary::filePath() const
 {
-    return m_filePath;
+    return _file_path;
 }

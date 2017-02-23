@@ -26,25 +26,25 @@ SnippetCollection::SnippetCollection(QObject *parent) :
 
 int SnippetCollection::count() const
 {
-    return snippets.count();
+    return _snippets.count();
 }
 
 int SnippetCollection::insert(const Snippet &snippet)
 {
-    QMap<QString, Snippet>::iterator it = snippets.insert(snippet.trigger, snippet);
+    QMap<QString, Snippet>::iterator it = _snippets.insert(snippet.trigger, snippet);
     emit collectionChanged(SnippetCollection::ItemAdded, snippet);
-    return std::distance(snippets.begin(), it);
+    return std::distance(_snippets.begin(), it);
 }
 
 void SnippetCollection::update(const Snippet &snippet)
 {
-    snippets.insert(snippet.trigger, snippet);
+    _snippets.insert(snippet.trigger, snippet);
     emit collectionChanged(SnippetCollection::ItemChanged, snippet);
 }
 
 void SnippetCollection::remove(const Snippet &snippet)
 {
-    snippets.remove(snippet.trigger);
+    _snippets.remove(snippet.trigger);
     emit collectionChanged(SnippetCollection::ItemDeleted, snippet);
 }
 
@@ -55,25 +55,25 @@ const QString SnippetCollection::name() const
 
 bool SnippetCollection::contains(const QString &trigger) const
 {
-    return snippets.contains(trigger);
+    return _snippets.contains(trigger);
 }
 
 const Snippet SnippetCollection::snippet(const QString &trigger) const
 {
-    return snippets.value(trigger);
+    return _snippets.value(trigger);
 }
 
 const Snippet &SnippetCollection::at(int offset) const
 {
-    return (snippets.begin() + offset).value();
+    return (_snippets.begin() + offset).value();
 }
 
 QSharedPointer<SnippetCollection> SnippetCollection::userDefinedSnippets() const
 {
     QSharedPointer<SnippetCollection> userDefinedSnippets = QSharedPointer<SnippetCollection>::create();
 
-    foreach (Snippet snippet, snippets.values()) {
-        if (!snippet.builtIn) {
+    foreach (Snippet snippet, _snippets.values()) {
+        if (!snippet.builtin) {
             userDefinedSnippets->insert(snippet);
         }
     }

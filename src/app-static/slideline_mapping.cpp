@@ -24,35 +24,35 @@ void SlideLineMapping::build(const QString &code)
 {
     static const QRegularExpression re("\n|\r\n|\r");
 
-    m_lineToSlide.clear();
-    m_slideToLine.clear();
+    _line_to_slide.clear();
+    _slide_to_line.clear();
     int horizontal = 0;
     int vertical = 0;
     int lineNumber = 0;
 
     QStringList lines = code.split(re);
-    m_slideToLine.insert(qMakePair(horizontal, vertical), lineNumber+1);
+    _slide_to_line.insert(qMakePair(horizontal, vertical), lineNumber+1);
     for (int i = 0; i < lines.count(); ++i) {
         ++lineNumber;
         if (isHorizontalSlideSeparator(lines, i)) {
-            m_lineToSlide.insert(lineNumber, qMakePair(horizontal, vertical));
+            _line_to_slide.insert(lineNumber, qMakePair(horizontal, vertical));
             horizontal++;
             vertical = 0;
-            m_slideToLine.insert(qMakePair(horizontal, vertical), lineNumber+1);
+            _slide_to_line.insert(qMakePair(horizontal, vertical), lineNumber+1);
         }
         if (isVerticalSlideSeparator(lines, i)) {
-            m_lineToSlide.insert(lineNumber, qMakePair(horizontal, vertical));
+            _line_to_slide.insert(lineNumber, qMakePair(horizontal, vertical));
             vertical++;
-            m_slideToLine.insert(qMakePair(horizontal, vertical), lineNumber+1);
+            _slide_to_line.insert(qMakePair(horizontal, vertical), lineNumber+1);
         }
     }
-    m_lineToSlide.insert(lineNumber, qMakePair(horizontal, vertical));
+    _line_to_slide.insert(lineNumber, qMakePair(horizontal, vertical));
 }
 
 int SlideLineMapping::lineForSlide(const QPair<int, int>& slide) const
 {
-    QMap<QPair<int, int>, int>::const_iterator it = m_slideToLine.find(slide);
-    if (it != m_slideToLine.end()) {
+    QMap<QPair<int, int>, int>::const_iterator it = _slide_to_line.find(slide);
+    if (it != _slide_to_line.end()) {
         return it.value();
     }
 
@@ -61,8 +61,8 @@ int SlideLineMapping::lineForSlide(const QPair<int, int>& slide) const
 
 QPair<int, int> SlideLineMapping::slideForLine(int lineNumber) const
 {
-    QMap<int, QPair<int, int> >::const_iterator it = m_lineToSlide.lowerBound(lineNumber);
-    if (it != m_lineToSlide.end()) {
+    QMap<int, QPair<int, int> >::const_iterator it = _line_to_slide.lowerBound(lineNumber);
+    if (it != _line_to_slide.end()) {
         return it.value();
     }
 
@@ -71,12 +71,12 @@ QPair<int, int> SlideLineMapping::slideForLine(int lineNumber) const
 
 QMap<int, QPair<int, int> > SlideLineMapping::lineToSlide() const
 {
-    return m_lineToSlide;
+    return _line_to_slide;
 }
 
 QMap<QPair<int, int>, int> SlideLineMapping::slideToLine() const
 {
-    return m_slideToLine;
+    return _slide_to_line;
 }
 
 bool SlideLineMapping::isHorizontalSlideSeparator(const QStringList &lines, int lineNumber) const

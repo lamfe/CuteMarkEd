@@ -59,6 +59,6 @@ void SnippetTest::isInitializedAfterCreation()
     QVERIFY(snippet.trigger.isNull());
     QVERIFY(snippet.description.isNull());
     QVERIFY(snippet.snippet.isNull());
-    QCOMPARE(snippet.cursorPosition, 0);
-    QCOMPARE(snippet.builtIn, false);
+    QCOMPARE(snippet.cursor_position, 0);
+    QCOMPARE(snippet.builtin, false);
 }

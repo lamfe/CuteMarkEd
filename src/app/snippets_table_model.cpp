@@ -41,7 +41,7 @@ Qt::ItemFlags SnippetsTableModel::flags(const QModelIndex &index) const
     Qt::ItemFlags itemFlags = QAbstractTableModel::flags(index);
     if (index.isValid()) {
         const Snippet snippet = snippetCollection->at(index.row());
-        if (!snippet.builtIn) {
+        if (!snippet.builtin) {
             itemFlags |= Qt::ItemIsEditable;
         }
     }
@@ -60,7 +60,7 @@ QVariant SnippetsTableModel::data(const QModelIndex &index, int role) const
         if (index.column() == 0) {
             return snippet.trigger;
         } else {
-            return snippet.description + (snippet.builtIn ? " (built-in)" : "");
+            return snippet.description + (snippet.builtin ? " (built-in)" : "");
         }
     }
 

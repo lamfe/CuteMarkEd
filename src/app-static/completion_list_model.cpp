@@ -21,15 +21,15 @@
 #include <QIcon>
 
 
-CompletionListModel::CompletionListModel(QObject *parent) :
-    QAbstractListModel(parent)
+CompletionListModel::CompletionListModel(QObject *parent)
+    : QAbstractListModel(parent)
 {
 }
 
 int CompletionListModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    return snippets.count() + words.count();
+    return _snippets.count() + _words.count();
 }
 
 QVariant CompletionListModel::data(const QModelIndex &index, int role) const
@@ -40,8 +40,8 @@ QVariant CompletionListModel::data(const QModelIndex &index, int role) const
     if (index.row() > rowCount())
         return QVariant();
 
-    if (index.row() < snippets.count()) {
-        const Snippet snippet = snippets.at(index.row());
+    if (index.row() < _snippets.count()) {
+        const Snippet snippet = _snippets.at(index.row());
 
         switch (role) {
             case Qt::DecorationRole:
@@ -68,7 +68,7 @@ QVariant CompletionListModel::data(const QModelIndex &index, int role) const
         switch (role) {
             case Qt::DisplayRole:
             case Qt::EditRole:
-                return words.at(index.row() - snippets.count());
+                return _words.at(index.row() - _snippets.count());
         }
     }
 
@@ -77,8 +77,8 @@ QVariant CompletionListModel::data(const QModelIndex &index, int role) const
 
 void CompletionListModel::setWords(const QStringList &words)
 {
-    beginInsertRows(QModelIndex(), snippets.count(), snippets.count() + words.count());
-    this->words = words;
+    beginInsertRows(QModelIndex(), _snippets.count(), _snippets.count() + words.count());
+    _words = words;
     endInsertRows();
 }
 
@@ -87,27 +87,30 @@ void CompletionListModel::snippetCollectionChanged(SnippetCollection::Collection
     switch (changedType) {
     case SnippetCollection::ItemAdded:
         {
-            QList<Snippet>::iterator it = qLowerBound(snippets.begin(), snippets.end(), snippet);
-            int row = std::distance(snippets.begin(), it);
+            QList<Snippet>::iterator it = qLowerBound(_snippets.begin(), _snippets.end(), snippet);
+            int row = std::distance(_snippets.begin(), it);
             beginInsertRows(QModelIndex(), row, row);
-            snippets.insert(it, snippet);
+            _snippets.insert(it, snippet);
             endInsertRows();
         }
         break;
+
     case SnippetCollection::ItemChanged:
         {
-            int row = snippets.indexOf(snippet);
-            snippets.replace(row, snippet);
+            int row = _snippets.indexOf(snippet);
+            _snippets.replace(row, snippet);
         }
         break;
+
     case SnippetCollection::ItemDeleted:
         {
-            int row = snippets.indexOf(snippet);
+            int row = _snippets.indexOf(snippet);
             beginRemoveRows(QModelIndex(), row, row);
-            snippets.removeAt(row);
+            _snippets.removeAt(row);
             endRemoveRows();
         }
         break;
+
     default:
         break;
     }

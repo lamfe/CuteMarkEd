@@ -23,17 +23,17 @@ PresentationTemplate::PresentationTemplate()
 {
     QFile f(":/template_presentation.html");
     if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        presentationTemplate = f.readAll();
+        _presentation_template = f.readAll();
     }
 }
 
 QString PresentationTemplate::render(const QString &body, RenderOptions options) const
 {
-    if (presentationTemplate.isEmpty()) {
+    if (_presentation_template.isEmpty()) {
         return body;
     }
 
-    return QString(presentationTemplate)
+    return QString(_presentation_template)
             .replace(QLatin1String("<!--__HTML_HEADER__-->"), QString())
             .replace(QLatin1String("<!--__HTML_CONTENT__-->"), body)
             .replace(QLatin1String("<!--__REVEAL_PLUGINS__-->"), buildRevealPlugins(options));

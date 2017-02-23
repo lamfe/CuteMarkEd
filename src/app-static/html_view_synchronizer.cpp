@@ -26,9 +26,8 @@
 #include "html_previewer.h"
 
 
-HtmlViewSynchronizer::HtmlViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor) :
-    ViewSynchronizer(webView, editor),
-    scrollBarPos(0)
+HtmlViewSynchronizer::HtmlViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor)
+    : ViewSynchronizer(webView, editor)
 {
     // synchronize scrollbars
     connect(editor->verticalScrollBar(), SIGNAL(valueChanged(int)),
@@ -44,19 +43,18 @@ HtmlViewSynchronizer::HtmlViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdi
 }
 
 HtmlViewSynchronizer::~HtmlViewSynchronizer()
-{
-}
+{}
 
 void HtmlViewSynchronizer::webViewScrolled()
 {
 #if WITH_QTWEBENGINE
     // TODO
 #else
-    double factor = (double)m_editor->verticalScrollBar()->maximum() /
-                    m_webView->page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
-    int value = m_webView->page()->mainFrame()->scrollBarValue(Qt::Vertical);
+    double factor = (double)_editor->verticalScrollBar()->maximum() /
+                    _web_view->page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
+    int value = _web_view->page()->mainFrame()->scrollBarValue(Qt::Vertical);
 
-    m_editor->verticalScrollBar()->setValue(qRound(value * factor));
+    _editor->verticalScrollBar()->setValue(qRound(value * factor));
 #endif
 
     // remember new vertical scrollbar position of markdown editor
@@ -68,23 +66,24 @@ void HtmlViewSynchronizer::scrollValueChanged(int value)
 #if WITH_QTWEBENGINE
     // TODO
 #else
-    int webMax = m_webView->page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
-    int textMax = m_editor->verticalScrollBar()->maximum();
+    int webMax = _web_view->page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
+    int textMax = _editor->verticalScrollBar()->maximum();
     double factor = (double)webMax / textMax;
 
-    m_webView->page()->mainFrame()->setScrollBarValue(Qt::Vertical, qRound(value * factor));
+    _web_view->page()->mainFrame()->setScrollBarValue(Qt::Vertical, qRound(value * factor));
 #endif
 }
 
 void HtmlViewSynchronizer::htmlContentSizeChanged()
 {
-    if (scrollBarPos > 0) {
+    if (_scrollbar_pos > 0)
+    {
         // restore previous scrollbar position
-        scrollValueChanged(scrollBarPos);
+        scrollValueChanged(_scrollbar_pos);
     }
 }
 
 void HtmlViewSynchronizer::rememberScrollBarPos()
 {
-    scrollBarPos = m_editor->verticalScrollBar()->value();
+    _scrollbar_pos = _editor->verticalScrollBar()->value();
 }

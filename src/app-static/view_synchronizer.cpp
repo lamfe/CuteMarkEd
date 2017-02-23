@@ -18,9 +18,7 @@
 
 #include "view_synchronizer.h"
 
-ViewSynchronizer::ViewSynchronizer(HtmlPreviewer *previewer, QPlainTextEdit *editor, QObject *parent) :
-    QObject(parent),
-    m_webView(previewer),
-    m_editor(editor)
-{
-}
+ViewSynchronizer::ViewSynchronizer(HtmlPreviewer *previewer,
+                                   QPlainTextEdit *editor, QObject *parent)
+    : QObject(parent), _web_view(previewer), _editor(editor)
+{}

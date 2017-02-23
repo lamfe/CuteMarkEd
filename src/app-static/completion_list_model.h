@@ -37,8 +37,8 @@ public slots:
     void snippetCollectionChanged(SnippetCollection::CollectionChangedType changedType, const Snippet &snippet);
 
 private:
-    QList<Snippet> snippets;
-    QStringList words;
+    QList<Snippet> _snippets;
+    QStringList _words;
 };
 
 #endif // COMPLETIONLISTMODEL_H

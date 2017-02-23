@@ -48,7 +48,7 @@ private:
     QString buildHtmlHeader(RenderOptions options) const;
     void convertDiagramCodeSectionToDiv(QString &body) const;
 
-    QString htmlTemplate;
+    QString _html_template;
 };
 
 #endif // HTMLTEMPLATE_H

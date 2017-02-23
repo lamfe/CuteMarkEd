@@ -28,10 +28,9 @@
 #include "slideline_mapping.h"
 
 
-RevealViewSynchronizer::RevealViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor) :
-    ViewSynchronizer(webView, editor),
-    currentSlide(qMakePair(0, 0)),
-    slideLineMapping(new SlideLineMapping())
+RevealViewSynchronizer::RevealViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor)
+    : ViewSynchronizer(webView, editor), _current_slide(qMakePair(0, 0)),
+      _slide_line_mapping(new SlideLineMapping())
 {
 #if WITH_QTWEBENGINE
     // TODO
@@ -52,27 +51,27 @@ RevealViewSynchronizer::RevealViewSynchronizer(HtmlPreviewer *webView, QPlainTex
 
 RevealViewSynchronizer::~RevealViewSynchronizer()
 {
-    delete slideLineMapping;
+    delete _slide_line_mapping;
 }
 
 int RevealViewSynchronizer::horizontalSlide() const
 {
-    return currentSlide.first;
+    return _current_slide.first;
 }
 
 int RevealViewSynchronizer::verticalSlide() const
 {
-    return currentSlide.second;
+    return _current_slide.second;
 }
 
 void RevealViewSynchronizer::slideChanged(int horizontal, int vertical)
 {
-    if (currentSlide.first == horizontal && currentSlide.second == vertical)
+    if (_current_slide.first == horizontal && _current_slide.second == vertical)
         return;
 
-    currentSlide = qMakePair(horizontal, vertical);
+    _current_slide = qMakePair(horizontal, vertical);
 
-    int lineNumber = slideLineMapping->lineForSlide(currentSlide);
+    int lineNumber = _slide_line_mapping->lineForSlide(_current_slide);
     if (lineNumber > 0) {
         gotoLine(lineNumber);
     }
@@ -83,7 +82,7 @@ void RevealViewSynchronizer::registerEvents()
 #if WITH_QTWEBENGINE
     // TODO
 #else
-    m_webView->page()->mainFrame()->evaluateJavaScript(
+    _web_view->page()->mainFrame()->evaluateJavaScript(
                     "(function(){"
                     "  var mainWinUpdate = false;"
                     "  function feedbackPosition(event) {"
@@ -110,15 +109,15 @@ void RevealViewSynchronizer::restoreSlidePosition()
 #else
     static QString restorePosition =
         "window.location.hash = '/'+synchronizer.horizontalSlide+'/'+synchronizer.verticalSlide;";
-    m_webView->page()->mainFrame()->evaluateJavaScript(restorePosition);
+    _web_view->page()->mainFrame()->evaluateJavaScript(restorePosition);
 #endif
 }
 
 void RevealViewSynchronizer::cursorPositionChanged()
 {
-    int lineNumber = m_editor->textCursor().blockNumber() + 1;
+    int lineNumber = _editor->textCursor().blockNumber() + 1;
 
-    QPair<int, int> slide = slideLineMapping->slideForLine(lineNumber);
+    QPair<int, int> slide = _slide_line_mapping->slideForLine(lineNumber);
     if (slide.first >= 0 && slide.second >= 0) {
         gotoSlide(slide);
     }
@@ -126,21 +125,21 @@ void RevealViewSynchronizer::cursorPositionChanged()
 
 void RevealViewSynchronizer::textChanged()
 {
-    QString code = m_editor->toPlainText();
-    slideLineMapping->build(code);
+    QString code = _editor->toPlainText();
+    _slide_line_mapping->build(code);
 }
 
 void RevealViewSynchronizer::gotoLine(int lineNumber)
 {
-    QTextCursor cursor(m_editor->document()->findBlockByNumber(lineNumber-1));
-    m_editor->setTextCursor(cursor);
+    QTextCursor cursor(_editor->document()->findBlockByNumber(lineNumber-1));
+    _editor->setTextCursor(cursor);
 }
 
 void RevealViewSynchronizer::gotoSlide(QPair<int, int> slide)
 {
-    if (currentSlide.first == slide.first && currentSlide.second == slide.second)
+    if (_current_slide.first == slide.first && _current_slide.second == slide.second)
         return;
 
-    currentSlide = slide;
+    _current_slide = slide;
     emit gotoSlideRequested(slide.first, slide.second);
 }

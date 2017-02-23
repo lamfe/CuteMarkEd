@@ -30,7 +30,7 @@ public:
 private:
     QString buildRevealPlugins(RenderOptions options) const;
 
-    QString presentationTemplate;
+    QString _presentation_template;
 };
 
 #endif // PRESENTATIONTEMPLATE_H

@@ -48,14 +48,21 @@ public:
 
     virtual ~Template() {}
 
-    QString codeHighlightingStyle() const { return highlightingStyle; }
-    void setCodeHighlightingStyle(const QString &style) { highlightingStyle = style; }
+    QString codeHighlightingStyle() const
+    {
+        return _highlighting_style;
+    }
+
+    void setCodeHighlightingStyle(const QString &style)
+    {
+        _highlighting_style = style;
+    }
 
     virtual QString render(const QString &body, RenderOptions options) const = 0;
     virtual QString exportAsHtml(const QString &header, const QString &body, RenderOptions options) const = 0;
 
 private:
-    QString highlightingStyle;
+    QString _highlighting_style;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Template::RenderOptions)

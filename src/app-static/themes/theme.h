@@ -30,35 +30,50 @@ public:
           const QString &previewStylesheet,
           bool builtIn = false);
 
-    QString name() const { return m_name; }
+    QString name() const
+    {
+        return _name;
+    }
 
-    QString markdownHighlighting() const { return m_markdownHighlighting; }
+    QString markdownHighlighting() const
+    {
+        return _markdown_highlighting;
+    }
 
-    QString codeHighlighting() const { return m_codeHighlighting; }
+    QString codeHighlighting() const
+    {
+        return _code_highlighting;
+    }
 
-    QString previewStylesheet() const { return m_previewStylesheet; }
+    QString previewStylesheet() const
+    {
+        return _preview_stylesheet;
+    }
 
-    bool isBuiltIn() const { return m_builtIn; }
+    bool isBuiltIn() const
+    {
+        return _builtin;
+    }
 
     bool operator<(const Theme &rhs) const
     {
-        return m_name < rhs.name();
+        return _name < rhs.name();
     }
 
     bool operator ==(const Theme &rhs) const
     {
-        return m_name == rhs.name();
+        return _name == rhs.name();
     }
 
 private:
     void checkInvariants() const;
 
 private:
-    QString m_name;
-    QString m_markdownHighlighting;
-    QString m_codeHighlighting;
-    QString m_previewStylesheet;
-    bool m_builtIn;
+    QString _name;
+    QString _markdown_highlighting;
+    QString _code_highlighting;
+    QString _preview_stylesheet;
+    bool _builtin;
 };
 
 #endif // THEME_H

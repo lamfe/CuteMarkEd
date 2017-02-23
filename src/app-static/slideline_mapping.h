@@ -37,8 +37,8 @@ private:
     bool isHorizontalSlideSeparator(const QStringList &lines, int lineNumber) const;
     bool isVerticalSlideSeparator(const QStringList &lines, int lineNumber) const;
 
-    QMap<int, QPair<int, int> > m_lineToSlide;
-    QMap<QPair<int, int>, int> m_slideToLine;
+    QMap<int, QPair<int, int> > _line_to_slide;
+    QMap<QPair<int, int>, int> _slide_to_line;
 };
 
 #endif // SLIDELINEMAPPING_H

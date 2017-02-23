@@ -90,7 +90,7 @@ void SnippetCompleter::insertSnippet(const QString &trigger)
     QString snippetContent(snippet.snippet);
     replaceClipboardVariable(snippetContent);
 
-    emit snippetSelected(completer->completionPrefix(), snippetContent, snippet.cursorPosition);
+    emit snippetSelected(completer->completionPrefix(), snippetContent, snippet.cursor_position);
 }
 
 void SnippetCompleter::replaceClipboardVariable(QString &snippetContent)

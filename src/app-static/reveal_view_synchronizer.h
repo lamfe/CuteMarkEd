@@ -55,8 +55,8 @@ private:
     void gotoSlide(QPair<int, int> slide);
 
 private:
-    QPair<int, int> currentSlide;
-    SlideLineMapping *slideLineMapping;
+    QPair<int, int> _current_slide;
+    SlideLineMapping *_slide_line_mapping;
 };
 
 #endif // REVEALVIEWSYNCHRONIZER_H

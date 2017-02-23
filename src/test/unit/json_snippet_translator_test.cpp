@@ -49,15 +49,15 @@ void JsonSnippetTranslatorTest::translatesJsonDocumentToSnippets()
     expected.trigger = "trigger";
     expected.description = "description";
     expected.snippet = "snippet";
-    expected.cursorPosition = 1;
-    expected.builtIn = true;
+    expected.cursor_position = 1;
+    expected.builtin = true;
 
     QJsonObject jsonObject;
     jsonObject.insert("trigger", expected.trigger);
     jsonObject.insert("description", expected.description);
     jsonObject.insert("snippet", expected.snippet);
-    jsonObject.insert("cursor", expected.cursorPosition);
-    jsonObject.insert("builtIn", expected.builtIn);
+    jsonObject.insert("cursor", expected.cursor_position);
+    jsonObject.insert("builtIn", expected.builtin);
 
     QJsonDocument doc = NewSnippetDocumentWithObject(jsonObject);
 
@@ -69,8 +69,8 @@ void JsonSnippetTranslatorTest::translatesJsonDocumentToSnippets()
     QCOMPARE(collection.at(0).trigger, expected.trigger);
     QCOMPARE(collection.at(0).description, expected.description);
     QCOMPARE(collection.at(0).snippet, expected.snippet);
-    QCOMPARE(collection.at(0).cursorPosition, expected.cursorPosition);
-    QCOMPARE(collection.at(0).builtIn, expected.builtIn);
+    QCOMPARE(collection.at(0).cursor_position, expected.cursor_position);
+    QCOMPARE(collection.at(0).builtin, expected.builtin);
 }
 
 void JsonSnippetTranslatorTest::translatesEmptyJsonDocumentToEmptySnippets()
@@ -79,8 +79,8 @@ void JsonSnippetTranslatorTest::translatesEmptyJsonDocumentToEmptySnippets()
     expected.trigger = QString();
     expected.description = QString();
     expected.snippet = QString();
-    expected.cursorPosition = 0;
-    expected.builtIn = false;
+    expected.cursor_position = 0;
+    expected.builtin = false;
 
     QJsonObject emptyJsonObject;
     QJsonDocument doc = NewSnippetDocumentWithObject(emptyJsonObject);
@@ -93,8 +93,8 @@ void JsonSnippetTranslatorTest::translatesEmptyJsonDocumentToEmptySnippets()
     QCOMPARE(collection.at(0).trigger, expected.trigger);
     QCOMPARE(collection.at(0).description, expected.description);
     QCOMPARE(collection.at(0).snippet, expected.snippet);
-    QCOMPARE(collection.at(0).cursorPosition, expected.cursorPosition);
-    QCOMPARE(collection.at(0).builtIn, expected.builtIn);
+    QCOMPARE(collection.at(0).cursor_position, expected.cursor_position);
+    QCOMPARE(collection.at(0).builtin, expected.builtin);
 }
 
 void JsonSnippetTranslatorTest::defectIfJsonDocumentIsInvalid()
@@ -114,8 +114,8 @@ void JsonSnippetTranslatorTest::translatesSnippetCollectionToJsonDocument()
     snippet.trigger = "trigger";
     snippet.description = "description";
     snippet.snippet = "snippet";
-    snippet.cursorPosition = 1;
-    snippet.builtIn = true;
+    snippet.cursor_position = 1;
+    snippet.builtin = true;
 
     SnippetCollection collection;
     collection.insert(snippet);
@@ -124,8 +124,8 @@ void JsonSnippetTranslatorTest::translatesSnippetCollectionToJsonDocument()
     expected.insert("trigger", snippet.trigger);
     expected.insert("description", snippet.description);
     expected.insert("snippet", snippet.snippet);
-    expected.insert("cursor", snippet.cursorPosition);
-    expected.insert("builtIn", snippet.builtIn);
+    expected.insert("cursor", snippet.cursor_position);
+    expected.insert("builtIn", snippet.builtin);
 
     QJsonDocument actual = translator->createDocument(&collection);
 

@@ -36,8 +36,8 @@ Snippet JsonSnippetTranslator::fromJsonObject(const QJsonObject &object)
     snippet.trigger = object.value(TRIGGER).toString();
     snippet.description = object.value(DESCRIPTION).toString();
     snippet.snippet = object.value(SNIPPET).toString();
-    snippet.cursorPosition = object.value(CURSOR).toDouble();
-    snippet.builtIn = object.value(BUILTIN).toBool();
+    snippet.cursor_position = object.value(CURSOR).toDouble();
+    snippet.builtin = object.value(BUILTIN).toBool();
 
     return snippet;
 }
@@ -49,8 +49,8 @@ QJsonObject JsonSnippetTranslator::toJsonObject(const Snippet &snippet)
     object.insert(TRIGGER, snippet.trigger);
     object.insert(DESCRIPTION, snippet.description);
     object.insert(SNIPPET, snippet.snippet);
-    object.insert(CURSOR, snippet.cursorPosition);
-    object.insert(BUILTIN, snippet.builtIn);
+    object.insert(CURSOR, snippet.cursor_position);
+    object.insert(BUILTIN, snippet.builtin);
 
     return object;
 }

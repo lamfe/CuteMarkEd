@@ -31,8 +31,8 @@ public:
     int bodyOffset() const;
 
 private:
-    QString m_header;
-    QString m_body;
+    QString _header;
+    QString _body;
 };
 
 #endif // YAMLHEADERCHECKER_H

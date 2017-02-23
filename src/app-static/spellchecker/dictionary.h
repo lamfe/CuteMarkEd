@@ -36,8 +36,8 @@ public:
     QString filePath() const;
 
 private:
-    QString m_language;
-    QString m_filePath;
+    QString _language;
+    QString _file_path;
 };
 
 Q_DECLARE_METATYPE(Dictionary);

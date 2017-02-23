@@ -20,28 +20,22 @@ Theme::Theme(const QString &name,
              const QString &markdownHighlighting,
              const QString &codeHighlighting,
              const QString &previewStylesheet,
-             bool builtIn) :
-    m_name(name),
-    m_markdownHighlighting(markdownHighlighting),
-    m_codeHighlighting(codeHighlighting),
-    m_previewStylesheet(previewStylesheet),
-    m_builtIn(builtIn)
+             bool builtIn)
+    : _name(name), _markdown_highlighting(markdownHighlighting),
+    _code_highlighting(codeHighlighting), _preview_stylesheet(previewStylesheet),
+    _builtin(builtIn)
 {
     checkInvariants();
 }
 
 void Theme::checkInvariants() const
 {
-    if (m_name.isEmpty()) {
+    if (_name.isEmpty())
         throw std::runtime_error("theme name must not be empty");
-    }
-    if (m_markdownHighlighting.isEmpty()) {
+    if (_markdown_highlighting.isEmpty())
         throw std::runtime_error("markdown highlighting style must not be empty");
-    }
-    if (m_codeHighlighting.isEmpty()) {
+    if (_code_highlighting.isEmpty())
         throw std::runtime_error("code highlighting style must not be empty");
-    }
-    if (m_previewStylesheet.isEmpty()) {
+    if (_preview_stylesheet.isEmpty())
         throw std::runtime_error("preview stylesheet must not be empty");
-    }
 }

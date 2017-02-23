@@ -39,8 +39,8 @@ public:
     const QString name() const;
 
 private:
-    QStringList themesIndex;
-    QList<Theme> themes;
+    QStringList _themes_index;
+    QList<Theme> _themes;
 };
 
 #endif // THEMECOLLECTION_H

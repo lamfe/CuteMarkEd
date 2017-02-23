@@ -27,34 +27,34 @@ bool ThemeCollection::load(const QString &fileName)
 
 int ThemeCollection::insert(const Theme &theme)
 {
-    themesIndex << theme.name();
-    themes << theme;
+    _themes_index << theme.name();
+    _themes << theme;
     return 0;
 }
 
 int ThemeCollection::count() const
 {
-    return themes.count();
+    return _themes.count();
 }
 
 const Theme &ThemeCollection::at(int offset) const
 {
-    return themes.at(offset);
+    return _themes.at(offset);
 }
 
 bool ThemeCollection::contains(const QString &name) const
 {
-    return themesIndex.contains(name);
+    return _themes_index.contains(name);
 }
 
 const Theme ThemeCollection::theme(const QString &name) const
 {
-    return at(themesIndex.indexOf(name));
+    return at(_themes_index.indexOf(name));
 }
 
 QStringList ThemeCollection::themeNames() const
 {
-    return themesIndex;
+    return _themes_index;
 }
 
 const QString ThemeCollection::name() const

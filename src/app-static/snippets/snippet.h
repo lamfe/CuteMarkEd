@@ -25,10 +25,11 @@ struct Snippet
     QString trigger;
     QString description;
     QString snippet;
-    int cursorPosition;
-    bool builtIn;
+    int cursor_position = 0;
+    bool builtin = false;
 
-    Snippet() : cursorPosition(0), builtIn(false) {}
+    Snippet()
+    {}
 
     bool operator<(const Snippet &rhs) const
     {

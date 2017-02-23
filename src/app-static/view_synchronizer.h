@@ -30,11 +30,13 @@ class ViewSynchronizer : public QObject
 
 public:
     ViewSynchronizer(HtmlPreviewer *previewer, QPlainTextEdit *editor, QObject *parent = 0);
-    virtual ~ViewSynchronizer() {}
+
+    virtual ~ViewSynchronizer()
+    {}
 
 protected:
-    HtmlPreviewer *m_webView;
-    QPlainTextEdit *m_editor;
+    HtmlPreviewer *_web_view;
+    QPlainTextEdit *_editor;
 };
 
 #endif // VIEWSYNCHRONIZER_H

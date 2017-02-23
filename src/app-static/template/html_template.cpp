@@ -39,14 +39,13 @@ HtmlTemplate::HtmlTemplate()
 {
     QFile f(":/template.html");
     if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        htmlTemplate = f.readAll();
+        _html_template = f.readAll();
     }
 }
 
-HtmlTemplate::HtmlTemplate(const QString &templateString) :
-	htmlTemplate(templateString)
-{
-}
+HtmlTemplate::HtmlTemplate(const QString &templateString)
+    : _html_template(templateString)
+{}
 
 QString HtmlTemplate::render(const QString &body, RenderOptions options) const
 {
@@ -74,14 +73,14 @@ QString HtmlTemplate::exportAsHtml(const QString &header, const QString &body, R
 
 QString HtmlTemplate::renderAsHtml(const QString &header, const QString &body, Template::RenderOptions options) const
 {
-    if (htmlTemplate.isEmpty()) {
+    if (_html_template.isEmpty()) {
         return body;
     }
 
     QString htmlHeader = buildHtmlHeader(options);
     htmlHeader += header;
 
-    return QString(htmlTemplate)
+    return QString(_html_template)
             .replace(QLatin1String("<!--__HTML_HEADER__-->"), htmlHeader)
             .replace(QLatin1String("<!--__HTML_CONTENT__-->"), body);
 }

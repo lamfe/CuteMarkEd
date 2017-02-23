@@ -24,35 +24,31 @@
 
 static const qreal ZOOM_CHANGE_VALUE = 0.1;
 
-HtmlPreviewController::HtmlPreviewController(HtmlPreviewer *view, QObject *parent) :
-    QObject(parent),
-    view(view),
-    zoomInAction(0),
-    zoomOutAction(0),
-    zoomResetAction(0),
-    diskCache(new QNetworkDiskCache(this))
+HtmlPreviewController::HtmlPreviewController(HtmlPreviewer *view, QObject *parent)
+    : QObject(parent), _view(view), _zoom_in_action(0), _zoom_out_action(0),
+    _zoom_reset_action(0), _disk_cache(new QNetworkDiskCache(this))
 {
     createActions();
     registerActionsWithView();
 
     // use registered actions as custom context menu
-    view->setContextMenuPolicy(Qt::ActionsContextMenu);
+    _view->setContextMenuPolicy(Qt::ActionsContextMenu);
 
     setupNetworkDiskCache();
 }
 
 void HtmlPreviewController::createActions()
 {
-    zoomInAction = createAction(tr("Zoom &In"), QKeySequence(Qt::CTRL | Qt::Key_Plus));
-    connect(zoomInAction, SIGNAL(triggered()), 
+    _zoom_in_action = createAction(tr("Zoom &In"), QKeySequence(Qt::CTRL | Qt::Key_Plus));
+    connect(_zoom_in_action, SIGNAL(triggered()),
             this, SLOT(zoomInView()));
 
-    zoomOutAction = createAction(tr("Zoom &Out"), QKeySequence(Qt::CTRL | Qt::Key_Minus));
-    connect(zoomOutAction, SIGNAL(triggered()),
+    _zoom_out_action = createAction(tr("Zoom &Out"), QKeySequence(Qt::CTRL | Qt::Key_Minus));
+    connect(_zoom_out_action, SIGNAL(triggered()),
             this, SLOT(zoomOutView()));
 
-    zoomResetAction = createAction(tr("Reset &Zoom"), QKeySequence(Qt::CTRL | Qt::Key_0));
-    connect(zoomResetAction, SIGNAL(triggered()),
+    _zoom_reset_action = createAction(tr("Reset &Zoom"), QKeySequence(Qt::CTRL | Qt::Key_0));
+    connect(_zoom_reset_action, SIGNAL(triggered()),
             this, SLOT(resetZoomOfView()));
 }
 
@@ -66,41 +62,41 @@ QAction *HtmlPreviewController::createAction(const QString &text, const QKeySequ
 void HtmlPreviewController::registerActionsWithView()
 {
 #if WITH_QTWEBENGINE
-    view->addAction(view->pageAction(QWebEnginePage::Copy));
+    _view->addAction(_view->pageAction(QWebEnginePage::Copy));
 #else
-    view->addAction(view->pageAction(QWebPage::Copy));
+    _view->addAction(_view->pageAction(QWebPage::Copy));
 #endif
     //view->addAction(view->pageAction(QWebPage::InspectElement));
-    view->addAction(zoomInAction);
-    view->addAction(zoomOutAction);
-    view->addAction(zoomResetAction);
+    _view->addAction(_zoom_in_action);
+    _view->addAction(_zoom_out_action);
+    _view->addAction(_zoom_reset_action);
 }
 
 void HtmlPreviewController::setupNetworkDiskCache()
 {
     // setup disk cache for network access
     QString cacheDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
-    diskCache->setCacheDirectory(cacheDir);
+    _disk_cache->setCacheDirectory(cacheDir);
 
 #if WITH_QTWEBENGINE
     // TODO
 #else
-    view->page()->networkAccessManager()->setCache(diskCache);
+    _view->page()->networkAccessManager()->setCache(_disk_cache);
 #endif
 }
 
 void HtmlPreviewController::zoomInView()
 {
-    view->setZoomFactor(view->zoomFactor() + ZOOM_CHANGE_VALUE);
+    _view->setZoomFactor(_view->zoomFactor() + ZOOM_CHANGE_VALUE);
 }
 
 void HtmlPreviewController::zoomOutView()
 {
-    view->setZoomFactor(view->zoomFactor() - ZOOM_CHANGE_VALUE);
+    _view->setZoomFactor(_view->zoomFactor() - ZOOM_CHANGE_VALUE);
 }
 
 void HtmlPreviewController::resetZoomOfView()
 {
-    view->setZoomFactor(1.0);
+    _view->setZoomFactor(1.0);
 }
 

@@ -37,7 +37,7 @@ private slots:
     void htmlContentSizeChanged();
 
 private:
-    int scrollBarPos;
+    int _scrollbar_pos = 0;
 };
 
 #endif // HTMLVIEWSYNCHRONIZER_H

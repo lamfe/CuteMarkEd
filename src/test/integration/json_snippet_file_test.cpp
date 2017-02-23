@@ -131,15 +131,15 @@ void JsonSnippetFileTest::roundtripTest()
     snippet1.trigger = "abc";
     snippet1.description = "description abc";
     snippet1.snippet = "content abc";
-    snippet1.cursorPosition = 0;
-    snippet1.builtIn = true;
+    snippet1.cursor_position = 0;
+    snippet1.builtin = true;
 
     Snippet snippet2;
     snippet2.trigger = "xyz";
     snippet2.description = "description xyz";
     snippet2.snippet = "content xyz";
-    snippet2.cursorPosition = 1;
-    snippet2.builtIn = false;
+    snippet2.cursor_position = 1;
+    snippet2.builtin = false;
 
     SnippetCollection collection1;
     collection1.insert(snippet1);
@@ -156,11 +156,11 @@ void JsonSnippetFileTest::roundtripTest()
 
     QCOMPARE(collection2.snippet("abc").description, snippet1.description);
     QCOMPARE(collection2.snippet("abc").snippet, snippet1.snippet);
-    QCOMPARE(collection2.snippet("abc").cursorPosition, snippet1.cursorPosition);
-    QCOMPARE(collection2.snippet("abc").builtIn, snippet1.builtIn);
+    QCOMPARE(collection2.snippet("abc").cursor_position, snippet1.cursor_position);
+    QCOMPARE(collection2.snippet("abc").builtin, snippet1.builtin);
 
     QCOMPARE(collection2.snippet("xyz").description, snippet2.description);
     QCOMPARE(collection2.snippet("xyz").snippet, snippet2.snippet);
-    QCOMPARE(collection2.snippet("xyz").cursorPosition, snippet2.cursorPosition);
-    QCOMPARE(collection2.snippet("xyz").builtIn, snippet2.builtIn);
+    QCOMPARE(collection2.snippet("xyz").cursor_position, snippet2.cursor_position);
+    QCOMPARE(collection2.snippet("xyz").builtin, snippet2.builtin);
 }

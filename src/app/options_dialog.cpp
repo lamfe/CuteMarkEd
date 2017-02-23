@@ -150,12 +150,12 @@ void OptionsDialog::currentSnippetChanged(const QModelIndex &current, const QMod
 
     // update text edit for snippet content
     QString formattedSnippet(snippet.snippet);
-    formattedSnippet.insert(snippet.cursorPosition, "$|");
+    formattedSnippet.insert(snippet.cursor_position, "$|");
     ui->snippetTextEdit->setPlainText(formattedSnippet);
-    ui->snippetTextEdit->setReadOnly(snippet.builtIn);
+    ui->snippetTextEdit->setReadOnly(snippet.builtin);
 
     // disable remove button when built-in snippet is selected
-    ui->removeSnippetButton->setEnabled(!snippet.builtIn);
+    ui->removeSnippetButton->setEnabled(!snippet.builtin);
 }
 
 void OptionsDialog::snippetTextChanged()
@@ -163,13 +163,13 @@ void OptionsDialog::snippetTextChanged()
     const QModelIndex &modelIndex = ui->snippetTableView->selectionModel()->currentIndex();
     if (modelIndex.isValid()) {
         Snippet snippet = snippetCollection->at(modelIndex.row());
-        if (!snippet.builtIn) {
+        if (!snippet.builtin) {
             snippet.snippet = ui->snippetTextEdit->toPlainText();
 
             // find cursor marker
             int pos = snippet.snippet.indexOf("$|");
             if (pos >= 0) {
-                snippet.cursorPosition = pos;
+                snippet.cursor_position = pos;
                 snippet.snippet.remove(pos, 2);
             }
 

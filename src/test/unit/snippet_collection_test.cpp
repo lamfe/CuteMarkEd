@@ -91,9 +91,9 @@ void SnippetCollectionTest::holdsSnippetsInTriggerOrder()
 
 void SnippetCollectionTest::returnsNewCollectionOfUserDefinedSnippets()
 {
-    Snippet snippet1; snippet1.trigger = "a"; snippet1.builtIn = true;
-    Snippet snippet2; snippet2.trigger = "b"; snippet2.builtIn = false;
-    Snippet snippet3; snippet3.trigger = "c"; snippet3.builtIn = false;
+    Snippet snippet1; snippet1.trigger = "a"; snippet1.builtin = true;
+    Snippet snippet2; snippet2.trigger = "b"; snippet2.builtin = false;
+    Snippet snippet3; snippet3.trigger = "c"; snippet3.builtin = false;
 
     SnippetCollection collection;
     collection.insert(snippet2);

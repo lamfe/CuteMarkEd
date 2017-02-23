@@ -42,11 +42,11 @@ private:
     void setupNetworkDiskCache();
     
 private:
-    HtmlPreviewer *view;
-    QAction *zoomInAction;
-    QAction *zoomOutAction;
-    QAction *zoomResetAction;
-    QNetworkDiskCache *diskCache;
+    HtmlPreviewer *_view;
+    QAction *_zoom_in_action;
+    QAction *_zoom_out_action;
+    QAction *_zoom_reset_action;
+    QNetworkDiskCache *_disk_cache;
 };
 
 #endif // HTMLPREVIEWCONTROLLER_H
