@@ -18,6 +18,10 @@
 #include <QPlainTextEdit>
 #include <QScrollBar>
 
+#if !WITH_QTWEBENGINE
+#   include <QWebFrame>
+#endif
+
 #include "htmlviewsynchronizer.h"
 #include "html_previewer.h"
 

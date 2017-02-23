@@ -29,7 +29,6 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "discountmarkdownconverter.h"
 
 extern "C" {
 #ifdef Q_OS_WIN
@@ -38,7 +37,8 @@ extern "C" {
 #include <mkdio.h>
 }
 
-#include "markdowndocument.h"
+#include "discount_markdown_converter.h"
+#include "markdown_document.h"
 #include "template/htmltemplate.h"
 
 class DiscountMarkdownDocument : public MarkdownDocument

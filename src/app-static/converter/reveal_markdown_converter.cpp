@@ -1,8 +1,8 @@
-#include "revealmarkdownconverter.h"
 
 #include <QStringList>
 
-#include "markdowndocument.h"
+#include "reveal_markdown_converter.h"
+#include "markdown_document.h"
 #include "template/presentationtemplate.h"
 
 class RevealMarkdownDocument : public MarkdownDocument

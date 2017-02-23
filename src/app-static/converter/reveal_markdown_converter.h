@@ -1,7 +1,7 @@
 #ifndef REVEALMARKDOWNCONVERTER_H
 #define REVEALMARKDOWNCONVERTER_H
 
-#include "markdownconverter.h"
+#include "markdown_converter.h"
 
 class RevealMarkdownConverter : public MarkdownConverter
 {

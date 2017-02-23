@@ -29,7 +29,6 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#include "hoedownmarkdownconverter.h"
 
 extern "C" {
 #ifdef Q_OS_WIN
@@ -41,7 +40,8 @@ extern "C" {
 #endif
 }
 
-#include "markdowndocument.h"
+#include "hoedown_markdown_converter.h"
+#include "markdown_document.h"
 #include "template/htmltemplate.h"
 
 class HoedownMarkdownDocument : public MarkdownDocument

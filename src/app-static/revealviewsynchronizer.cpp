@@ -19,6 +19,10 @@
 #include <QPlainTextEdit>
 #include <QTextBlock>
 
+#if !WITH_QTWEBENGINE
+#   include <QWebFrame>
+#endif
+
 #include "revealviewsynchronizer.h"
 #include "html_previewer.h"
 #include "slidelinemapping.h"

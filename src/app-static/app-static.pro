@@ -24,9 +24,9 @@ INCLUDEPATH += $$PWD
 SOURCES += \
     snippets/jsonsnippettranslator.cpp \
     snippets/snippetcollection.cpp \
-    converter/discountmarkdownconverter.cpp \
+    converter/discount_markdown_converter.cpp \
+    converter/reveal_markdown_converter.cpp \
     spellchecker/dictionary.cpp \
-    converter/revealmarkdownconverter.cpp \
     template/htmltemplate.cpp \
     template/presentationtemplate.cpp \
     themes/jsonthemetranslator.cpp \
@@ -48,11 +48,11 @@ HEADERS += \
     snippets/jsonsnippettranslator.h \
     snippets/jsonsnippettranslatorfactory.h \
     snippets/snippetcollection.h \
-    converter/markdownconverter.h \
-    converter/markdowndocument.h \
-    converter/discountmarkdownconverter.h \
+    converter/markdown_converter.h \
+    converter/markdown_document.h \
+    converter/discount_markdown_converter.h \
+    converter/reveal_markdown_converter.h \
     spellchecker/dictionary.h \
-    converter/revealmarkdownconverter.h \
     template/template.h \
     template/htmltemplate.h \
     template/presentationtemplate.h \
