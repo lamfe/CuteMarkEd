@@ -22,7 +22,7 @@
 #include <QtCore/qmutex.h>
 #include <QtCore/qwaitcondition.h>
 
-#include <converter/markdownconverter.h>
+#include <converter/markdown_converter.h>
 #include <template/template.h>
 
 class MarkdownDocument;

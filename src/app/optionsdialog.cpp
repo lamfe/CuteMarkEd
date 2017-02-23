@@ -25,7 +25,7 @@
 #include <QStyledItemDelegate>
 #include <QTableWidgetItem>
 
-#include <snippets/snippetcollection.h>
+#include <snippets/snippet_collection.h>
 #include "options.h"
 #include "snippetstablemodel.h"
 

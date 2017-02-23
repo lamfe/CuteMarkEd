@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "snippetstablemodel.h"
 
 #include <QMessageBox>
 
-#include <snippets/snippetcollection.h>
+#include "snippetstablemodel.h"
+#include <snippets/snippet_collection.h>
 
 SnippetsTableModel::SnippetsTableModel(SnippetCollection *collection, QObject *parent) :
     QAbstractTableModel(parent),

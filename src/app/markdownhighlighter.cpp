@@ -15,15 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "markdownhighlighter.h"
 
 #include <QDebug>
 #include <QFile>
 #include <QTextDocument>
 #include <QTextLayout>
 
+#include "markdownhighlighter.h"
 #include "pmh_parser.h"
-#include "yamlheaderchecker.h"
+#include "yaml_header_checker.h"
 
 #include "pmh-adapter/definitions.h"
 using PegMarkdownHighlight::HighlightingStyle;

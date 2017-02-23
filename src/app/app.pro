@@ -53,11 +53,11 @@ SOURCES += \
     main.cpp\
     mainwindow.cpp \
     markdowneditor.cpp \
-    controls/linenumberarea.cpp \
-    controls/activelabel.cpp \
-    controls/fileexplorerwidget.cpp \
-    controls/findreplacewidget.cpp \
-    controls/recentfilesmenu.cpp \
+    controls/line_number_area.cpp \
+    controls/active_label.cpp \
+    controls/file_explorer_widget.cpp \
+    controls/find_replace_widget.cpp \
+    controls/recent_files_menu.cpp \
     htmlpreviewgenerator.cpp \
     markdownhighlighter.cpp \
     highlightworkerthread.cpp \
@@ -68,7 +68,7 @@ SOURCES += \
     options.cpp \
     optionsdialog.cpp \
     hunspell/spellchecker.cpp \
-    controls/languagemenu.cpp \
+    controls/language_menu.cpp \
     tabletooldialog.cpp \
     imagetooldialog.cpp \
     snippetcompleter.cpp \
@@ -90,11 +90,11 @@ macx {
 HEADERS += \
     mainwindow.h \
     markdowneditor.h \
-    controls/linenumberarea.h \
-    controls/activelabel.h \
-    controls/fileexplorerwidget.h \
-    controls/findreplacewidget.h \
-    controls/recentfilesmenu.h \
+    controls/line_number_area.h \
+    controls/active_label.h \
+    controls/file_explorer_widget.h \
+    controls/find_replace_widget.h \
+    controls/recent_files_menu.h \
     htmlpreviewgenerator.h \
     markdownhighlighter.h \
     highlightworkerthread.h \
@@ -105,7 +105,7 @@ HEADERS += \
     options.h \
     optionsdialog.h \
     hunspell/spellchecker.h \
-    controls/languagemenu.h \
+    controls/language_menu.h \
     tabletooldialog.h \
     imagetooldialog.h \
     snippetcompleter.h \
@@ -116,8 +116,8 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui \
-    controls/fileexplorerwidget.ui \
-    controls/findreplacewidget.ui \
+    controls/file_explorer_widget.ui \
+    controls/find_replace_widget.ui \
     exportpdfdialog.ui \
     exporthtmldialog.ui \
     optionsdialog.ui \

@@ -23,8 +23,8 @@
 #include <QScrollBar>
 
 #include <snippets/snippet.h>
-#include <snippets/snippetcollection.h>
-#include <completionlistmodel.h>
+#include <snippets/snippet_collection.h>
+#include <completion_list_model.h>
 
 
 SnippetCompleter::SnippetCompleter(SnippetCollection *collection, QWidget *parentWidget) :

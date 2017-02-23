@@ -26,7 +26,7 @@ using hunspell::SpellChecker;
 #include <hunspell/hunspell.hxx>
 
 #include <spellchecker/dictionary.h>
-#include <datalocation.h>
+#include <data_location.h>
 
 SpellChecker::SpellChecker() :
     hunspellChecker(0),

@@ -7,7 +7,7 @@
 #include <QActionGroup>
 #include <QMenu>
 
-#include "controls/activelabel.h"
+#include "controls/active_label.h"
 #include "markdowneditor.h"
 
 StatusBarWidget::StatusBarWidget(MarkdownEditor* editor) :

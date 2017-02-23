@@ -1,8 +1,9 @@
-#include "fileexplorerwidget.h"
-#include "ui_fileexplorerwidget.h"
 
 #include <QFileSystemModel>
 #include <QSortFilterProxyModel>
+
+#include "file_explorer_widget.h"
+#include "ui_file_explorer_widget.h"
 
 class FileSortFilterProxyModel : public QSortFilterProxyModel
 {

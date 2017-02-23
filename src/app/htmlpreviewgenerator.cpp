@@ -18,10 +18,10 @@
 
 #include <QFile>
 
-#include <converter/markdownconverter.h>
-#include <converter/markdowndocument.h>
-#include <converter/discountmarkdownconverter.h>
-#include <converter/revealmarkdownconverter.h>
+#include <converter/markdown_converter.h>
+#include <converter/markdown_document.h>
+#include <converter/discount_markdown_converter.h>
+#include <converter/reveal_markdown_converter.h>
 
 #ifdef ENABLE_HOEDOWN
 #include <converter/hoedownmarkdownconverter.h>
@@ -30,7 +30,7 @@
 #include <template/template.h>
 
 #include "options.h"
-#include "yamlheaderchecker.h"
+#include "yaml_header_checker.h"
 
 HtmlPreviewGenerator::HtmlPreviewGenerator(Options *opt, QObject *parent) :
     QThread(parent),

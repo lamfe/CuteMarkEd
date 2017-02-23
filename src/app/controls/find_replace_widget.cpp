@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "findreplacewidget.h"
-#include "ui_findreplacewidget.h"
 
 #include <QMenu>
 #include <QPlainTextEdit>
+
+#include "find_replace_widget.h"
+#include "ui_find_replace_widget.h"
 
 FindReplaceWidget::FindReplaceWidget(QWidget *parent) :
     QWidget(parent),

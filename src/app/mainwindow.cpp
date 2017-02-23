@@ -52,21 +52,21 @@
 #endif
 
 #include <jsonfile.h>
-#include <snippets/jsonsnippettranslatorfactory.h>
-#include <snippets/snippetcollection.h>
+#include <snippets/json_snippet_translator_factory.h>
+#include <snippets/snippet_collection.h>
 #include <spellchecker/dictionary.h>
-#include <themes/stylemanager.h>
-#include <themes/themecollection.h>
-#include <datalocation.h>
-#include "controls/activelabel.h"
-#include "controls/findreplacewidget.h"
-#include "controls/languagemenu.h"
-#include "controls/recentfilesmenu.h"
+#include <themes/style_manager.h>
+#include <themes/theme_collection.h>
+#include <data_location.h>
+#include "controls/active_label.h"
+#include "controls/find_replace_widget.h"
+#include "controls/language_menu.h"
+#include "controls/recent_files_menu.h"
 #include "aboutdialog.h"
 #include "html_previewer.h"
-#include "htmlpreviewcontroller.h"
+#include "html_preview_controller.h"
 #include "htmlpreviewgenerator.h"
-#include "htmlviewsynchronizer.h"
+#include "html_view_synchronizer.h"
 #include "htmlhighlighter.h"
 #include "imagetooldialog.h"
 #include "markdownmanipulator.h"
@@ -74,7 +74,7 @@
 #include "exportpdfdialog.h"
 #include "options.h"
 #include "optionsdialog.h"
-#include "revealviewsynchronizer.h"
+#include "reveal_view_synchronizer.h"
 #include "savefileadapter.h"
 #include "snippetcompleter.h"
 #include "tabletooldialog.h"

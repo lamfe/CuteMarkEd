@@ -25,8 +25,9 @@
 #include <QStyle>
 #include <QTextBlock>
 #include <QTextStream>
+#include <QScrollBar>
 
-#include <controls/linenumberarea.h>
+#include <controls/line_number_area.h>
 #include <pmh-adapter/styleparser.h>
 #include <markdownhighlighter.h>
 #include "markdownmanipulator.h"
@@ -34,9 +35,9 @@
 
 #include <spellchecker/dictionary.h>
 #include "hunspell/spellchecker.h"
-using hunspell::SpellChecker;
 
-#include <QScrollBar>
+
+using hunspell::SpellChecker;
 
 class ScrollBarFix : public QScrollBar {
 public:

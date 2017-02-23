@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "recentfilesmenu.h"
 
 #include <QFileInfo>
 #include <QDir>
 #include <QSettings>
+
+#include "recent_files_menu.h"
 
 RecentFilesMenu::RecentFilesMenu(QWidget *parent) :
     QMenu(tr("Recent &Files"), parent)

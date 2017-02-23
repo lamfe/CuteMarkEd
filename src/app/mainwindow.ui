@@ -754,18 +754,18 @@
   <customwidget>
    <class>FindReplaceWidget</class>
    <extends>QWidget</extends>
-   <header>controls/findreplacewidget.h</header>
+   <header>controls/find_replace_widget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>LanguageMenu</class>
    <extends>QMenu</extends>
-   <header>controls/languagemenu.h</header>
+   <header>controls/language_menu.h</header>
   </customwidget>
   <customwidget>
    <class>FileExplorerWidget</class>
    <extends>QWidget</extends>
-   <header>controls/fileexplorerwidget.h</header>
+   <header>controls/file_explorer_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

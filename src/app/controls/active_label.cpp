@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "activelabel.h"
 
 #include <QAction>
 #include <QMouseEvent>
+
+#include "active_label.h"
 
 ActiveLabel::ActiveLabel(QWidget *parent) :
     QLabel(parent),

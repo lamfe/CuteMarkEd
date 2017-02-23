@@ -21,7 +21,7 @@
 #include <jsontranslator.h>
 
 #include "snippets/snippet.h"
-#include "snippets/jsonsnippettranslator.h"
+#include "snippets/json_snippet_translator.h"
 
 
 template <> class JsonTranslatorFactory<Snippet>
