@@ -18,9 +18,9 @@
 #define COMPLETIONLISTMODEL_H
 
 #include <QAbstractListModel>
-#include <snippets/snippetcollection.h>
-struct Snippet;
+#include <snippets/snippet_collection.h>
 
+struct Snippet;
 
 class CompletionListModel : public QAbstractListModel
 {

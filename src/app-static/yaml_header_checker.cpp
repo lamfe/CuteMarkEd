@@ -14,8 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <QRegularExpression>
-#include "yamlheaderchecker.h"
+
+#include "yaml_header_checker.h"
 
 YamlHeaderChecker::YamlHeaderChecker(const QString &text)
 {

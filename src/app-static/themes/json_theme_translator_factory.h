@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
+ * Copyright 2015 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,28 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "datalocation.h"
+#ifndef JSONTHEMETRANSLATORFACTORY_H
+#define JSONTHEMETRANSLATORFACTORY_H
 
-#include <QDir>
-#include <QStandardPaths>
+#include <jsontranslatorfactory.h>
+#include <jsontranslator.h>
+
+#include "themes/theme.h"
+#include "themes/json_theme_translator.h"
 
 
-QString DataLocation::writableLocation()
+template <> class JsonTranslatorFactory<Theme>
 {
-    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-    ensurePathExists(path);
-    return path;
-}
-
-QStringList DataLocation::standardLocations()
-{
-    return QStandardPaths::standardLocations(QStandardPaths::DataLocation);
-}
-
-void DataLocation::ensurePathExists(const QString &path)
-{
-    QDir p(path);
-    if (!p.exists()) {
-        p.mkpath(path);
+public:
+    static JsonTranslator<Theme> *create()
+    {
+        return new JsonThemeTranslator();
     }
-}
+};
+
+#endif // JSONTHEMETRANSLATORFACTORY_H
+

@@ -23,9 +23,9 @@
 #   include <QWebFrame>
 #endif
 
-#include "revealviewsynchronizer.h"
+#include "reveal_view_synchronizer.h"
 #include "html_previewer.h"
-#include "slidelinemapping.h"
+#include "slideline_mapping.h"
 
 
 RevealViewSynchronizer::RevealViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor) :

@@ -22,53 +22,53 @@ CONFIG += c++11
 INCLUDEPATH += $$PWD
 
 SOURCES += \
-    snippets/jsonsnippettranslator.cpp \
-    snippets/snippetcollection.cpp \
+    snippets/json_snippet_translator.cpp \
+    snippets/snippet_collection.cpp \
     converter/discount_markdown_converter.cpp \
     converter/reveal_markdown_converter.cpp \
     spellchecker/dictionary.cpp \
-    template/htmltemplate.cpp \
-    template/presentationtemplate.cpp \
-    themes/jsonthemetranslator.cpp \
-    themes/stylemanager.cpp \
+    template/html_template.cpp \
+    template/presentation_template.cpp \
+    themes/json_theme_translator.cpp \
+    themes/style_manager.cpp \
     themes/theme.cpp \
-    themes/themecollection.cpp \
-    completionlistmodel.cpp \
-    datalocation.cpp \
-    slidelinemapping.cpp \
-    viewsynchronizer.cpp \
-    revealviewsynchronizer.cpp \
-    htmlpreviewcontroller.cpp \
-    htmlviewsynchronizer.cpp \
-    yamlheaderchecker.cpp \
+    themes/theme_collection.cpp \
+    completion_list_model.cpp \
+    data_location.cpp \
+    slideline_mapping.cpp \
+    view_synchronizer.cpp \
+    reveal_view_synchronizer.cpp \
+    html_preview_controller.cpp \
+    html_view_synchronizer.cpp \
+    yaml_header_checker.cpp \
     html_previewer.cpp
 
 HEADERS += \
     snippets/snippet.h \
-    snippets/jsonsnippettranslator.h \
-    snippets/jsonsnippettranslatorfactory.h \
-    snippets/snippetcollection.h \
+    snippets/json_snippet_translator.h \
+    snippets/json_snippet_translator_factory.h \
+    snippets/snippet_collection.h \
     converter/markdown_converter.h \
     converter/markdown_document.h \
     converter/discount_markdown_converter.h \
     converter/reveal_markdown_converter.h \
     spellchecker/dictionary.h \
     template/template.h \
-    template/htmltemplate.h \
-    template/presentationtemplate.h \
-    themes/jsonthemetranslator.h \
-    themes/jsonthemetranslatorfactory.h \
-    themes/stylemanager.h \
+    template/html_template.h \
+    template/presentation_template.h \
+    themes/json_theme_translator.h \
+    themes/json_theme_translator_factory.h \
+    themes/style_manager.h \
     themes/theme.h \
-    themes/themecollection.h \
-    completionlistmodel.h \
-    datalocation.h \
-    slidelinemapping.h \
-    viewsynchronizer.h \
-    revealviewsynchronizer.h \
-    htmlpreviewcontroller.h \
-    htmlviewsynchronizer.h \
-    yamlheaderchecker.h \
+    themes/theme_collection.h \
+    completion_list_model.h \
+    data_location.h \
+    slideline_mapping.h \
+    view_synchronizer.h \
+    reveal_view_synchronizer.h \
+    html_preview_controller.h \
+    html_view_synchronizer.h \
+    yaml_header_checker.h \
     html_previewer.h
 
 #unix:!symbian {

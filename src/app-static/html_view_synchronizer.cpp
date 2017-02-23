@@ -22,7 +22,7 @@
 #   include <QWebFrame>
 #endif
 
-#include "htmlviewsynchronizer.h"
+#include "html_view_synchronizer.h"
 #include "html_previewer.h"
 
 

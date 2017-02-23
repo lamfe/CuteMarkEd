@@ -19,7 +19,7 @@
 #include <QNetworkDiskCache>
 #include <QStandardPaths>
 
-#include "htmlpreviewcontroller.h"
+#include "html_preview_controller.h"
 #include "html_previewer.h"
 
 static const qreal ZOOM_CHANGE_VALUE = 0.1;

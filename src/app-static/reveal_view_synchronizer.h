@@ -18,7 +18,7 @@
 #ifndef REVEALVIEWSYNCHRONIZER_H
 #define REVEALVIEWSYNCHRONIZER_H
 
-#include "viewsynchronizer.h"
+#include "view_synchronizer.h"
 
 #include <QPair>
 

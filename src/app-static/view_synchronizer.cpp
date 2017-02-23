@@ -1,5 +1,6 @@
-/*
- * Copyright 2015 Christian Loose <christian.loose@hamburg.de>
+﻿/*
+ * Copyright 2014 Andreas Reischuck <https://github.com/arBmind>
+ * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef JSONTHEMETRANSLATORFACTORY_H
-#define JSONTHEMETRANSLATORFACTORY_H
 
-#include <jsontranslatorfactory.h>
-#include <jsontranslator.h>
+#include "view_synchronizer.h"
 
-#include "themes/theme.h"
-#include "themes/jsonthemetranslator.h"
-
-
-template <> class JsonTranslatorFactory<Theme>
+ViewSynchronizer::ViewSynchronizer(HtmlPreviewer *previewer, QPlainTextEdit *editor, QObject *parent) :
+    QObject(parent),
+    m_webView(previewer),
+    m_editor(editor)
 {
-public:
-    static JsonTranslator<Theme> *create()
-    {
-        return new JsonThemeTranslator();
-    }
-};
-
-#endif // JSONTHEMETRANSLATORFACTORY_H
-
+}

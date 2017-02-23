@@ -1,5 +1,4 @@
 ﻿/*
- * Copyright 2014 Andreas Reischuck <https://github.com/arBmind>
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "viewsynchronizer.h"
+#ifndef HTMLVIEWSYNCHRONIZER_H
+#define HTMLVIEWSYNCHRONIZER_H
 
-ViewSynchronizer::ViewSynchronizer(HtmlPreviewer *previewer, QPlainTextEdit *editor, QObject *parent) :
-    QObject(parent),
-    m_webView(previewer),
-    m_editor(editor)
+#include "view_synchronizer.h"
+
+
+class HtmlViewSynchronizer : public ViewSynchronizer
 {
-}
+    Q_OBJECT
+
+public:
+    HtmlViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor);
+    ~HtmlViewSynchronizer();
+
+public slots:
+    void webViewScrolled();
+    void rememberScrollBarPos();
+
+private slots:
+    void scrollValueChanged(int value);
+    void htmlContentSizeChanged();
+
+private:
+    int scrollBarPos;
+};
+
+#endif // HTMLVIEWSYNCHRONIZER_H
+

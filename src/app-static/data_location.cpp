@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,31 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HTMLVIEWSYNCHRONIZER_H
-#define HTMLVIEWSYNCHRONIZER_H
 
-#include "viewsynchronizer.h"
+#include "data_location.h"
+
+#include <QDir>
+#include <QStandardPaths>
 
 
-class HtmlViewSynchronizer : public ViewSynchronizer
+QString DataLocation::writableLocation()
 {
-    Q_OBJECT
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    ensurePathExists(path);
+    return path;
+}
 
-public:
-    HtmlViewSynchronizer(HtmlPreviewer *webView, QPlainTextEdit *editor);
-    ~HtmlViewSynchronizer();
+QStringList DataLocation::standardLocations()
+{
+    return QStandardPaths::standardLocations(QStandardPaths::DataLocation);
+}
 
-public slots:
-    void webViewScrolled();
-    void rememberScrollBarPos();
-
-private slots:
-    void scrollValueChanged(int value);
-    void htmlContentSizeChanged();
-
-private:
-    int scrollBarPos;
-};
-
-#endif // HTMLVIEWSYNCHRONIZER_H
-
+void DataLocation::ensurePathExists(const QString &path)
+{
+    QDir p(path);
+    if (!p.exists()) {
+        p.mkpath(path);
+    }
+}
