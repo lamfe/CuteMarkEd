@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "aboutdialog.h"
-#include "ui_aboutdialog.h"
+
+#include "about_dialog.h"
+#include "ui_about_dialog.h"
 
 static const QString COPYRIGHT = QStringLiteral("Copyright 2013-2016 Christian Loose");
 static const QString HOMEPAGE = QStringLiteral("<a href=\"http://cloose.github.io/CuteMarkEd\">http://cloose.github.io/CuteMarkEd</a>");

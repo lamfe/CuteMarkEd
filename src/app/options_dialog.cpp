@@ -14,8 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "optionsdialog.h"
-#include "ui_optionsdialog.h"
 
 #include <QFontComboBox>
 #include <QItemEditorFactory>
@@ -25,9 +23,11 @@
 #include <QStyledItemDelegate>
 #include <QTableWidgetItem>
 
+#include "options_dialog.h"
+#include "ui_options_dialog.h"
 #include <snippets/snippet_collection.h>
 #include "options.h"
-#include "snippetstablemodel.h"
+#include "snippets_table_model.h"
 
 class KeySequenceTableItem : public QTableWidgetItem
 {

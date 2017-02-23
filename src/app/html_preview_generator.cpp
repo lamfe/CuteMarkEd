@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "htmlpreviewgenerator.h"
 
 #include <QFile>
 
@@ -29,6 +28,7 @@
 
 #include <template/template.h>
 
+#include "html_preview_generator.h"
 #include "options.h"
 #include "yaml_header_checker.h"
 

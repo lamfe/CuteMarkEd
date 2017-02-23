@@ -21,7 +21,7 @@
 #include <QTextDocument>
 #include <QTextLayout>
 
-#include "markdownhighlighter.h"
+#include "markdown_highlighter.h"
 #include "pmh_parser.h"
 #include "yaml_header_checker.h"
 

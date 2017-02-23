@@ -1,4 +1,3 @@
-#include "statusbarwidget.h"
 
 #include <QHBoxLayout>
 #include <QTextBlock>
@@ -7,8 +6,9 @@
 #include <QActionGroup>
 #include <QMenu>
 
+#include "statusbar_widget.h"
 #include "controls/active_label.h"
-#include "markdowneditor.h"
+#include "markdown_editor.h"
 
 StatusBarWidget::StatusBarWidget(MarkdownEditor* editor) :
     m_editor(editor),

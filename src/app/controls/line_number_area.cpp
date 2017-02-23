@@ -16,7 +16,7 @@
  */
 
 #include "line_number_area.h"
-#include "markdowneditor.h"
+#include "markdown_editor.h"
 
 
 LineNumberArea::LineNumberArea(MarkdownEditor *editor) :

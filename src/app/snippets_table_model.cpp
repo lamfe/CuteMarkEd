@@ -17,7 +17,7 @@
 
 #include <QMessageBox>
 
-#include "snippetstablemodel.h"
+#include "snippets_table_model.h"
 #include <snippets/snippet_collection.h>
 
 SnippetsTableModel::SnippetsTableModel(SnippetCollection *collection, QObject *parent) :

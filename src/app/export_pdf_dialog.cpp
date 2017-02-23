@@ -14,12 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "exportpdfdialog.h"
-#include "ui_exportpdfdialog.h"
 
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QPrinter>
+
+#include "export_pdf_dialog.h"
+#include "ui_export_pdf_dialog.h"
 
 ExportPdfDialog::ExportPdfDialog(const QString &fileName, QWidget *parent) :
     QDialog(parent),

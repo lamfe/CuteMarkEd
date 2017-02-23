@@ -21,7 +21,7 @@
 
 #include "pmh_definitions.h"
 #include "pmh-adapter/definitions.h"
-#include "highlightworkerthread.h"
+#include "highlight_worker_thread.h"
 
 namespace hunspell {
 class SpellChecker;

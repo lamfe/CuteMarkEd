@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "tabletooldialog.h"
-#include "ui_tabletooldialog.h"
+
+#include "table_tool_dialog.h"
+#include "ui_table_tool_dialog.h"
 
 #include <QComboBox>
 #include <QLineEdit>

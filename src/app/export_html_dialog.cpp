@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "exporthtmldialog.h"
-#include "ui_exporthtmldialog.h"
 
 #include <QFileDialog>
 #include <QFileInfo>
+
+#include "export_html_dialog.h"
+#include "ui_export_html_dialog.h"
 
 ExportHtmlDialog::ExportHtmlDialog(const QString &fileName, QWidget *parent) :
     QDialog(parent),

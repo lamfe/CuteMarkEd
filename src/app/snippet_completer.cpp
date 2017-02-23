@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "snippetcompleter.h"
 
 #include <QApplication>
 #include <QAbstractItemView>
@@ -26,6 +25,7 @@
 #include <snippets/snippet_collection.h>
 #include <completion_list_model.h>
 
+#include "snippet_completer.h"
 
 SnippetCompleter::SnippetCompleter(SnippetCollection *collection, QWidget *parentWidget) :
     QObject(parentWidget),

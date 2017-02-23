@@ -52,29 +52,29 @@ INCLUDEPATH += $$PWD
 SOURCES += \
     main.cpp\
     mainwindow.cpp \
-    markdowneditor.cpp \
+    markdown_editor.cpp \
     controls/line_number_area.cpp \
     controls/active_label.cpp \
     controls/file_explorer_widget.cpp \
     controls/find_replace_widget.cpp \
     controls/recent_files_menu.cpp \
-    htmlpreviewgenerator.cpp \
-    markdownhighlighter.cpp \
-    highlightworkerthread.cpp \
-    markdownmanipulator.cpp \
-    exportpdfdialog.cpp \
-    exporthtmldialog.cpp \
-    htmlhighlighter.cpp \
+    html_preview_generator.cpp \
+    markdown_highlighter.cpp \
+    highlight_worker_thread.cpp \
+    markdown_manipulator.cpp \
+    export_pdf_dialog.cpp \
+    export_html_dialog.cpp \
+    html_highlighter.cpp \
     options.cpp \
-    optionsdialog.cpp \
+    options_dialog.cpp \
     hunspell/spellchecker.cpp \
     controls/language_menu.cpp \
-    tabletooldialog.cpp \
-    imagetooldialog.cpp \
-    snippetcompleter.cpp \
-    snippetstablemodel.cpp \
-    aboutdialog.cpp \
-    statusbarwidget.cpp
+    table_tool_dialog.cpp \
+    image_tool_dialog.cpp \
+    snippet_completer.cpp \
+    snippets_table_model.cpp \
+    about_dialog.cpp \
+    statusbar_widget.cpp
 
 macx {
     SOURCES += \
@@ -89,41 +89,41 @@ macx {
 
 HEADERS += \
     mainwindow.h \
-    markdowneditor.h \
+    markdown_editor.h \
     controls/line_number_area.h \
     controls/active_label.h \
     controls/file_explorer_widget.h \
     controls/find_replace_widget.h \
     controls/recent_files_menu.h \
-    htmlpreviewgenerator.h \
-    markdownhighlighter.h \
-    highlightworkerthread.h \
-    markdownmanipulator.h \
-    exportpdfdialog.h \
-    exporthtmldialog.h \
-    htmlhighlighter.h \
+    html_preview_generator.h \
+    markdown_highlighter.h \
+    highlight_worker_thread.h \
+    markdown_manipulator.h \
+    export_pdf_dialog.h \
+    export_html_dialog.h \
+    html_highlighter.h \
     options.h \
-    optionsdialog.h \
+    options_dialog.h \
     hunspell/spellchecker.h \
     controls/language_menu.h \
-    tabletooldialog.h \
-    imagetooldialog.h \
-    snippetcompleter.h \
-    snippetstablemodel.h \
-    aboutdialog.h \
-    statusbarwidget.h \
-    savefileadapter.h
+    table_tool_dialog.h \
+    image_tool_dialog.h \
+    snippet_completer.h \
+    snippets_table_model.h \
+    about_dialog.h \
+    statusbar_widget.h \
+    save_file_adapter.h
 
 FORMS += \
     mainwindow.ui \
     controls/file_explorer_widget.ui \
     controls/find_replace_widget.ui \
-    exportpdfdialog.ui \
-    exporthtmldialog.ui \
-    optionsdialog.ui \
-    tabletooldialog.ui \
-    imagetooldialog.ui \
-    aboutdialog.ui
+    export_pdf_dialog.ui \
+    export_html_dialog.ui \
+    options_dialog.ui \
+    table_tool_dialog.ui \
+    image_tool_dialog.ui \
+    about_dialog.ui
 
 RESOURCES += \
     resources.qrc \

@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "markdowneditor.h"
 
 #include <QAction>
 #include <QApplication>
@@ -29,13 +28,14 @@
 
 #include <controls/line_number_area.h>
 #include <pmh-adapter/styleparser.h>
-#include <markdownhighlighter.h>
-#include "markdownmanipulator.h"
-#include "snippetcompleter.h"
+#include <markdown_highlighter.h>
+#include "markdown_manipulator.h"
+#include "snippet_completer.h"
 
 #include <spellchecker/dictionary.h>
 #include "hunspell/spellchecker.h"
 
+#include "markdown_editor.h"
 
 using hunspell::SpellChecker;
 
