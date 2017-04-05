@@ -753,6 +753,10 @@ void MainWindow::plainTextChanged()
 
 void MainWindow::htmlResultReady(const QString &html)
 {
+#if !defined(NDEBUG) && 0
+    qDebug() << html << endl;
+#endif
+
     // show html preview
     QUrl baseUrl;
     if (_file_name.isEmpty()) {

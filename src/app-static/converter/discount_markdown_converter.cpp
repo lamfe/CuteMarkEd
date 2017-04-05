@@ -138,7 +138,8 @@ MarkdownConverter::ConverterOptions DiscountMarkdownConverter::supportedOptions(
 
 unsigned long DiscountMarkdownConverter::translateConverterOptions(ConverterOptions options) const
 {
-    unsigned long converterOptions = MKD_TOC | MKD_NOSTYLE;
+    // NOTE 语法高亮、流程图需要开启 MKD_FENCEDCODE
+    unsigned long converterOptions = MKD_TOC | MKD_NOSTYLE | MKD_FENCEDCODE;
 
     // autolink
     if (options.testFlag(MarkdownConverter::AutolinkOption)) {
