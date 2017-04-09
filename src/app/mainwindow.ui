@@ -749,7 +749,7 @@
   <customwidget>
    <class>MarkdownEditor</class>
    <extends>QPlainTextEdit</extends>
-   <header>markdowneditor.h</header>
+   <header>markdown_editor.h</header>
   </customwidget>
   <customwidget>
    <class>FindReplaceWidget</class>
