@@ -11,11 +11,10 @@ TEMPLATE = lib
 CONFIG += staticlib
 
 SOURCES += \
-    pmh_parser.cpp \
-    pmh_styleparser.cpp
+    pmh_parser.c \
+    pmh_styleparser.c
 
 HEADERS += \
     pmh_styleparser.h \
     pmh_parser.h \
     pmh_definitions.h
-

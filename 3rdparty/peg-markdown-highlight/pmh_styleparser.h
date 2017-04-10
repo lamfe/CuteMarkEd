@@ -1,5 +1,5 @@
 /* PEG Markdown Highlight
- * Copyright 2011-2012 Ali Rantakari -- http://hasseg.org
+ * Copyright 2011-2016 Ali Rantakari -- http://hasseg.org
  * Licensed under the GPL2+ and MIT licenses (see LICENSE for more info).
  * 
  * pmh_styleparser.h
@@ -54,6 +54,7 @@ typedef enum
     pmh_attr_type_font_size_pt,     /**< Font size (in points) */
     pmh_attr_type_font_family,      /**< Font family */
     pmh_attr_type_font_style,       /**< Font style */
+    pmh_attr_type_strike_color,     /**< Strike-through color */
     pmh_attr_type_other             /**< Arbitrary custom attribute */
 } pmh_attr_type;
 
@@ -108,6 +109,9 @@ typedef struct
 } pmh_style_collection;
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /**
 * \brief Parse stylesheet string, return style collection
 * 
@@ -147,3 +151,6 @@ char *pmh_attr_name_from_type(pmh_attr_type type);
 
 pmh_attr_type pmh_attr_type_from_name(char *name);
 
+#ifdef __cplusplus
+}
+#endif
