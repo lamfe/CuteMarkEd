@@ -19,6 +19,7 @@ lessThan(QT_VERSION, 5.6) {
 }
 
 CONFIG += console testcase
+CONFIG -= app_bundle
 CONFIG += c++11
 
 SOURCES += \
