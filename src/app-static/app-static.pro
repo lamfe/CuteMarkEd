@@ -101,8 +101,8 @@ with_hoedown {
     message("app-static: Enable hoedown markdown converter support")
 
     DEFINES += ENABLE_HOEDOWN
-    SOURCES += converter/hoedownmarkdownconverter.cpp
-    HEADERS += converter/hoedownmarkdownconverter.h
+    SOURCES += converter/hoedown_markdown_converter.cpp
+    HEADERS += converter/hoedown_markdown_converter.h
 
     win32:INCLUDEPATH += $$PWD/../../3rdparty/hoedown
 }

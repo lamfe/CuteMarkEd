@@ -32,7 +32,7 @@
 #ifndef HOEDOWNMARKDOWNCONVERTER_H
 #define HOEDOWNMARKDOWNCONVERTER_H
 
-#include "markdownconverter.h"
+#include "markdown_converter.h"
 
 class HoedownMarkdownConverter : public MarkdownConverter
 {

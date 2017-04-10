@@ -42,7 +42,7 @@ extern "C" {
 
 #include "hoedown_markdown_converter.h"
 #include "markdown_document.h"
-#include "template/htmltemplate.h"
+#include "template/html_template.h"
 
 class HoedownMarkdownDocument : public MarkdownDocument
 {

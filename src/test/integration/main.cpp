@@ -28,7 +28,7 @@
 #include "theme_collection_test.h"
 
 #ifdef ENABLE_HOEDOWN
-#include "hoedownmarkdownconvertertest.h"
+#include "hoedown_markdown_converter_test.h"
 #endif
 
 int main(int argc, char *argv[])
