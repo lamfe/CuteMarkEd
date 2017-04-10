@@ -107,8 +107,8 @@ LIBS += -L$$OUT_PWD/../../libs/discount$${OUT_TAIL} -ldiscount
 #
 with_hoedown {
     DEFINES += ENABLE_HOEDOWN
-    SOURCES += hoedownmarkdownconvertertest.cpp
-    HEADERS += hoedownmarkdownconvertertest.h
+    SOURCES += hoedown_markdown_converter_test.cpp
+    HEADERS += hoedown_markdown_converter_test.h
 
     INCLUDEPATH += $$PWD/../../../3rdparty/hoedown
 

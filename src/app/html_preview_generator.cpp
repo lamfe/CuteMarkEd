@@ -23,7 +23,7 @@
 #include <converter/reveal_markdown_converter.h>
 
 #ifdef ENABLE_HOEDOWN
-#include <converter/hoedownmarkdownconverter.h>
+#include <converter/hoedown_markdown_converter.h>
 #endif
 
 #include <template/template.h>

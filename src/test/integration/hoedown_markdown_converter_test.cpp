@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "hoedownmarkdownconvertertest.h"
+#include "hoedown_markdown_converter_test.h"
 
 #include <QtTest>
 
-#include <converter/hoedownmarkdownconverter.h>
-#include "loremipsumtestdata.h"
+#include <converter/hoedown_markdown_converter.h>
+#include "lorem_ipsum_test_data.h"
 
 void HoedownMarkdownConverterTest::initTestCase()
 {
