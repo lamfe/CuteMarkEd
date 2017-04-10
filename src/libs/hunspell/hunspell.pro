@@ -7,14 +7,12 @@
 TARGET = hunspell
 TEMPLATE = lib
 
-QT -= core gui
+CONFIG -= qt
 
 DEFINES += HUNSPELL_LIBRARY
 DEFINES += BUILDING_LIBHUNSPELL
 
 CONFIG += precompile_header
-
-OBJECTS_DIR += temp
 
 SRC_ROOT = $$PWD/../../../3rdparty/hunspell
 

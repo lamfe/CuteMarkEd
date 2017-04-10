@@ -8,7 +8,7 @@
 TARGET = discount
 TEMPLATE = lib
 
-QT       -= core gui
+CONFIG -= qt
 
 # compile output is unreadable with -Wall
 CONFIG += warn_off

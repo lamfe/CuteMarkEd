@@ -7,7 +7,7 @@
 TARGET = hoedown
 TEMPLATE = lib
 
-QT -= core gui
+CONFIG -= qt
 
 SRC_ROOT = $$PWD/../../../3rdparty/hoedown
 
