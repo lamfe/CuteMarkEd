@@ -42,7 +42,7 @@ public:
     {
         switch (role) {
             case Qt::DisplayRole:
-                return m_keySequence.toString();
+                return m_keySequence;
             case Qt::EditRole:
                 return m_keySequence;
             default:
@@ -216,14 +216,14 @@ void OptionsDialog::validateShortcut(int row, int column)
     if (ks.isEmpty() && !newShortcut.isEmpty()) {
         // If new shortcut was invalid, restore the original
         _ui->shortcutsTable->setItem(row, column,
-            new QTableWidgetItem(_actions[row]->shortcut().toString()));
+            new KeySequenceTableItem(_actions[row]->shortcut()));
     } else {
         // Check for conflicts.
         if (!ks.isEmpty()) {
             for (int c = 0; c < _actions.size(); ++c) {
                 if (c != row && ks == QKeySequence(_ui->shortcutsTable->item(c, 1)->text())) {
                     _ui->shortcutsTable->setItem(row, column,
-                        new QTableWidgetItem(_actions[row]->shortcut().toString()));
+                        new KeySequenceTableItem(_actions[row]->shortcut()));
                     QMessageBox::information(this, tr("Conflict"), tr("This shortcut is already used for \"%1\"").arg(_actions[c]->text().remove('&')));
                     return;
                 }
@@ -258,7 +258,7 @@ void OptionsDialog::setupShortcutsTable()
             label->setFont(font);
         }
         QTableWidgetItem *accel = new KeySequenceTableItem(action->shortcut());
-        QTableWidgetItem *def = new QTableWidgetItem(defaultKeySeq.toString());
+        QTableWidgetItem *def = new KeySequenceTableItem(defaultKeySeq);
         def->setFlags(Qt::ItemIsSelectable);
         _ui->shortcutsTable->setItem(i, 0, label);
         _ui->shortcutsTable->setItem(i, 1, accel);
