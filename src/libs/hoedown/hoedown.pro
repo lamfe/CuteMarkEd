@@ -18,3 +18,5 @@ SOURCES += \
 
 HEADERS += \
     $$files($${SRC_ROOT}/src/*.h)
+
+macx:QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/

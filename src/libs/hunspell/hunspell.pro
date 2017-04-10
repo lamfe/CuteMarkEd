@@ -36,3 +36,5 @@ OTHER_FILES += \
     $${SRC_ROOT}/license.myspell \
     $${SRC_ROOT}/license.hunspell \
     $${SRC_ROOT}/src/hunspell/utf_info.cxx
+
+macx:QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
