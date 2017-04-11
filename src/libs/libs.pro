@@ -4,6 +4,7 @@ TEMPLATE = subdirs
 SUBDIRS += \
     discount \
     hunspell \
+    peg-markdown-highlight \
     pmh-adapter
 
 win32 {
@@ -13,3 +14,5 @@ win32 {
         SUBDIRS += hoedown
     }
 }
+
+pmh-adapter.depends = peg-markdown-highlight

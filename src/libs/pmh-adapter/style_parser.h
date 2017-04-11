@@ -18,7 +18,15 @@
 #define STYLEPARSER_H
 
 #include "definitions.h"
-#include <pmh_styleparser.h>
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#	include <pmh_styleparser.h>
+#ifdef __cplusplus
+}
+#endif
 
 
 namespace PegMarkdownHighlight

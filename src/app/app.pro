@@ -180,7 +180,7 @@ INCLUDEPATH += $$PWD/../app-static
 LIBS += -L$$OUT_PWD/../app-static$${OUT_TAIL} -lapp-static
 
 # discount
-INCLUDEPATH += $$PWD/../../3rdparty/discount
+INCLUDEPATH += $$PWD/../../3rdparty/discount.git
 LIBS += -L$$OUT_PWD/../libs/discount$${OUT_TAIL} -ldiscount
 
 # pmh-adapter
@@ -188,11 +188,13 @@ INCLUDEPATH += $$PWD/../libs/pmh-adapter/..
 LIBS += -L$$OUT_PWD/../libs/pmh-adapter$${OUT_TAIL} -lpmh-adapter
 
 # peg-markdown-highlight
-INCLUDEPATH += $$PWD/../../3rdparty/peg-markdown-highlight
-LIBS += -L$$OUT_PWD/../../3rdparty/peg-markdown-highlight$${OUT_TAIL} -lpmh
+INCLUDEPATH += \
+    $$PWD/../../3rdparty/peg-markdown-highlight.git \
+    $$PWD/../libs/peg-markdown-highlight
+LIBS += -L$$OUT_PWD/../libs/peg-markdown-highlight$${OUT_TAIL} -lpmh
 
 # hunspell
-INCLUDEPATH += $$PWD/../../3rdparty/hunspell/src
+INCLUDEPATH += $$PWD/../../3rdparty/hunspell.git/src
 LIBS += -L$$OUT_PWD/../libs/hunspell$${OUT_TAIL} -lhunspell
 
 unix:!macx {
@@ -202,7 +204,7 @@ unix:!macx {
 # hoedown
 with_hoedown {
     DEFINES += ENABLE_HOEDOWN
-    INCLUDEPATH += $$PWD/../../3rdparty/hoedown
+    INCLUDEPATH += $$PWD/../../3rdparty/hoedown.git
     LIBS += -L$$OUT_PWD/../libs/hoedown$${OUT_TAIL} -lhoedown
 }
 

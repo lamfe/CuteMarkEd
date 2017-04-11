@@ -10,11 +10,16 @@ TARGET = pmh
 TEMPLATE = lib
 CONFIG += staticlib
 
+SRC_ROOT = $$PWD/../../../3rdparty/peg-markdown-highlight.git
+
+INCLUDEPATH += \
+    $${SRC_ROOT}
+
 SOURCES += \
     pmh_parser.c \
     pmh_styleparser.c
 
 HEADERS += \
-    pmh_styleparser.h \
-    pmh_parser.h \
-    pmh_definitions.h
+    $${SRC_ROOT}/pmh_styleparser.h \
+    $${SRC_ROOT}/pmh_parser.h \
+    $${SRC_ROOT}/pmh_definitions.h

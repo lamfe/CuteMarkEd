@@ -15,8 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#   include <pmh_parser.h>
+#ifdef __cplusplus
+}
+#endif
+
 #include "highlight_worker_thread.h"
-#include "pmh_parser.h"
 
 HighlightWorkerThread::HighlightWorkerThread(QObject *parent) :
     QThread(parent)

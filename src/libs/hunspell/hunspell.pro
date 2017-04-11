@@ -14,7 +14,7 @@ DEFINES += BUILDING_LIBHUNSPELL
 
 CONFIG += precompile_header
 
-SRC_ROOT = $$PWD/../../../3rdparty/hunspell
+SRC_ROOT = $$PWD/../../../3rdparty/hunspell.git
 
 INCLUDEPATH += \
     $${SRC_ROOT}/src/hunspell \
