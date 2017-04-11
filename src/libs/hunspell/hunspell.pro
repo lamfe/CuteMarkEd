@@ -7,14 +7,12 @@
 TARGET = hunspell
 TEMPLATE = lib
 
-QT -= core gui
+CONFIG -= qt
 
 DEFINES += HUNSPELL_LIBRARY
 DEFINES += BUILDING_LIBHUNSPELL
 
 CONFIG += precompile_header
-
-OBJECTS_DIR += temp
 
 SRC_ROOT = $$PWD/../../../3rdparty/hunspell.git
 
@@ -36,3 +34,5 @@ OTHER_FILES += \
     $${SRC_ROOT}/license.myspell \
     $${SRC_ROOT}/license.hunspell \
     $${SRC_ROOT}/src/hunspell/utf_info.cxx
+
+macx:QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/

@@ -8,7 +8,7 @@
 TARGET = discount
 TEMPLATE = lib
 
-QT       -= core gui
+CONFIG -= qt
 
 # compile output is unreadable with -Wall
 CONFIG += warn_off
@@ -49,3 +49,5 @@ HEADERS += \
     config.h \
     config_win.h \
     config_mac.h
+
+macx:QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
