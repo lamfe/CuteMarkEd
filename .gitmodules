@@ -1,9 +1,12 @@
-[submodule "3rdparty/discount"]
-	path = 3rdparty/discount
+[submodule "3rdparty/discount.git"]
+	path = 3rdparty/discount.git
 	url = https://github.com/Orc/discount.git
-[submodule "3rdparty/hunspell"]
-	path = 3rdparty/hunspell
+[submodule "3rdparty/hunspell.git"]
+	path = 3rdparty/hunspell.git
 	url = https://github.com/hunspell/hunspell.git
-[submodule "3rdparty/hoedown"]
-	path = 3rdparty/hoedown
+[submodule "3rdparty/hoedown.git"]
+	path = 3rdparty/hoedown.git
 	url = https://github.com/hoedown/hoedown.git
+[submodule "3rdparty/peg-markdown-highlight.git"]
+	path = 3rdparty/peg-markdown-highlight.git
+	url = https://github.com/ali-rantakari/peg-markdown-highlight.git

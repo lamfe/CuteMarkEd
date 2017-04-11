@@ -10,7 +10,7 @@ TARGET = pmh
 TEMPLATE = lib
 CONFIG += staticlib
 
-SRC_ROOT = $$PWD/../../../3rdparty/peg-markdown-highlight
+SRC_ROOT = $$PWD/../../../3rdparty/peg-markdown-highlight.git
 
 INCLUDEPATH += \
     $${SRC_ROOT}

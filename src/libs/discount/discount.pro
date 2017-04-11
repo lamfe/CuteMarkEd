@@ -13,7 +13,7 @@ QT       -= core gui
 # compile output is unreadable with -Wall
 CONFIG += warn_off
 
-SRC_ROOT = $$PWD/../../../3rdparty/discount
+SRC_ROOT = $$PWD/../../../3rdparty/discount.git
 
 DEF_FILE = discount.def
 

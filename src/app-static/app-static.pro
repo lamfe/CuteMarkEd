@@ -92,7 +92,7 @@ INCLUDEPATH += $$PWD/../libs/jsonconfig
 #
 # Discount library
 #
-INCLUDEPATH += $$PWD/../../3rdparty/discount $$PWD/../libs/discount
+INCLUDEPATH += $$PWD/../../3rdparty/discount.git $$PWD/../libs/discount
 
 #
 # Hoedown library
@@ -104,5 +104,5 @@ with_hoedown {
     SOURCES += converter/hoedown_markdown_converter.cpp
     HEADERS += converter/hoedown_markdown_converter.h
 
-    win32:INCLUDEPATH += $$PWD/../../3rdparty/hoedown
+    win32:INCLUDEPATH += $$PWD/../../3rdparty/hoedown.git
 }

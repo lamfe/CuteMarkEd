@@ -80,7 +80,7 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../libs/pmh-adapter/libpmh-adapter.a
 # peg-markdown-highlight
 #
 INCLUDEPATH += \
-    $$PWD/../../../3rdparty/peg-markdown-highlight \
+    $$PWD/../../../3rdparty/peg-markdown-highlight.git \
     $$PWD/../../libs/peg-markdown-highlight
 LIBS += -L$$OUT_PWD/../../libs/peg-markdown-highlight$${OUT_TAIL} -lpmh
 
@@ -91,7 +91,7 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../../libs/peg-markdown-highlight/libpmh.
 #
 # Discount library
 #
-INCLUDEPATH += $$PWD/../../../3rdparty/
+INCLUDEPATH += $$PWD/../../../3rdparty/discount.git
 LIBS += -L$$OUT_PWD/../../libs/discount$${OUT_TAIL} -ldiscount
 
 #win32-g++: PRE_TARGETDEPS += $$OUT_PWD/../../libs/discount/$${DEBUG_MODE}/libdiscount.a
@@ -106,7 +106,7 @@ with_hoedown {
     SOURCES += hoedown_markdown_converter_test.cpp
     HEADERS += hoedown_markdown_converter_test.h
 
-    INCLUDEPATH += $$PWD/../../../3rdparty/hoedown
+    INCLUDEPATH += $$PWD/../../../3rdparty/hoedown.git
 
     LIBS += -L$$OUT_PWD/../../libs/hoedown$${OUT_TAIL} -lhoedown
 

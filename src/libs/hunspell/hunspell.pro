@@ -16,7 +16,7 @@ CONFIG += precompile_header
 
 OBJECTS_DIR += temp
 
-SRC_ROOT = $$PWD/../../../3rdparty/hunspell
+SRC_ROOT = $$PWD/../../../3rdparty/hunspell.git
 
 INCLUDEPATH += \
     $${SRC_ROOT}/src/hunspell \

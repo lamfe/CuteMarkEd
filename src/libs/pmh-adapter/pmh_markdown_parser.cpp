@@ -17,8 +17,15 @@
 
 #include <QString>
 
-#include <pmh_definitions.h>
-#include <pmh_parser.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#   include <pmh_definitions.h>
+#   include <pmh_parser.h>
+#ifdef __cplusplus
+}
+#endif
 
 #include "pmh_markdown_parser.h"
 
