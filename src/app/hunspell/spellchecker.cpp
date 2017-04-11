@@ -45,7 +45,7 @@ bool SpellChecker::isCorrect(const QString &word)
     }
 
     QByteArray ba = _text_codec->fromUnicode(word);
-    return _hunspell_checker->spell(ba) != 0;
+    return _hunspell_checker->spell(ba.toStdString()) != 0;
 }
 
 QStringList SpellChecker::suggestions(const QString &word)
@@ -56,15 +56,12 @@ QStringList SpellChecker::suggestions(const QString &word)
         return suggestions;
     }
 
-    char **suggestedWords;
     QByteArray ba = _text_codec->fromUnicode(word);
-    int count = _hunspell_checker->suggest(&suggestedWords, ba);
+    std::vector<std::string> suggestedWords = _hunspell_checker->suggest(ba.toStdString());
 
-    for (int i = 0; i < count; ++i) {
-        suggestions << _text_codec->toUnicode(suggestedWords[i]);
+    for (std::size_t i = 0; i < suggestedWords.size(); ++i) {
+        suggestions << _text_codec->toUnicode(suggestedWords[i].data());
     }
-
-    _hunspell_checker->free_list(&suggestedWords, count);
 
     return suggestions;
 }
