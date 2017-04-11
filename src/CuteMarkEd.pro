@@ -9,14 +9,12 @@ TEMPLATE = subdirs
 CONFIG += c++11
 
 SUBDIRS = \
-    ../3rdparty \
     libs \
     app-static \
     app \
     font-awesome-icon \
     test
 
-# build order: 3rdparty -> libs -> app-static -> app & test
-libs.depends = ../3rdparty
+# build order: libs -> app-static -> app & test
 app.depends = libs app-static
 test.depends = libs app-static

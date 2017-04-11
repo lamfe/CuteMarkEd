@@ -184,8 +184,10 @@ INCLUDEPATH += $$PWD/../libs/pmh-adapter/..
 LIBS += -L$$OUT_PWD/../libs/pmh-adapter$${OUT_TAIL} -lpmh-adapter
 
 # peg-markdown-highlight
-INCLUDEPATH += $$PWD/../../3rdparty/peg-markdown-highlight
-LIBS += -L$$OUT_PWD/../../3rdparty/peg-markdown-highlight$${OUT_TAIL} -lpmh
+INCLUDEPATH += \
+    $$PWD/../../3rdparty/peg-markdown-highlight \
+    $$PWD/../libs/peg-markdown-highlight
+LIBS += -L$$OUT_PWD/../libs/peg-markdown-highlight$${OUT_TAIL} -lpmh
 
 # hunspell
 INCLUDEPATH += $$PWD/../../3rdparty/hunspell/src
