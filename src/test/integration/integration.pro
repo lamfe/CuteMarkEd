@@ -10,7 +10,7 @@ include(../../global.pri)
 
 QT += testlib
 QT += gui
-lessThan(QT_VERSION, 5.6) {
+qtHaveModule(webkitwidgets) {
     QT += webkitwidgets
     DEFINES += WITH_QTWEBENGINE=0
 } else {
@@ -19,6 +19,7 @@ lessThan(QT_VERSION, 5.6) {
 }
 
 CONFIG += console testcase
+CONFIG -= app_bundle
 CONFIG += c++11
 
 SOURCES += \

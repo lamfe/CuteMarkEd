@@ -7,9 +7,12 @@
 TARGET = hoedown
 TEMPLATE = lib
 
-QT -= core gui
+CONFIG -= qt
 
-SRC_ROOT = $$PWD/../../../3rdparty/hoedown
+# compile output is unreadable with -Wall
+CONFIG += warn_off
+
+SRC_ROOT = $$PWD/../../../3rdparty/hoedown.git
 
 DEF_FILE = $${SRC_ROOT}/hoedown.def
 
