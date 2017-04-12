@@ -4,9 +4,13 @@
 # Github : https://github.com/cloose/CuteMarkEd
 #
 
+TARGET = unittest
+TEMPLATE = app
+
+include(../../global.pri)
+
 QT += testlib
 
-TARGET = unittest
 CONFIG += console testcase
 CONFIG -= app_bundle
 CONFIG += c++11

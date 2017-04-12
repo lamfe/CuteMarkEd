@@ -7,9 +7,14 @@
 TARGET = hoedown
 TEMPLATE = lib
 
+include(../../global.pri)
+
 CONFIG -= qt
 
-SRC_ROOT = $$PWD/../../../3rdparty/hoedown
+# compile output is unreadable with -Wall
+CONFIG += warn_off
+
+SRC_ROOT = $$PWD/../../../3rdparty/hoedown.git
 
 DEF_FILE = $${SRC_ROOT}/hoedown.def
 
@@ -18,5 +23,3 @@ SOURCES += \
 
 HEADERS += \
     $$files($${SRC_ROOT}/src/*.h)
-
-macx:QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/

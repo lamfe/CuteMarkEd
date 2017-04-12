@@ -12,7 +12,7 @@ include(../global.pri)
 QT += core gui printsupport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 win32: QT += winextras
-lessThan(QT_VERSION, 5.6) {
+qtHaveModule(webkitwidgets) {
     QT += webkitwidgets
     DEFINES += WITH_QTWEBENGINE=0
 } else {

@@ -8,6 +8,8 @@
 TARGET = discount
 TEMPLATE = lib
 
+include(../../global.pri)
+
 CONFIG -= qt
 
 # compile output is unreadable with -Wall
@@ -49,5 +51,3 @@ HEADERS += \
     config.h \
     config_win.h \
     config_mac.h
-
-macx:QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../Frameworks/
