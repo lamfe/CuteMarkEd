@@ -5,6 +5,7 @@
 #
 
 TARGET = integrationtest
+TEMPLATE = app
 
 include(../../global.pri)
 
