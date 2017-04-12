@@ -8,6 +8,8 @@
 TARGET = discount
 TEMPLATE = lib
 
+include(../../global.pri)
+
 CONFIG -= qt
 
 # compile output is unreadable with -Wall

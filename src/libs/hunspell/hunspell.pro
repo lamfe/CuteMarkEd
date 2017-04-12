@@ -1,11 +1,13 @@
-#-------------------------------------------------
 #
-# Project created by QtCreator 2011-07-04T16:26:46
+# Hunspell library
 #
-#-------------------------------------------------
+# Github : https://github.com/hunspell/hunspell.git
+#
 
 TARGET = hunspell
 TEMPLATE = lib
+
+include(../../global.pri)
 
 CONFIG -= qt
 

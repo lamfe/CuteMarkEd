@@ -12,3 +12,12 @@ win32: OUT_TAIL = /$${DEBUG_MODE}
 mac: OS_NAME = darwin
 else:win32: OS_NAME = win
 else:unix: OS_NAME = unix
+
+# dylib 安装路径
+mac: contains(TEMPLATE, lib): !contains(CONFIG, staticlib) {
+    QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
+}
+mac: contains(TEMPLATE, app) {
+    QMAKE_LFLAGS += -Wl,-rpath,@executable_path -Wl,-rpath,@executable_path/../Frameworks
+    QMAKE_LFLAGS_RPATH =
+}
