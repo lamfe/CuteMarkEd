@@ -31,7 +31,7 @@
  */
 
 extern "C" {
-#ifdef Q_OS_WIN
+#if defined(_WIN32) || defined(__APPLE__)
 #include <src/html.h>
 #include <src/markdown.h>
 #else

@@ -7,7 +7,7 @@ SUBDIRS += \
     peg-markdown-highlight \
     pmh-adapter
 
-win32 {
+win32|macx {
     with_hoedown {
         message("3rdparty: Build hoedown markdown converter library")
         DEFINES += ENABLE_HOEDOWN
