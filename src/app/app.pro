@@ -45,6 +45,10 @@ win32: RC_FILE = cutemarked.rc
 macx {
     ICON = resources/app-icon.icns
     QMAKE_INFO_PLIST = Info.plist
+
+    file_icon.files = resources/markdown_file.icns
+    file_icon.path = Contents/Resources
+    QMAKE_BUNDLE_DATA += file_icon
 }
 
 INCLUDEPATH += $$PWD
