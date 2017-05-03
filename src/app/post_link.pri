@@ -17,9 +17,9 @@ mac {
     }
 } else {
     # libs
-    POST_TARGETDEPS += $${ORGANIC_LIBS}
+    POST_TARGETDEPS += $${CUTE_MARK_ED_LIBS}
 
-    for(l,ORGANIC_LIBS) {
+    for(l,CUTE_MARK_ED_LIBS) {
         QMAKE_POST_LINK += cp -Lf $${l} $$OUT_PWD/ ;
     }
 }
