@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2013-2014 Christian Loose <christian.loose@hamburg.de>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,21 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "mainwindow.h"
 
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QLibraryInfo>
 #include <QTranslator>
+#include <QFileOpenEvent>
 
 #ifdef Q_OS_WIN
-#include <QDir>
-#include <QFileInfo>
-#include <QSettings>
+
+#   include <QDir>
+#   include <QFileInfo>
+#   include <QSettings>
 
 // Helper function to register supported file types
 // This is needed to enable the application jump list to show the desired recent files
-static void associateFileTypes(const QStringList &fileTypes)
+static void associate_file_types(const QStringList &fileTypes)
 {
     QString displayName = QGuiApplication::applicationDisplayName();
     QString filePath = QCoreApplication::applicationFilePath();
@@ -48,42 +51,48 @@ static void associateFileTypes(const QStringList &fileTypes)
     settings.beginGroup("Command");
     settings.setValue(".", QChar('"') + QDir::toNativeSeparators(filePath) + QString("\" \"%1\""));
 }
+
 #endif
 
 
-#include <QFileOpenEvent>
-
 class MyApplication : public QApplication
 {
+    MainWindow *_main_window = nullptr;
+
 public:
-    MyApplication(int &argc, char **argv) : QApplication(argc, argv)
+    MyApplication(int &argc, char **argv)
+        : QApplication(argc, argv)
     {
         setOrganizationName("CuteMarkEd Project");
         setApplicationName("CuteMarkEd");
         setApplicationDisplayName("CuteMarkEd");
         setApplicationVersion("0.11.3");
-
-        main_window_ = new MainWindow();
     }
 
     ~MyApplication()
     {
-        delete main_window_;
+        if (nullptr != _main_window)
+            delete _main_window;
+        _main_window = nullptr;
     }
 
     bool event(QEvent *event)
     {
-        if (event->type() == QEvent::FileOpen) {
+        if (event->type() == QEvent::FileOpen && nullptr != _main_window)
+        {
             QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
-            return main_window_->loadFile(openEvent->file());
+            return _main_window->loadFile(openEvent->file());
         }
         return QApplication::event(event);
     }
 
-    MainWindow* mainWindow() { return main_window_; }
-
-private:
-    MainWindow* main_window_;
+    MainWindow* get_main_window()
+    {
+        // NOTE Defer creating, or the language translations won't work.
+        if (nullptr == _main_window)
+            _main_window = new MainWindow();
+        return _main_window;
+    }
 };
 
 
@@ -94,40 +103,41 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
 #ifdef Q_OS_WIN
-    QStringList fileTypes;
-    fileTypes << ".markdown" << ".md" << ".mdown";
-    associateFileTypes(fileTypes);
+    QStringList file_types;
+    file_types << ".markdown" << ".md" << ".mdown";
+    associate_file_types(file_types);
 #endif
 
-    // load translation for Qt
-    QTranslator qtTranslator;
-    if (!qtTranslator.load("qt_" + QLocale::system().name(),
-                           QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
-        qtTranslator.load("qt_" + QLocale::system().name(), "translations");
+    // Load translation for Qt
+    QTranslator qt_translator;
+    if (!qt_translator.load("qt_" + QLocale::system().name(),
+                            QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+    {
+        qt_translator.load("qt_" + QLocale::system().name(), "translations");
     }
-    app.installTranslator(&qtTranslator);
+    app.installTranslator(&qt_translator);
 
-    // try to load translation for current locale from resource file
+    // Try to load translation for current locale from resource file
     QTranslator translator;
     translator.load("cutemarked_" + QLocale::system().name(), ":/translations");
     app.installTranslator(&translator);
 
-    // setup command line parser
+    // Setup command line parser
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("file", QApplication::translate("main", "The file to open."));
     parser.process(app);
 
-    // get filename from command line arguments
-    QString fileName;
-    const QStringList cmdLineArgs = parser.positionalArguments();
-    if (!cmdLineArgs.isEmpty()) {
-        fileName = cmdLineArgs.at(0);
+    // Get filename from command line arguments
+    QString file_name;
+    const QStringList cmdline_args = parser.positionalArguments();
+    if (!cmdline_args.isEmpty()) {
+        file_name = cmdline_args.at(0);
     }
 
-    app.mainWindow()->loadFile(fileName);
-    app.mainWindow()->show();
+    app.get_main_window()->loadFile(file_name);
+    app.get_main_window()->show();
 
     return app.exec();
 }
