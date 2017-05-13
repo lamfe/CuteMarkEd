@@ -164,7 +164,7 @@ private:
     ThemeCollection *_theme_collection;
     Theme _current_theme { "Default", "Default", "Default", "Default" };
     QString _file_name;
-    float _split_factor;
+    qreal _split_factor;
     bool _right_view_collapsed;
 };
 
