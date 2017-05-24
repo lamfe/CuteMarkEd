@@ -104,5 +104,5 @@ with_hoedown {
     SOURCES += converter/hoedown_markdown_converter.cpp
     HEADERS += converter/hoedown_markdown_converter.h
 
-    win32:INCLUDEPATH += $$PWD/../../3rdparty/hoedown.git
+    win32|macx:INCLUDEPATH += $$PWD/../../3rdparty/hoedown.git
 }
